@@ -1,17 +1,61 @@
 {
+  "strict": true,
   "extends": "adonis-preset-ts/tsconfig.json",
-  "include": ["**/*"],
-  "exclude": ["node_modules", "build"],
+  "include": [
+    "**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ],
   "compilerOptions": {
     "outDir": "build",
     "rootDir": "./",
     "sourceMap": true,
     "paths": {
-      "App/*": ["./app/*"],
-      "Config/*": ["./config/*"],
-      "Contracts/*": ["./contracts/*"],
-      "Database/*": ["./database/*"]
+      "@Models/*": [
+        "./app/Models/*"
+      ],
+      "@Controllers/*": [
+        "./app/Controllers/*"
+      ],
+      "@Services/*": [
+        "./app/Services/*"
+      ],
+      "@DTO/*": [
+        "./app/DataAccessLayer/DTO/*"
+      ],
+      "@DALContracts/*": [
+        "./app/DataAccessLayer/DALContracts/*"
+      ],
+      "@Repositories/*": [
+        "./app/DataAccessLayer/Repositories/*"
+      ],
+      "@Enum/*": [
+        "app/Enum/*"
+      ],
+      "@Validators/*": [
+        "./app/Validators/*"
+      ],
+      "App/*": [
+        "./app/*"
+      ],
+      "Config/*": [
+        "./config/*"
+      ],
+      "Contracts/*": [
+        "./contracts/*"
+      ],
+      "Database/*": [
+        "./database/*"
+      ]
     },
-    "types": ["@adonisjs/core", "@adonisjs/repl", "@japa/preset-adonis/build/adonis-typings"]
+    "types": [
+      "@adonisjs/core",
+      "@adonisjs/repl",
+      "@japa/preset-adonis/build/adonis-typings",
+      "@adonisjs/lucid",
+      "@adonisjs/auth"
+    ]
   }
 }
