@@ -1,6 +1,6 @@
 import AuthentificationMode from 'App/Enum/AuthentificationMode'
 
-export interface UserCreateDTO {
+export default interface UserCreateDTO {
   email: string
   password: string
   user_language: string | ''
