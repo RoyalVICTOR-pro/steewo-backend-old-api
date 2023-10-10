@@ -1,8 +1,8 @@
 import User from 'App/Models/User'
-import UserCreateDTO from '@DTO/UserCreateDTO'
+import { UserCreateDTO } from '@DTO/UserCreateDTO'
 import UserContract from '@DALContracts/UserContract'
 
-export default class UserRepository implements UserContract {
+export class UserRepository implements UserContract {
   public async createUser(data: UserCreateDTO): Promise<User> {
     const user = new User()
     user.email = data.email

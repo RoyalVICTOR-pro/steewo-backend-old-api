@@ -1,16 +1,15 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { AuthService } from 'App/Services/AuthService'
+import AuthServiceContract from 'App/Services/ServicesContracts/AuthServiceContract'
 import { UserCreateDTO } from 'App/DataAccessLayer/DTO/UserCreateDTO'
 import AuthentificationMode from 'App/Enum/AuthentificationMode'
 import CreateUserValidator from 'App/Validators/CreateUserValidator'
+import { inject } from '@adonisjs/core/build/standalone'
 
 const acceptLanguage = require('accept-language-parser')
 
-export default class AuthController {
-  private authService: AuthService
-  constructor() {
-    this.authService = new AuthService()
-  }
+@inject()
+export class AuthController {
+  constructor(private authService: AuthServiceContract) {}
 
   public async register({ request, response }: HttpContextContract) {
     try {
@@ -29,6 +28,7 @@ export default class AuthController {
         internal_or_sso: AuthentificationMode.INTERNAL,
       }
 
+      console.log('this.authService :>> ', this.authService) // return this.authService :>>  { AuthService: [class AuthService] }
       const user = await this.authService.createUserAccount(userData)
       return response.created(user) // 201 CREATED
     } catch (error) {
