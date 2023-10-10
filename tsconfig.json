@@ -32,7 +32,7 @@
         "./app/DataAccessLayer/Repositories/*"
       ],
       "@Enum/*": [
-        "app/Enum/*"
+        "./app/Enum/*"
       ],
       "@Validators/*": [
         "./app/Validators/*"
