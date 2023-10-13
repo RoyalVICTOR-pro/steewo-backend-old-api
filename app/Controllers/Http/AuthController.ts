@@ -19,8 +19,6 @@ export class AuthController {
       const acceptLangHeader = request.header('Accept-Language')
       const languages = acceptLanguage.parse(acceptLangHeader)
 
-      console.log('AuthentificationMode.INTERNAL :>> ', AuthentificationMode.INTERNAL)
-
       const userData: UserCreateDTO = {
         email: data.email,
         password: data.password,
@@ -28,7 +26,6 @@ export class AuthController {
         internal_or_sso: AuthentificationMode.INTERNAL,
       }
 
-      console.log('this.authService :>> ', this.authService) // return this.authService :>>  { AuthService: [class AuthService] }
       const user = await this.authService.createUserAccount(userData)
       return response.created(user) // 201 CREATED
     } catch (error) {

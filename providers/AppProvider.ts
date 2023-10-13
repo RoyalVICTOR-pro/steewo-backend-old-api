@@ -5,7 +5,6 @@ export default class AppProvider {
 
   public async register() {
     // Register your own bindings
-    console.log('AppProvider register called')
     await this.setupDependancyInjectionBindings()
   }
 
@@ -22,7 +21,6 @@ export default class AppProvider {
   }
 
   private async setupDependancyInjectionBindings() {
-    console.log('setupDependancyInjectionBindings called')
     const { UserRepository } = await import('App/DataAccessLayer/Repositories/UserRepository')
     const { AuthService } = await import('App/Services/AuthService')
     const { AuthController } = await import('App/Controllers/Http/AuthController')
@@ -32,7 +30,7 @@ export default class AppProvider {
       () => new UserRepository()
     )
 
-    this.app.container.singleton('App/Services/ServicesContracts/AuthServiceContract', async () => {
+    this.app.container.singleton('App/Services/AuthService', () => {
       const userRepository = this.app.container.use('App/DataAccessLayer/DALContracts/UserContract')
       return new AuthService(userRepository)
     })
