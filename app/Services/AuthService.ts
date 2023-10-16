@@ -1,13 +1,12 @@
+import { inject } from '@adonisjs/fold'
 import { UserCreateDTO } from '@DTO/UserCreateDTO'
-import { UserRepository } from 'App/DataAccessLayer/Repositories/UserRepository'
 import Config from '@ioc:Adonis/Core/Config'
+import AuthServiceInterface from 'App/Services/Interfaces/AuthServiceInterface'
+import UserInterface from 'App/DataAccessLayer/Interfaces/UserInterface'
 
-export class AuthService {
-  private userRepository: UserRepository
-
-  constructor() {
-    this.userRepository = new UserRepository()
-  }
+@inject()
+export class AuthService implements AuthServiceInterface {
+  constructor(private userRepository: UserInterface) {}
 
   public async createUserAccount(data: UserCreateDTO) {
     if (!data.user_language) data.user_language = Config.get('custom.DEFAULT_LANGUAGE')

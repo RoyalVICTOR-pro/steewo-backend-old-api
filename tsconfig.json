@@ -13,30 +13,6 @@
     "rootDir": "./",
     "sourceMap": true,
     "paths": {
-      "@Models/*": [
-        "./app/Models/*"
-      ],
-      "@Controllers/*": [
-        "./app/Controllers/*"
-      ],
-      "@Services/*": [
-        "./app/Services/*"
-      ],
-      "@DTO/*": [
-        "./app/DataAccessLayer/DTO/*"
-      ],
-      "@DALContracts/*": [
-        "./app/DataAccessLayer/DALContracts/*"
-      ],
-      "@Repositories/*": [
-        "./app/DataAccessLayer/Repositories/*"
-      ],
-      "@Enum/*": [
-        "app/Enum/*"
-      ],
-      "@Validators/*": [
-        "./app/Validators/*"
-      ],
       "App/*": [
         "./app/*"
       ],
@@ -48,6 +24,30 @@
       ],
       "Database/*": [
         "./database/*"
+      ],
+      "@Models/*": [
+        "./app/Models/*"
+      ],
+      "@Controllers/*": [
+        "./app/Controllers/Http/*"
+      ],
+      "@Services/*": [
+        "./app/Services/*"
+      ],
+      "@DTO/*": [
+        "./app/DataAccessLayer/DTO/*"
+      ],
+      "@DALInterfaces/*": [
+        "./app/DataAccessLayer/Interfaces/*"
+      ],
+      "@DALRepositories/*": [
+        "./app/DataAccessLayer/Repositories/*"
+      ],
+      "@Enums/*": [
+        "./app/Enums/*"
+      ],
+      "@Validators/*": [
+        "./app/Validators/*"
       ]
     },
     "types": [

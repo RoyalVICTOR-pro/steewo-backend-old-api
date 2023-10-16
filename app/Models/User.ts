@@ -2,10 +2,10 @@ import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { BaseModel, column, beforeSave, BelongsTo, belongsTo } from '@ioc:Adonis/Lucid/Orm'
 import Country from 'App/Models/Country'
-import Role from 'App/Enum/Roles'
-import StudentUserStatus from 'App/Enum/StudentUserStatus'
-import ClientUserStatus from 'App/Enum/ClientUserStatus'
-import AuthentificationMode from 'App/Enum/AuthentificationMode'
+import Role from 'App/Enums/Roles'
+import StudentUserStatus from 'App/Enums/StudentUserStatus'
+import ClientUserStatus from 'App/Enums/ClientUserStatus'
+import AuthentificationMode from 'App/Enums/AuthentificationMode'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
