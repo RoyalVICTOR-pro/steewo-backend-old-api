@@ -26,12 +26,12 @@ export default class AppProvider {
     const { AuthController } = await import('App/Controllers/Http/AuthController')
 
     this.app.container.singleton(
-      'App/DataAccessLayer/DALContracts/UserContract',
+      'App/DataAccessLayer/Interfaces/UserInterface',
       () => new UserRepository()
     )
 
     this.app.container.singleton('App/Services/AuthService', () => {
-      const userRepository = this.app.container.use('App/DataAccessLayer/DALContracts/UserContract')
+      const userRepository = this.app.container.use('App/DataAccessLayer/Interfaces/UserInterface')
       return new AuthService(userRepository)
     })
 
