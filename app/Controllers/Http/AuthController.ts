@@ -4,12 +4,11 @@ import { AuthService } from 'App/Services/AuthService'
 import { UserCreateDTO } from 'App/DataAccessLayer/DTO/UserCreateDTO'
 import AuthentificationMode from 'App/Enums/AuthentificationMode'
 import CreateUserValidator from 'App/Validators/CreateUserValidator'
-import AuthControllerInterface from './AuthControllerInterface'
 
 const acceptLanguage = require('accept-language-parser')
 
 @inject()
-export default class AuthController implements AuthControllerInterface {
+export default class AuthController {
   private authService: AuthService
   constructor(authService: AuthService) {
     this.authService = authService
