@@ -21,14 +21,14 @@ export default class extends BaseSchema {
       table.string('user_language', 5).notNullable()
       table.dateTime('privacy_acceptation').nullable()
       table.dateTime('cgv_acceptation').nullable()
-      table.string('emailValidationToken', 255).nullable()
-      table.tinyint('isValidEmail').defaultTo(0)
+      table.string('email_validation_token', 255).nullable()
+      table.tinyint('is_valid_email').defaultTo(0)
       table.string('internal_or_sso', 15).notNullable()
       table.string('sso_provider_id', 255).nullable()
       table.string('password_forgotten', 255).nullable()
       table.dateTime('password_forgotten_datetime').nullable()
-      table.tinyint('has_Enabled_Notifications').defaultTo(0)
-      table.tinyint('has_Accepted_Steewo_Charter').defaultTo(0)
+      table.tinyint('has_enabled_notifications').defaultTo(0)
+      table.tinyint('has_accepted_steewo_Charter').defaultTo(0)
 
       /**
        * Uses timestampz for PostgreSQL and DATETIME2 for MSSQL

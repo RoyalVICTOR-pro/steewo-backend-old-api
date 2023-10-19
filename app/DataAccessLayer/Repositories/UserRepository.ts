@@ -14,4 +14,9 @@ export class UserRepository implements UserInterface {
     await user.save()
     return user
   }
+
+  public async getUserByEmail(email: string): Promise<User | null> {
+    const user = await User.findBy('email', email)
+    return user
+  }
 }

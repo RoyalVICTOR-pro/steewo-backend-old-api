@@ -39,10 +39,10 @@ export default class User extends BaseModel {
   public cgv_acceptation: DateTime | null
 
   @column()
-  public emailValidationToken: string | null
+  public email_validation_token: string | null
 
   @column()
-  public isValidEmail: boolean
+  public is_valid_email: boolean
 
   @column()
   public internal_or_sso: AuthentificationMode
@@ -60,10 +60,10 @@ export default class User extends BaseModel {
   public password_forgotten_datetime: DateTime | null
 
   @column()
-  public has_Enabled_Notifications: boolean
+  public has_enabled_notifications: boolean
 
   @column()
-  public has_Accepted_Steewo_Charter: boolean
+  public has_accepted_steewo_charter: boolean
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
