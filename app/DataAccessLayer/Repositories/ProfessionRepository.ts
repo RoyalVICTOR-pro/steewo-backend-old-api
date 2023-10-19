@@ -1,0 +1,39 @@
+// Générer les méthodes CRUD pour le modèle Profession
+
+import Profession from 'App/Models/Profession'
+import { ProfessionCreateOrUpdateDTO } from 'App/DataAccessLayer/DTO/ProfessionCreateOrUpdateDTO'
+import ProfessionInterface from 'App/DataAccessLayer/Interfaces/ProfessionInterface'
+import { inject } from '@adonisjs/core/build/standalone'
+
+@inject()
+export class ProfessionRepository implements ProfessionInterface {
+  public async listProfessions(): Promise<Profession[]> {
+    const professions = await Profession.all()
+    return professions
+  }
+
+  public async getProfessionById(id: number): Promise<Profession> {
+    const profession = await Profession.findOrFail(id)
+    return profession
+  }
+
+  public async createProfession(data: ProfessionCreateOrUpdateDTO): Promise<Profession> {
+    const profession = new Profession()
+    profession.name_fr = data.name_fr
+    await profession.save()
+    return profession
+  }
+
+  public async updateProfession(data: ProfessionCreateOrUpdateDTO): Promise<Profession> {
+    const profession = await Profession.findOrFail(data.id)
+    profession.name_fr = data.name_fr
+    await profession.save()
+    return profession
+  }
+
+  public async deleteProfession(id: number): Promise<boolean> {
+    const profession = await Profession.findOrFail(id)
+    await profession.delete()
+    return true
+  }
+}

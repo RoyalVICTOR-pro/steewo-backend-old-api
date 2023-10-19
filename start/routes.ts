@@ -26,3 +26,9 @@ Route.get('/', async () => {
 
 Route.post('/register', 'AuthController.register').as('register')
 Route.post('/login', 'AuthController.login').as('login')
+
+Route.get('/professions', 'ProfessionsController.getAllProfessions').as('getAllProfessions')
+Route.get('/professions/:id', 'ProfessionsController.getProfessionById').as('getProfessionById')
+Route.post('/professions', 'ProfessionsController.createProfession').as('createProfession')
+Route.put('/professions', 'ProfessionsController.updateProfession').as('updateProfession')
+Route.delete('/professions/:id', 'ProfessionsController.deleteProfession').as('deleteProfession')
