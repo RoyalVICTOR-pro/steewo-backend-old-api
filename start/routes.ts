@@ -24,11 +24,18 @@ Route.get('/', async () => {
   return { hello: 'world' }
 })
 
+// Préfixer toutes les routes par un numéro de version d'api
 Route.post('/register', 'AuthController.register').as('register')
 Route.post('/login', 'AuthController.login').as('login')
 
+// TODO: add auth middleware to some routes
+// TODO: add admin middleware to some routes
+// Route.group(() => {
+//   Route.group(() => {
 Route.get('/professions', 'ProfessionsController.getAllProfessions').as('getAllProfessions')
 Route.get('/professions/:id', 'ProfessionsController.getProfessionById').as('getProfessionById')
 Route.post('/professions', 'ProfessionsController.createProfession').as('createProfession')
-Route.put('/professions', 'ProfessionsController.updateProfession').as('updateProfession')
+Route.put('/professions/:id', 'ProfessionsController.updateProfession').as('updateProfession')
 Route.delete('/professions/:id', 'ProfessionsController.deleteProfession').as('deleteProfession')
+//   }).middleware('auth')
+// }).prefix('/v1')

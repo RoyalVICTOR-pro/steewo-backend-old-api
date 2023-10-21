@@ -24,8 +24,11 @@ export class ProfessionRepository implements ProfessionInterface {
     return profession
   }
 
-  public async updateProfession(data: ProfessionCreateOrUpdateDTO): Promise<Profession> {
-    const profession = await Profession.findOrFail(data.id)
+  public async updateProfessionById(
+    idToUpdate: number,
+    data: ProfessionCreateOrUpdateDTO
+  ): Promise<Profession> {
+    const profession = await Profession.findOrFail(idToUpdate)
     profession.name_fr = data.name_fr
     await profession.save()
     return profession

@@ -9,9 +9,9 @@ export default class ProfessionCreateOrUpdateValidator {
       rules.required(),
       rules.unique({ table: 'professions', column: 'name_fr' }),
     ]),
-    picto_path: schema.string(),
-    image_path: schema.string(),
-    is_enabled: schema.boolean(),
+    picto_path: schema.string.optional(),
+    image_path: schema.string.optional(),
+    is_enabled: schema.boolean.optional(),
   })
 
   public messages: CustomMessages = {

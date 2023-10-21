@@ -1,3 +1,5 @@
+import { compose } from '@ioc:Adonis/Core/Helpers'
+import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { BaseModel, column, beforeSave, BelongsTo, belongsTo } from '@ioc:Adonis/Lucid/Orm'
@@ -7,7 +9,7 @@ import StudentUserStatus from 'App/Enums/StudentUserStatus'
 import ClientUserStatus from 'App/Enums/ClientUserStatus'
 import AuthentificationMode from 'App/Enums/AuthentificationMode'
 
-export default class User extends BaseModel {
+export default class User extends compose(BaseModel, SoftDeletes) {
   @column({ isPrimary: true })
   public id: number
 
@@ -70,6 +72,9 @@ export default class User extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @column.dateTime()
+  public deletedAt: DateTime | null
 
   @beforeSave()
   public static async hashPassword(user: User) {

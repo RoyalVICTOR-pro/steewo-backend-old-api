@@ -22,12 +22,11 @@ export class ProfessionService implements ProfessionServiceInterface {
     return await this.professionRepository.createProfession(data)
   }
 
-  public async updateProfession(data: ProfessionCreateOrUpdateDTO) {
-    return await this.professionRepository.updateProfession(data)
+  public async updateProfessionById(idToUpdate: number, data: ProfessionCreateOrUpdateDTO) {
+    return await this.professionRepository.updateProfessionById(idToUpdate, data)
   }
 
   public async deleteProfession(id: number) {
-    // TODO : Faire du Soft delete
     return await this.professionRepository.deleteProfession(id)
   }
 }

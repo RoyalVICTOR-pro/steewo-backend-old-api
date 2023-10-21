@@ -46,19 +46,28 @@ export default class ProfessionsController {
       const profession = await this.professionService.createProfession(newProfession)
       return response.created(profession)
     } catch (error) {
-      error.message = 'While creating a profession : ' + error.message
+      const validationError = JSON.stringify(error.messages)
+      error.message = `While creating profession : Validation Error => ${validationError} Other Error => ${error.message}`
       console.log(error)
       return response.status(500).json({ message: 'Internal Server Error' })
     }
   }
 
-  public async updateProfession({ request, response }: HttpContextContract) {
-    const data = request.only(['id', 'name_fr'])
+  public async updateProfession({ request, response, params }: HttpContextContract) {
     try {
-      const profession = await this.professionService.updateProfession(data)
+      const data = await request.validate(ProfessionCreateOrUpdateValidator)
+      const newProfession = {
+        name_fr: data.name_fr,
+        picto_path: data.picto_path,
+        image_path: data.image_path,
+        is_enabled: data.is_enabled,
+      }
+
+      const profession = await this.professionService.updateProfessionById(params.id, newProfession)
       return response.ok(profession)
     } catch (error) {
-      error.message = 'While updating profession ' + data.id + ' : ' + error.message
+      const validationError = JSON.stringify(error.messages)
+      error.message = `While updating profession ${params.id} : Validation Error => ${validationError} Other Error => ${error.message}`
       console.log(error)
       return response.status(500).json({ message: 'Internal Server Error' })
     }
