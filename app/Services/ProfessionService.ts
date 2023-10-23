@@ -3,8 +3,7 @@ import { inject } from '@adonisjs/core/build/standalone'
 import ProfessionServiceInterface from 'App/Services/Interfaces/ProfessionServiceInterface'
 import { ProfessionRepository } from 'App/DataAccessLayer/Repositories/ProfessionRepository'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
-import slugify from 'slugify'
-
+import UploadService from 'App/Services/UploadService'
 @inject()
 export class ProfessionService implements ProfessionServiceInterface {
   private professionRepository: ProfessionRepository
@@ -29,28 +28,36 @@ export class ProfessionService implements ProfessionServiceInterface {
     imageFile: MultipartFileContract | null = null
   ) {
     if (pictoFile) {
-      const sanitizedName = slugify(data.name_fr, { lower: true, strict: true })
-      const newName = sanitizedName + '.' + pictoFile.extname
-      // On déplace le fichier à la racine du dossier d'uploads
-      await pictoFile.moveToDisk(this.pictoPath, { name: newName })
-      // On change le nom du thumbnail dans le model
-      data.picto_file = this.pictoPath + newName
+      data.picto_file = await UploadService.uploadFileTo(pictoFile, this.pictoPath, data.name_fr)
     }
 
     if (imageFile) {
-      const sanitizedName = slugify(data.name_fr, { lower: true, strict: true })
-      const newName = sanitizedName + '.' + imageFile.extname
-      // On déplace le fichier à la racine du dossier d'uploads
-      await imageFile.moveToDisk(this.imagePath, { name: newName })
-      // On change le nom du thumbnail dans le model
-      data.image_file = this.imagePath + newName
+      data.image_file = await UploadService.uploadFileTo(imageFile, this.imagePath, data.name_fr)
     }
-    console.log('data', data)
-
     return await this.professionRepository.createProfession(data)
   }
 
-  public async updateProfessionById(idToUpdate: number, data: ProfessionCreateOrUpdateDTO) {
+  public async updateProfessionById(
+    idToUpdate: number,
+    data: ProfessionCreateOrUpdateDTO,
+    pictoFile: MultipartFileContract | null = null,
+    imageFile: MultipartFileContract | null = null
+  ) {
+    if (pictoFile || imageFile) {
+      const oldProfession = await this.professionRepository.getProfessionById(idToUpdate)
+      if (pictoFile) {
+        if (oldProfession.picto_file) {
+          await UploadService.deleteFile(oldProfession.picto_file)
+        }
+        data.picto_file = await UploadService.uploadFileTo(pictoFile, this.pictoPath, data.name_fr)
+      }
+      if (imageFile) {
+        if (oldProfession.image_file) {
+          await UploadService.deleteFile(oldProfession.image_file)
+        }
+        data.image_file = await UploadService.uploadFileTo(imageFile, this.imagePath, data.name_fr)
+      }
+    }
     return await this.professionRepository.updateProfessionById(idToUpdate, data)
   }
 
