@@ -33,6 +33,9 @@ export class ProfessionRepository implements ProfessionInterface {
   ): Promise<Profession> {
     const profession = await Profession.findOrFail(idToUpdate)
     profession.name_fr = data.name_fr
+    if (data.picto_file) profession.picto_file = data.picto_file
+    if (data.image_file) profession.image_file = data.image_file
+    if (data.is_enabled) profession.is_enabled = data.is_enabled
     await profession.save()
     return profession
   }

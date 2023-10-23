@@ -1,13 +1,21 @@
 import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class ProfessionCreateOrUpdateValidator {
+export default class ProfessionUpdateValidator {
   constructor(protected ctx: HttpContextContract) {}
+
+  public refs = schema.refs({
+    id: this.ctx.params.id,
+  })
 
   public schema = schema.create({
     name_fr: schema.string({}, [
       rules.required(),
-      rules.unique({ table: 'professions', column: 'name_fr' }),
+      rules.unique({
+        table: 'professions',
+        column: 'name_fr',
+        whereNot: { id: this.refs.id },
+      }),
     ]),
     picto_file: schema.file.optional({
       size: '2mb', // Limite la taille du fichier

@@ -2,7 +2,8 @@ import { inject } from '@adonisjs/core/build/standalone'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { ProfessionCreateOrUpdateDTO } from 'App/DataAccessLayer/DTO/ProfessionCreateOrUpdateDTO'
 import { ProfessionService } from 'App/Services/ProfessionService'
-import ProfessionCreateOrUpdateValidator from 'App/Validators/ProfessionCreateOrUpdateValidator'
+import ProfessionCreateValidator from 'App/Validators/ProfessionCreateValidator'
+import ProfessionUpdateValidator from 'App/Validators/ProfessionUpdateValidator'
 
 @inject()
 export default class ProfessionsController {
@@ -35,7 +36,7 @@ export default class ProfessionsController {
 
   public async createProfession({ request, response }: HttpContextContract) {
     try {
-      const data = await request.validate(ProfessionCreateOrUpdateValidator)
+      const data = await request.validate(ProfessionCreateValidator)
 
       const newProfession: ProfessionCreateOrUpdateDTO = {
         name_fr: data.name_fr,
@@ -58,7 +59,7 @@ export default class ProfessionsController {
 
   public async updateProfession({ request, response, params }: HttpContextContract) {
     try {
-      const data = await request.validate(ProfessionCreateOrUpdateValidator)
+      const data = await request.validate(ProfessionUpdateValidator)
       const newProfession = {
         name_fr: data.name_fr,
         is_enabled: data.is_enabled,
