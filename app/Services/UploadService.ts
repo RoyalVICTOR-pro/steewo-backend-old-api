@@ -19,6 +19,7 @@ export default class UploadService {
   }
 
   public static async deleteFile(path: string) {
+    console.log('path :>> ', path)
     Drive.delete(path)
   }
 }

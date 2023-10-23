@@ -65,7 +65,12 @@ export default class ProfessionsController {
         is_enabled: data.is_enabled,
       }
 
-      const profession = await this.professionService.updateProfessionById(params.id, newProfession)
+      const profession = await this.professionService.updateProfessionById(
+        params.id,
+        newProfession,
+        data.picto_file,
+        data.image_file
+      )
       return response.ok(profession)
     } catch (error) {
       const validationError = JSON.stringify(error.messages)
