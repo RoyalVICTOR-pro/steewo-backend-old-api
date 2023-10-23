@@ -17,10 +17,10 @@ export default class Service extends compose(BaseModel, SoftDeletes) {
   public short_name_fr: string | null
 
   @column()
-  public picto_path: string | null
+  public picto_file: string | null
 
   @column()
-  public image_path: string | null
+  public image_file: string | null
 
   @column()
   public is_enabled: boolean

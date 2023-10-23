@@ -9,8 +9,8 @@ export default class extends BaseSchema {
       table.integer('professions_id').unsigned().notNullable().index()
       table.string('name_fr', 70).notNullable()
       table.string('short_name_fr', 40).notNullable()
-      table.string('picto_path', 255).nullable()
-      table.string('image_path', 255).nullable()
+      table.string('picto_file', 255).nullable()
+      table.string('image_file', 255).nullable()
       table.tinyint('is_enabled').notNullable().defaultTo(0)
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

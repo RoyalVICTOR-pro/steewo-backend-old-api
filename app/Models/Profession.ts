@@ -11,10 +11,10 @@ export default class Profession extends compose(BaseModel, SoftDeletes) {
   public name_fr: string
 
   @column()
-  public picto_path: string | null
+  public picto_file: string | null
 
   @column()
-  public image_path: string | null
+  public image_file: string | null
 
   @column()
   public is_enabled: boolean
