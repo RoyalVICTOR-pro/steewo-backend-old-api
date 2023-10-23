@@ -10,7 +10,6 @@ export default class ProfessionUpdateValidator {
 
   public schema = schema.create({
     name_fr: schema.string({}, [
-      rules.required(),
       rules.unique({
         table: 'professions',
         column: 'name_fr',

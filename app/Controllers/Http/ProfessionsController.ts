@@ -17,8 +17,9 @@ export default class ProfessionsController {
       const professions = await this.professionService.listProfessions()
       return response.ok(professions)
     } catch (error) {
+      console.log('error.status :>> ', error.status)
       error.message = 'While getting all professions : ' + error.message
-      console.log(error)
+      console.log('error :>> ', error)
       return response.status(500).json({ message: 'Internal Server Error' })
     }
   }
@@ -28,9 +29,14 @@ export default class ProfessionsController {
       const profession = await this.professionService.getProfessionById(params.id)
       return response.ok(profession)
     } catch (error) {
+      console.log('error.status :>> ', error.status)
       error.message = 'While getting profession ' + params.id + ' : ' + error.message
-      console.log(error)
-      return response.status(500).json({ message: 'Internal Server Error' })
+      console.log('error :>> ', error)
+      if (error.status === 404) {
+        return response.status(404).json({ message: 'Profession not found' })
+      } else {
+        return response.status(500).json({ message: 'Internal Server Error' })
+      }
     }
   }
 
@@ -50,10 +56,17 @@ export default class ProfessionsController {
       )
       return response.created(profession)
     } catch (error) {
-      const validationError = JSON.stringify(error.messages)
-      error.message = `While creating profession : Validation Error => ${validationError} Other Error => ${error.message}`
-      console.log(error)
-      return response.status(500).json({ message: 'Internal Server Error' })
+      console.log('error.status :>> ', error.status)
+      if (error.status === 422) {
+        const validationErrorMessagesForConsoleLog = JSON.stringify(error.messages)
+        error.message = `Validation Error While creating profession : ${validationErrorMessagesForConsoleLog} =>  ${error.message}`
+        console.log('error :>> ', error)
+        return response.status(422).json({ message: error.messages })
+      } else {
+        error.message = `Not a validation error => ${error.message}`
+        console.log('error :>> ', error)
+        return response.status(500).json({ message: 'Internal Server Error' })
+      }
     }
   }
 
@@ -73,10 +86,21 @@ export default class ProfessionsController {
       )
       return response.ok(profession)
     } catch (error) {
-      const validationError = JSON.stringify(error.messages)
-      error.message = `While updating profession ${params.id} : Validation Error => ${validationError} Other Error => ${error.message}`
-      console.log(error)
-      return response.status(500).json({ message: 'Internal Server Error' })
+      console.log('error.status :>> ', error.status)
+      if (error.status === 422) {
+        const validationErrorMessagesForConsoleLog = JSON.stringify(error.messages)
+        error.message = `Validation Error While updating profession ${params.id} : ${validationErrorMessagesForConsoleLog} =>  ${error.message}`
+        console.log('error :>> ', error)
+        return response.status(422).json({ message: error.messages })
+      } else if (error.status === 404) {
+        error.message = 'While getting profession ' + params.id + ' for update : ' + error.message
+        console.log('error :>> ', error)
+        return response.status(404).json({ message: 'Profession not found' })
+      } else {
+        error.message = `Not a validation error => ${error.message}`
+        console.log('error :>> ', error)
+        return response.status(500).json({ message: 'Internal Server Error' })
+      }
     }
   }
 
@@ -85,9 +109,16 @@ export default class ProfessionsController {
       await this.professionService.deleteProfession(params.id)
       return response.noContent()
     } catch (error) {
-      error.message = 'While deleting profession ' + params.id + ' : ' + error.message
-      console.log(error)
-      return response.status(500).json({ message: 'Internal Server Error' })
+      console.log('error.status :>> ', error.status)
+      if (error.status === 404) {
+        error.message = 'While getting profession ' + params.id + ' for delete : ' + error.message
+        console.log('error :>> ', error)
+        return response.status(404).json({ message: 'Profession not found' })
+      } else {
+        error.message = 'While deleting profession ' + params.id + ' : ' + error.message
+        console.log(error)
+        return response.status(500).json({ message: 'Internal Server Error' })
+      }
     }
   }
 }

@@ -61,7 +61,15 @@ export class ProfessionService implements ProfessionServiceInterface {
     return await this.professionRepository.updateProfessionById(idToUpdate, data)
   }
 
-  public async deleteProfession(id: number) {
-    return await this.professionRepository.deleteProfession(id)
+  public async deleteProfession(idToDelete: number) {
+    const professionToDelete = await this.professionRepository.getProfessionById(idToDelete)
+    if (professionToDelete.picto_file) {
+      await UploadService.deleteFile(professionToDelete.picto_file)
+    }
+
+    if (professionToDelete.image_file) {
+      await UploadService.deleteFile(professionToDelete.image_file)
+    }
+    return await this.professionRepository.deleteProfession(idToDelete)
   }
 }

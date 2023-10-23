@@ -6,8 +6,7 @@ export default class ProfessionCreateValidator {
 
   public schema = schema.create({
     name_fr: schema.string({}, [
-      rules.required(),
-      rules.unique({ table: 'professions', column: 'name_fr' }),
+      rules.unique({ table: 'professions', column: 'name_fr' }), // Vérifie que le nom n'existe pas déjà mais aussi que le nom n'est pas vide (required)
     ]),
     picto_file: schema.file.optional({
       size: '2mb', // Limite la taille du fichier
@@ -23,9 +22,9 @@ export default class ProfessionCreateValidator {
   public messages: CustomMessages = {
     'name_fr.required': 'Le nom de la profession est requis.',
     'name_fr.unique': 'Cette profession existe déjà.',
-    'picto_file.file.extnames': 'Le fichier picto_file doit être au format jpg, png ou jpeg.',
+    'picto_file.file.extname': 'Le fichier picto_file doit être au format jpg, png ou jpeg.',
     'picto_file.file.size': 'Le fichier picto_file ne doit pas dépasser 2 Mo.',
-    'image_file.file.extnames': 'Le fichier image_file doit être au format jpg, png ou jpeg.',
+    'image_file.file.extname': 'Le fichier image_file doit être au format jpg, png ou jpeg.',
     'image_file.file.size': 'Le fichier image_file ne doit pas dépasser 2 Mo.',
   }
 }
