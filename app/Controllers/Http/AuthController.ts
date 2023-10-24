@@ -34,9 +34,8 @@ export default class AuthController {
   }
 
   public async login({ request, response, auth }: HttpContextContract) {
-    // Récupérer les données de la requête, les vérifier et les valider et ensuite utiliser l'AuthService pour se connecter
+    // TODO : Activer le mode strict de la politique CORS
     try {
-      // Valider les données de la requête en utilisant le validateur prestationUpdate
       const loginData = await request.validate(UserLoginValidator)
 
       const tokenAndUserInfo: any = await this.authService.authenticateUser(loginData, auth)
