@@ -38,12 +38,12 @@ export default class AuthController {
     try {
       const loginData = await request.validate(UserLoginValidator)
 
-      const tokenAndUserInfo: any = await this.authService.authenticateUser(loginData, auth)
+      const token: any = await this.authService.authenticateUser(loginData, auth)
 
-      if (!tokenAndUserInfo) {
+      if (!token) {
         return response.status(401).json({ errors: 'Invalid credentials' })
       }
-      return response.status(200).json({ tokenAndUserInfo })
+      return response.status(200).json({ token })
     } catch (error) {
       console.log('error :>> ', error)
       if (error instanceof TooManyRequestsException) {

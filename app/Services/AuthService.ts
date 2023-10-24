@@ -38,15 +38,6 @@ export class AuthService implements AuthServiceInterface {
       return false
     }
 
-    // TODO: Récupérer ici les nom et prénom de l'utilisateur en fonction de son role et les ajouter à la réponse
-
-    const userInfo = {
-      email: user.email,
-      role: user.role,
-      status: user.status,
-      user_language: user.user_language,
-    }
-    const token = response.token
-    return { token, userInfo }
+    return response.token
   }
 }
