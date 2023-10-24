@@ -1,7 +1,7 @@
 import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class CreateUserValidator {
+export default class UserCreateValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
@@ -31,5 +31,6 @@ export default class CreateUserValidator {
     'password_confirmation.required': 'La confirmation du mot de passe est requise.',
     'password_confirmation.equals':
       'La confirmation du mot de passe ne correspond pas au mot de passe.',
+    'password.confirmed': 'La confirmation du mot de passe ne correspond pas au mot de passe.',
   }
 }

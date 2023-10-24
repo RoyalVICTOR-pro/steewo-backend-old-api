@@ -14,10 +14,33 @@
 */
 
 import Logger from '@ioc:Adonis/Core/Logger'
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import HttpExceptionHandler from '@ioc:Adonis/Core/HttpExceptionHandler'
 
 export default class ExceptionHandler extends HttpExceptionHandler {
   constructor() {
     super(Logger)
+  }
+
+  public async handle(error: any, ctx: HttpContextContract) {
+    // TODO : Gérer les messages d'erreurs en fonction de la langue de l'utilisateur
+    if (error.status === 422) {
+      // Gestion des erreurs de validation
+      return ctx.response.status(error.status).send({
+        message: error.messages,
+      })
+    }
+
+    if (error.status === 404) {
+      // Gestion des erreurs 404 (Not Found)
+      return ctx.response.status(error.status).send({
+        message: 'Ressource introuvable',
+      })
+    }
+
+    // Gestion des autres erreurs
+    return ctx.response.status(error.status).send({
+      message: 'Une erreur est survenue, merci de réessayer plus tard',
+    })
   }
 }
