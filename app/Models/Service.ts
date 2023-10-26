@@ -1,14 +1,15 @@
 import { compose } from '@ioc:Adonis/Core/Helpers'
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
+import Profession from 'App/Models/Profession'
 
 export default class Service extends compose(BaseModel, SoftDeletes) {
   @column({ isPrimary: true })
   public id: number
 
   @column()
-  public professions_id: number
+  public profession_id: number
 
   @column()
   public name_fr: string | null
@@ -33,4 +34,7 @@ export default class Service extends compose(BaseModel, SoftDeletes) {
 
   @column.dateTime()
   public deletedAt: DateTime | null
+
+  @belongsTo(() => Profession)
+  public profession: BelongsTo<typeof Profession>
 }

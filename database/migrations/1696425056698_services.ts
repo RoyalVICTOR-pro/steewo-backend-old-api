@@ -6,7 +6,7 @@ export default class extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.integer('professions_id').unsigned().notNullable().index()
+      table.integer('profession_id').unsigned().notNullable().index()
       table.string('name_fr', 70).notNullable()
       table.string('short_name_fr', 40).notNullable()
       table.string('picto_file', 255).nullable()
@@ -19,7 +19,7 @@ export default class extends BaseSchema {
       table.timestamp('updated_at', { useTz: true })
 
       table
-        .foreign('professions_id')
+        .foreign('profession_id')
         .references('id')
         .inTable('professions')
         .onDelete('CASCADE')
