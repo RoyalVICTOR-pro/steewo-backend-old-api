@@ -5,12 +5,10 @@ export default class ProfessionCreateValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
-    name_fr: schema.string({}, [
-      rules.unique({ table: 'professions', column: 'name_fr' }), // Vérifie que le nom n'existe pas déjà mais aussi que le nom n'est pas vide (required)
-    ]),
+    name_fr: schema.string({}, [rules.unique({ table: 'professions', column: 'name_fr' })]),
     picto_file: schema.file.optional({
-      size: '2mb', // Limite la taille du fichier
-      extnames: ['jpg', 'png', 'jpeg'], // Extensions autorisées
+      size: '2mb',
+      extnames: ['jpg', 'png', 'jpeg'],
     }),
     image_file: schema.file.optional({
       size: '2mb',

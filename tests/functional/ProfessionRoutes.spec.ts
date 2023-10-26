@@ -1,17 +1,21 @@
 import { test } from '@japa/runner'
-import supertest from 'supertest'
+// import supertest from 'supertest'
 import { FakeUserForTest } from './Auth.helper'
-import fs from 'fs'
+import Profession from 'App/Models/Profession'
 
-const BASE_URL = `${process.env.API_URL}`
-const picto1 = fs.readFileSync('./tests/functional/files_for_tests/red_img_test_50x50.jpg')
-const image1 = fs.readFileSync('./tests/functional/files_for_tests/red_img_test_100x100.jpg')
-const picto2 = fs.readFileSync('./tests/functional/files_for_tests/orange_img_test_50x50.jpg')
-const image2 = fs.readFileSync('./tests/functional/files_for_tests/orange_img_test_100x100.jpg')
-const picto3 = fs.readFileSync('./tests/functional/files_for_tests/green_img_test_50x50.jpg')
-const image3 = fs.readFileSync('./tests/functional/files_for_tests/green_img_test_100x100.jpg')
+// const BASE_URL = `${process.env.API_URL}`
+const picto1Path = './tests/functional/files_for_tests/red_img_test_50x50.jpg'
+const image1Path = './tests/functional/files_for_tests/red_img_test_100x100.jpg'
+const picto2Path = './tests/functional/files_for_tests/orange_img_test_50x50.jpg'
+const image2Path = './tests/functional/files_for_tests/orange_img_test_100x100.jpg'
+const picto3Path = './tests/functional/files_for_tests/green_img_test_50x50.jpg'
+const image3Path = './tests/functional/files_for_tests/green_img_test_100x100.jpg'
 let firstProfessionId: number
 let secondProfessionId: number
+
+const hardDeleteProfession = async (idToDelete: number) => {
+  await Profession.query().where('id', idToDelete).delete()
+}
 
 test.group('ProfessionRoutes', (group) => {
   let fakeUser = new FakeUserForTest()
@@ -25,135 +29,139 @@ test.group('ProfessionRoutes', (group) => {
     await fakeUser.deleteFakeUser()
   })
 
-  test('Create a first profession with valid data but simple user role : should fail', async () => {
-    await supertest(BASE_URL)
+  test('Create a first profession with valid data but simple user role : should fail', async ({
+    client,
+  }) => {
+    const response = await client
       .post('/professions')
-      .set('Authorization', `Bearer ${fakeUser.token}`)
-      .field('name_fr', 'Profession Test 1')
-      .field('is_enabled', true)
-      // .attach('picto_file', picto1)
-      // .attach('image_file', image1)
-      .expect(401)
+      .bearerToken(fakeUser.token)
+      .file('picto_file', picto1Path)
+      .file('image_file', image1Path)
+      .fields({ name_fr: 'Profession Test 1', is_enabled: true })
+    response.assertStatus(401)
   })
 
-  test('Create a first profession with missing name with admin role', async ({ assert }) => {
-    const { body } = await supertest(BASE_URL)
+  test('Create a first profession with missing name with admin role', async ({ client }) => {
+    const response = await client
       .post('/professions')
-      .set('Authorization', `Bearer ${fakeUser.adminToken}`)
+      .bearerToken(fakeUser.adminToken)
       .field('name_fr', '')
       .field('is_enabled', true)
-      .expect(422)
+    response.assertStatus(422)
   })
 
-  test('Create a first profession with valid data with admin role', async ({ assert }) => {
-    const { body } = await supertest(BASE_URL)
+  test('Create a first profession with valid data with admin role', async ({ client }) => {
+    const response = await client
       .post('/professions')
-      .set('Authorization', `Bearer ${fakeUser.adminToken}`)
+      .bearerToken(fakeUser.adminToken)
+      .file('picto_file', picto1Path)
+      .file('image_file', image1Path)
+      .fields({ name_fr: 'Profession Test 1', is_enabled: true })
+
+    response.assertStatus(201)
+    response.assertBodyContains({
+      name_fr: 'Profession Test 1',
+      picto_file: './professions/pictos/profession-test-1.jpg',
+    })
+    firstProfessionId = response.body().id
+  })
+
+  test('Create a second profession with already used name with admin role', async ({ client }) => {
+    const response = await client
+      .post('/professions')
+      .bearerToken(fakeUser.adminToken)
       .field('name_fr', 'Profession Test 1')
       .field('is_enabled', true)
-      // .attach('picto_file', picto1)
-      // .attach('image_file', image1)
-      .expect(201)
-    firstProfessionId = body.id
-    assert.equal(body.name_fr, 'Profession Test 1')
-    // assert.equal(body.picto_file, './professions/pictos/profession-test-1.jpg')
+    response.assertStatus(422)
   })
 
-  test('Create a second profession with already used name with admin role', async ({ assert }) => {
-    const { body } = await supertest(BASE_URL)
+  test('Create a second profession with valid data with admin role', async ({ assert, client }) => {
+    const response = await client
       .post('/professions')
-      .set('Authorization', `Bearer ${fakeUser.adminToken}`)
-      .field('name_fr', 'Profession Test 1')
-      .field('is_enabled', true)
-      .expect(422)
+      .bearerToken(fakeUser.adminToken)
+      .file('picto_file', picto2Path)
+      .file('image_file', image2Path)
+      .fields({ name_fr: 'Profession Test 2', is_enabled: true })
+    response.assertStatus(201)
+
+    secondProfessionId = response.body().id
+    assert.equal(response.body().name_fr, 'Profession Test 2')
+    assert.equal(response.body().image_file, './professions/images/profession-test-2.jpg')
   })
 
-  test('Create a second profession with valid data with admin role', async ({ assert }) => {
-    const { body } = await supertest(BASE_URL)
-      .post('/professions')
-      .set('Authorization', `Bearer ${fakeUser.adminToken}`)
-      .field('name_fr', 'Profession Test 2')
-      .field('is_enabled', true)
-      // .attach('picto_file', picto2)
-      // .attach('image_file', image2)
-      .expect(201)
-
-    secondProfessionId = body.id
-    assert.equal(body.name_fr, 'Profession Test 2')
-    // assert.equal(body.image_file, './professions/images/profession-test-2.jpg')
-  })
-
-  test('Get all professions with logged simple user role', async ({ assert }) => {
-    const { body } = await supertest(BASE_URL)
-      .get('/professions')
-      .set('Authorization', `Bearer ${fakeUser.token}`)
-      .expect(200)
+  test('Get all professions with logged simple user role', async ({ assert, client }) => {
+    const response = await client.get('/professions').bearerToken(fakeUser.token)
+    response.assertStatus(200)
 
     assert.isTrue(
-      body.some(
-        (profession) =>
-          profession.id === firstProfessionId && profession.name_fr === 'Profession Test 1'
-      )
+      response
+        .body()
+        .some(
+          (profession) =>
+            profession.id === firstProfessionId && profession.name_fr === 'Profession Test 1'
+        )
     )
     assert.isTrue(
-      body.some(
-        (profession) =>
-          profession.id === secondProfessionId && profession.name_fr === 'Profession Test 2'
-      )
+      response
+        .body()
+        .some(
+          (profession) =>
+            profession.id === secondProfessionId && profession.name_fr === 'Profession Test 2'
+        )
     )
   })
 
-  test('Update a second profession with already used name with admin role', async ({ assert }) => {
-    const { body } = await supertest(BASE_URL)
+  test('Update a second profession with already used name with admin role', async ({ client }) => {
+    const response = await client
       .put('/professions/' + secondProfessionId)
-      .set('Authorization', `Bearer ${fakeUser.adminToken}`)
+      .bearerToken(fakeUser.adminToken)
       .field('name_fr', 'Profession Test 1')
       .field('is_enabled', true)
-      .expect(422)
-
-    // assert.containsSubset(body, {
-    //   rule: 'unique',
-    // })
+    response.assertStatus(422)
   })
 
-  test('Update the second profession with valid data with admin role', async ({ assert }) => {
-    const { body } = await supertest(BASE_URL)
+  test('Update the second profession with valid data with admin role', async ({
+    assert,
+    client,
+  }) => {
+    const response = await client
       .put('/professions/' + secondProfessionId)
-      .set('Authorization', `Bearer ${fakeUser.adminToken}`)
-      .field('name_fr', 'Profession Test 3')
-      .field('is_enabled', false)
-      // .attach('picto_file', picto3)
-      // .attach('image_file', image3)
-      .expect(200)
+      .bearerToken(fakeUser.adminToken)
+      .file('picto_file', picto3Path)
+      .file('image_file', image3Path)
+      .fields({ name_fr: 'Profession Test 3', is_enabled: false })
+    response.assertStatus(200)
 
-    assert.equal(body.id, secondProfessionId)
-    assert.equal(body.name_fr, 'Profession Test 3')
-    // assert.equal(body.image_file, './professions/images/profession-test-3.jpg')
+    assert.equal(response.body().id, secondProfessionId)
+    assert.equal(response.body().name_fr, 'Profession Test 3')
+    assert.equal(response.body().image_file, './professions/images/profession-test-3.jpg')
   })
 
-  test('Get profession 2 by ID with logged simple user role', async ({ assert }) => {
-    const { body } = await supertest(BASE_URL)
+  test('Get profession 2 by ID with logged simple user role', async ({ assert, client }) => {
+    const response = await client
       .get('/professions/' + secondProfessionId)
-      .set('Authorization', `Bearer ${fakeUser.token}`)
-      .expect(200)
+      .bearerToken(fakeUser.adminToken)
+    response.assertStatus(200)
 
-    assert.containsSubset(body, {
+    assert.containsSubset(response.body(), {
       id: secondProfessionId,
       name_fr: 'Profession Test 3',
       is_enabled: 1,
     })
   })
 
-  test('Delete profession 1 by ID with admin role', async () => {
-    await supertest(BASE_URL)
+  test('Delete profession 1 by ID with admin role', async ({ client }) => {
+    const response = await client
       .delete('/professions/' + firstProfessionId)
-      .set('Authorization', `Bearer ${fakeUser.adminToken}`)
-      .expect(204)
+      .bearerToken(fakeUser.adminToken)
+    response.assertStatus(204)
+    hardDeleteProfession(firstProfessionId)
   })
-  test('Delete profession 2 by ID with admin role', async () => {
-    await supertest(BASE_URL)
+  test('Delete profession 2 by ID with admin role', async ({ client }) => {
+    const response = await client
       .delete('/professions/' + secondProfessionId)
-      .set('Authorization', `Bearer ${fakeUser.adminToken}`)
-      .expect(204)
+      .bearerToken(fakeUser.adminToken)
+    response.assertStatus(204)
+    hardDeleteProfession(secondProfessionId)
   })
 })
