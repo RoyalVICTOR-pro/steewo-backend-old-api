@@ -1,7 +1,7 @@
 import { test } from '@japa/runner'
 // import supertest from 'supertest'
 import { FakeUserForTest } from './Auth.helper'
-import Profession from 'App/Models/Profession'
+import { hardDeleteProfession } from './Utils.helper'
 
 // const BASE_URL = `${process.env.API_URL}`
 const picto1Path = './tests/functional/files_for_tests/red_img_test_50x50.jpg'
@@ -12,10 +12,6 @@ const picto3Path = './tests/functional/files_for_tests/green_img_test_50x50.jpg'
 const image3Path = './tests/functional/files_for_tests/green_img_test_100x100.jpg'
 let firstProfessionId: number
 let secondProfessionId: number
-
-const hardDeleteProfession = async (idToDelete: number) => {
-  await Profession.query().where('id', idToDelete).delete()
-}
 
 test.group('ProfessionRoutes', (group) => {
   let fakeUser = new FakeUserForTest()
