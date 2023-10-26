@@ -40,6 +40,7 @@ export default class ExceptionHandler extends HttpExceptionHandler {
     }
 
     if (error.status === 422) {
+      console.log('error.messages :>> ', JSON.stringify(error.messages))
       // Gestion des erreurs de validation
       return ctx.response.status(error.status).send({
         message: error.messages,

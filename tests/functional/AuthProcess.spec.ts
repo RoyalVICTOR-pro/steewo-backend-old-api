@@ -1,9 +1,14 @@
 import { test } from '@japa/runner'
 import supertest from 'supertest'
+import User from 'App/Models/User'
 
 const BASE_URL = `${process.env.API_URL}`
+let userEmail: string = 'test@example.com'
 
-test.group('AuthProcess', () => {
+test.group('AuthProcess', (group) => {
+  group.teardown(async () => {
+    await User.query().where('email', userEmail).delete()
+  })
   test('register returns an error with invalid email', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
       .post('/register')
@@ -48,7 +53,7 @@ test.group('AuthProcess', () => {
     const { body } = await supertest(BASE_URL)
       .post('/register')
       .send({
-        email: 'test@example.com',
+        email: userEmail,
         password: 'Password1234',
         password_confirmation: 'Password1234',
       })
