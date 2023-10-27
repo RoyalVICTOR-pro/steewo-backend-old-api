@@ -62,6 +62,7 @@ export class ProfessionService implements ProfessionServiceInterface {
   }
 
   public async deleteProfession(idToDelete: number) {
+    // TODO: Supprimer les services associés
     const professionToDelete = await this.professionRepository.getProfessionById(idToDelete)
     if (professionToDelete.picto_file) {
       await UploadService.deleteFile(professionToDelete.picto_file)
