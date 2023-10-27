@@ -2,11 +2,11 @@
 
 import Profession from 'App/Models/Profession'
 import { ProfessionCreateOrUpdateDTO } from 'App/DataAccessLayer/DTO/ProfessionCreateOrUpdateDTO'
-import ProfessionInterface from 'App/DataAccessLayer/Interfaces/ProfessionInterface'
+import ProfessionRepositoryInterface from 'App/DataAccessLayer/Interfaces/ProfessionRepositoryInterface'
 import { inject } from '@adonisjs/core/build/standalone'
 
 @inject()
-export class ProfessionRepository implements ProfessionInterface {
+export class ProfessionRepository implements ProfessionRepositoryInterface {
   public async listProfessions(): Promise<Profession[]> {
     const professions = await Profession.all()
     return professions

@@ -1,9 +1,9 @@
 import { inject } from '@adonisjs/core/build/standalone'
-import FailedLoginAttemptInterface from 'App/DataAccessLayer/Interfaces/FailedLoginAttemptInterface'
+import FailedLoginAttemptRepositoryInterface from 'App/DataAccessLayer/Interfaces/FailedLoginAttemptRepositoryInterface'
 import FailedLoginAttempt from 'App/Models/FailedLoginAttempt'
 
 @inject()
-export class FailedLoginAttemptRepository implements FailedLoginAttemptInterface {
+export class FailedLoginAttemptRepository implements FailedLoginAttemptRepositoryInterface {
   public async addFailedAttempt(email: string): Promise<FailedLoginAttempt> {
     const failedLoginAttempt = new FailedLoginAttempt()
     failedLoginAttempt.email = email
