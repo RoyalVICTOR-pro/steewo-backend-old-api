@@ -229,10 +229,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
     })
   })
 
-  test('Update the form fields order with valid data with admin role', async ({
-    assert,
-    client,
-  }) => {
+  test('Update the form fields order with valid data with admin role', async ({ client }) => {
     const reorderedFormFields: {
       id: number
       order: number
