@@ -46,6 +46,12 @@ export default class ExceptionHandler extends HttpExceptionHandler {
         message: error.messages,
       })
     }
+
+    if (!error.status) {
+      // Gestion des erreurs qui n'ont pas de status
+      console.log('error with no status:>> ', error)
+      error.status = 500
+    }
     // Gestion des autres erreurs
     return ctx.response.status(error.status).send({
       message: 'Une erreur est survenue, merci de réessayer plus tard',

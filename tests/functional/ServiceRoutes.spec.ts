@@ -33,7 +33,7 @@ test.group('Services Management Routes Testing', (group) => {
     response.assertStatus(201)
     response.assertBodyContains({
       name_fr: 'Profession Test 1',
-      picto_file: './services/pictos/service-test-1.jpg',
+      picto_file: './professions/pictos/profession-test-1.jpg',
     })
     professionIdForTest = response.body().id
   })
@@ -90,6 +90,7 @@ test.group('Services Management Routes Testing', (group) => {
       .post('professions/' + professionIdForTest + '/services')
       .bearerToken(fakeUser.adminToken)
       .field('name_fr', 'Service Test 1')
+      .field('short_name_fr', 'Test 11')
       .field('is_enabled', true)
     response.assertStatus(422)
   })
@@ -139,6 +140,7 @@ test.group('Services Management Routes Testing', (group) => {
       .put('professions/' + professionIdForTest + '/services/' + secondServiceId)
       .bearerToken(fakeUser.adminToken)
       .field('name_fr', 'Service Test 1')
+      .field('short_name_fr', 'Test 1')
       .field('is_enabled', true)
     response.assertStatus(422)
   })
@@ -172,7 +174,7 @@ test.group('Services Management Routes Testing', (group) => {
       id: secondServiceId,
       name_fr: 'Service Test 3',
       short_name_fr: 'Test 3',
-      is_enabled: 1,
+      is_enabled: 0,
     })
   })
 
