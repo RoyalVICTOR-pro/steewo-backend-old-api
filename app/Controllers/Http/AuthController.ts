@@ -45,7 +45,7 @@ export default class AuthController {
       }
       return response.status(200).json({ token })
     } catch (error) {
-      console.log('error :>> ', error)
+      // console.log('error :>> ', error)
       if (error instanceof TooManyRequestsException) {
         return response.status(429).json({ errors: error.message })
       } else {

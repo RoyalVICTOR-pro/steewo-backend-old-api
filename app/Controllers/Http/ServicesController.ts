@@ -23,7 +23,6 @@ export default class ServicesController {
   }
 
   public async createService({ request, response, params }: HttpContextContract) {
-    console.log('params.id_profession :>> ', params.id_profession)
     const data = await request.validate(ServiceCreateValidator)
 
     const newService: ServiceCreateOrUpdateDTO = {
