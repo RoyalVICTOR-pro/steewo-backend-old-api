@@ -13,7 +13,7 @@ export default class FormFieldController {
   }
 
   public async getAllFormFieldsByService({ response, params }: HttpContextContract) {
-    const formFields = await this.formFieldService.listFormFieldsByService(params.id_profession)
+    const formFields = await this.formFieldService.listFormFieldsByService(params.id_service)
     return response.ok(formFields)
   }
 
@@ -28,6 +28,7 @@ export default class FormFieldController {
     const newFormField: FormFieldCreateOrUpdateDTO = {
       service_id: params.id_service,
       type: data.type,
+      // TODO : Gérer partout le fait que la langue doit s'ajouter aux noms des champs
       label_fr: data.label_fr,
       mandatory: data.mandatory,
       tooltip_text_fr: data.tooltip_text_fr,
@@ -64,7 +65,7 @@ export default class FormFieldController {
 
   public async updateFormFieldOrder({ request, response }: HttpContextContract) {
     await this.formFieldService.updateFormFieldOrder(
-      request.input['formFields'] as FormFieldUpdateOrderDTO[]
+      request.body().formFields as FormFieldUpdateOrderDTO[]
     )
     return response.noContent()
   }

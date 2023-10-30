@@ -25,13 +25,13 @@ export default class ServicesFormField extends BaseModel {
   public tooltipImageFile: string
 
   @column()
-  public tooltipText_fr: string
+  public tooltipText_fr: string | null
 
   @column()
-  public description_fr: string
+  public description_fr: string | null
 
   @column()
-  public placeholder_fr: string
+  public placeholder_fr: string | null
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

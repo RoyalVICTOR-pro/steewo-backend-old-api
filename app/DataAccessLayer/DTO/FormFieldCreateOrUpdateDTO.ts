@@ -3,8 +3,8 @@ export interface FormFieldCreateOrUpdateDTO {
   type: string
   label_fr: string
   mandatory: boolean
-  tooltip_image_file?: string | null
-  tooltip_text_fr?: string
-  description_fr?: string
-  placeholder_fr?: string
+  tooltip_image_file?: string
+  tooltip_text_fr?: string | null
+  description_fr?: string | null
+  placeholder_fr?: string | null
 }

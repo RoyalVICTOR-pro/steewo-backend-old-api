@@ -74,7 +74,10 @@ Route.group(() => {
   Route.put('/services/:id_service/form-fields/:id', 'FormFieldsController.updateFormField')
     .as('updateFormField')
     .middleware(['auth', `role:${[Role.ADMIN]}`])
-  Route.put('/services/:id_service/form-fields/order', 'FormFieldsController.updateFormFieldOrder')
+  Route.patch(
+    '/services/:id_service/form-fields/order',
+    'FormFieldsController.updateFormFieldOrder'
+  )
     .as('updateFormFieldOrder')
     .middleware(['auth', `role:${[Role.ADMIN]}`])
   Route.delete('/services/:id_service/form-fields/:id', 'FormFieldsController.deleteFormField')

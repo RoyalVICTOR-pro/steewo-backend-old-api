@@ -110,7 +110,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
     response.assertStatus(201)
     response.assertBodyContains({
       label_fr: 'Objectifs',
-      mandatory: 1,
+      mandatory: true,
     })
     assert.match(response.body().tooltip_image_file, /objectifs/)
     assert.equal(response.body().order, 1)
@@ -124,14 +124,15 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .fields({
         type: 'text',
         label_fr: 'Nom de la marque',
+        mandatory: false,
         tooltip_text_fr: 'Même si elle est en création',
         placeholder_fr: 'Saisissez ici',
       })
     response.assertStatus(201)
 
     assert.equal(response.body().label_fr, 'Nom de la marque')
-    assert.equal(response.body().mandatory, 0)
-    assert.equal(response.body().tooltip_image_file, '')
+    assert.equal(response.body().mandatory, false)
+    assert.equal(response.body().tooltip_image_file, null)
     assert.equal(response.body().order, 2)
 
     secondFormFieldId = response.body().id
@@ -143,6 +144,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .fields({
         type: 'text',
         label_fr: 'Label Test 3',
+        mandatory: false,
       })
     response.assertStatus(201)
 
@@ -158,6 +160,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .fields({
         type: 'text',
         label_fr: 'Label Test 4',
+        mandatory: false,
       })
     response.assertStatus(201)
 
@@ -231,7 +234,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       type: 'link',
       label_fr: 'Site web',
       mandatory: 1,
-      tooltip_text_fr: '',
+      tooltip_text_fr: null,
       description_fr: 'Donnez ici le lien vers votre site web personnel',
     })
   })
@@ -262,8 +265,8 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
     const response = await client
       .patch('services/' + serviceIdForTest + '/form-fields/order')
       .bearerToken(fakeUser.adminToken)
-      .field('formFields', JSON.stringify(reorderedFormFields))
-    response.assertStatus(200)
+      .json({ formFields: reorderedFormFields })
+    response.assertStatus(204)
   })
 
   test('Get all form fields for a service with logged admin role', async ({ assert, client }) => {

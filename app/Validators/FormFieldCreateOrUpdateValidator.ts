@@ -12,9 +12,9 @@ export default class FormFieldCreateOrUpdateValidator {
       size: '2mb',
       extnames: ['jpg', 'png', 'jpeg'],
     }),
-    description_fr: schema.string.optional(),
-    placeholder_fr: schema.string.optional(),
-    tooltip_text_fr: schema.string.optional(),
+    description_fr: schema.string.nullableAndOptional(),
+    placeholder_fr: schema.string.nullableAndOptional(),
+    tooltip_text_fr: schema.string.nullableAndOptional(),
     mandatory: schema.boolean(),
   })
 
@@ -28,5 +28,6 @@ export default class FormFieldCreateOrUpdateValidator {
     'description_fr.string': 'La description doit être une chaîne de caractères.',
     'placeholder_fr.string': 'Le placeholder doit être une chaîne de caractères.',
     'tooltip_text_fr.string': 'Le tooltip doit être une chaîne de caractères.',
+    'mandatory.required': 'Le champ mandatory est requis.',
   }
 }

@@ -15,8 +15,8 @@ export class FormFieldService implements FormFieldServiceInterface {
     this.formFieldRepository = formFieldRepository
   }
 
-  public async listFormFieldsByService(professionId: number) {
-    return await this.formFieldRepository.listFormFieldsByService(professionId)
+  public async listFormFieldsByService(serviceId: number) {
+    return await this.formFieldRepository.listFormFieldsByService(serviceId)
   }
 
   public async getFormFieldById(id: number) {
