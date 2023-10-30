@@ -72,11 +72,11 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .file('tooltip_image_file', tooltipImage1Path)
       .fields({
         type: 'textarea',
-        label: 'Objectifs',
+        label_fr: 'Objectifs',
         mandatory: true,
-        tooltip_text: 'Test 1',
-        description: 'Décrivez vos objectifs en quelques mots',
-        placeholder: 'Ici vos objectifs',
+        tooltip_text_fr: 'Test 1',
+        description_fr: 'Décrivez vos objectifs en quelques mots',
+        placeholder_fr: 'Ici vos objectifs',
       })
     response.assertStatus(401)
   })
@@ -86,9 +86,9 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .post('services/' + serviceIdForTest + '/form-fields')
       .bearerToken(fakeUser.adminToken)
       .fields({
-        label: 'Objectifs',
-        tooltip_text: 'Test 1',
-        description: 'Décrivez vos objectifs en quelques mots',
+        label_fr: 'Objectifs',
+        tooltip_text_fr: 'Test 1',
+        description_fr: 'Décrivez vos objectifs en quelques mots',
       })
     response.assertStatus(422)
   })
@@ -100,16 +100,16 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .file('tooltip_image_file', tooltipImage1Path)
       .fields({
         type: 'textarea',
-        label: 'Objectifs',
+        label_fr: 'Objectifs',
         mandatory: true,
-        tooltip_text: 'Test 1',
-        description: 'Décrivez vos objectifs en quelques mots',
-        placeholder: 'Ici vos objectifs',
+        tooltip_text_fr: 'Test 1',
+        description_fr: 'Décrivez vos objectifs en quelques mots',
+        placeholder_fr: 'Ici vos objectifs',
       })
 
     response.assertStatus(201)
     response.assertBodyContains({
-      label: 'Objectifs',
+      label_fr: 'Objectifs',
       mandatory: 1,
     })
     assert.match(response.body().tooltip_image_file, /objectifs/)
@@ -123,13 +123,13 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .bearerToken(fakeUser.adminToken)
       .fields({
         type: 'text',
-        label: 'Nom de la marque',
-        tooltip_text: 'Même si elle est en création',
-        placeholder: 'Saisissez ici',
+        label_fr: 'Nom de la marque',
+        tooltip_text_fr: 'Même si elle est en création',
+        placeholder_fr: 'Saisissez ici',
       })
     response.assertStatus(201)
 
-    assert.equal(response.body().label, 'Nom de la marque')
+    assert.equal(response.body().label_fr, 'Nom de la marque')
     assert.equal(response.body().mandatory, 0)
     assert.equal(response.body().tooltip_image_file, '')
     assert.equal(response.body().order, 2)
@@ -142,7 +142,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .bearerToken(fakeUser.adminToken)
       .fields({
         type: 'text',
-        label: 'Label Test 3',
+        label_fr: 'Label Test 3',
       })
     response.assertStatus(201)
 
@@ -157,7 +157,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .bearerToken(fakeUser.adminToken)
       .fields({
         type: 'text',
-        label: 'Label Test 4',
+        label_fr: 'Label Test 4',
       })
     response.assertStatus(201)
 
@@ -166,26 +166,33 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
     fourthFormFieldId = response.body().id
   })
 
-  test('Get all form fields for a service with logged simple user role', async ({
-    assert,
+  test('Get all form fields for a service with logged simple user role : should fail', async ({
     client,
   }) => {
     const response = await client
       .get('services/' + serviceIdForTest + '/form-fields')
       .bearerToken(fakeUser.token)
+    response.assertStatus(401)
+  })
+  test('Get all form fields for a service with logged admin role', async ({ assert, client }) => {
+    const response = await client
+      .get('services/' + serviceIdForTest + '/form-fields')
+      .bearerToken(fakeUser.adminToken)
     response.assertStatus(200)
 
     assert.isTrue(
       response
         .body()
-        .some((formField) => formField.id === firstFormFieldId && formField.label === 'Objectifs')
+        .some(
+          (formField) => formField.id === firstFormFieldId && formField.label_fr === 'Objectifs'
+        )
     )
     assert.isTrue(
       response
         .body()
         .some(
           (formField) =>
-            formField.id === secondFormFieldId && formField.label === 'Nom de la marque'
+            formField.id === secondFormFieldId && formField.label_fr === 'Nom de la marque'
         )
     )
   })
@@ -200,20 +207,20 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .file('tooltip_image_file', tooltipImage2Path)
       .fields({
         type: 'link',
-        label: 'Site web',
+        label_fr: 'Site web',
         mandatory: true,
-        tooltip_text: '',
-        description: 'Donnez ici le lien vers votre site web personnel',
+        tooltip_text_fr: '',
+        description_fr: 'Donnez ici le lien vers votre site web personnel',
       })
     response.assertStatus(200)
 
     assert.equal(response.body().id, secondFormFieldId)
-    assert.equal(response.body().label, 'Site web')
+    assert.equal(response.body().label_fr, 'Site web')
     assert.equal(response.body().mandatory, 1)
-    assert.equal(response.body().placeholder, 'Saisissez ici')
+    assert.equal(response.body().placeholder_fr, 'Saisissez ici')
   })
 
-  test('Get form field 2 by ID with logged simple user role', async ({ assert, client }) => {
+  test('Get form field 2 by ID with admin role', async ({ assert, client }) => {
     const response = await client
       .get('services/' + serviceIdForTest + '/form-fields/' + secondFormFieldId)
       .bearerToken(fakeUser.adminToken)
@@ -222,10 +229,10 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
     assert.containsSubset(response.body(), {
       id: secondFormFieldId,
       type: 'link',
-      label: 'Site web',
+      label_fr: 'Site web',
       mandatory: 1,
-      tooltip_text: '',
-      description: 'Donnez ici le lien vers votre site web personnel',
+      tooltip_text_fr: '',
+      description_fr: 'Donnez ici le lien vers votre site web personnel',
     })
   })
 
@@ -259,13 +266,10 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
     response.assertStatus(200)
   })
 
-  test('Get all form fields for a service with logged simple user role', async ({
-    assert,
-    client,
-  }) => {
+  test('Get all form fields for a service with logged admin role', async ({ assert, client }) => {
     const response = await client
       .get('services/' + serviceIdForTest + '/form-fields')
-      .bearerToken(fakeUser.token)
+      .bearerToken(fakeUser.adminToken)
     response.assertStatus(200)
 
     assert.isTrue(
