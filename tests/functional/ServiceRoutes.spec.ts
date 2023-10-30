@@ -167,7 +167,7 @@ test.group('Services Management Routes Testing', (group) => {
   test('Get service 2 by ID with logged simple user role', async ({ assert, client }) => {
     const response = await client
       .get('professions/' + professionIdForTest + '/services/' + secondServiceId)
-      .bearerToken(fakeUser.adminToken)
+      .bearerToken(fakeUser.token)
     response.assertStatus(200)
 
     assert.containsSubset(response.body(), {
