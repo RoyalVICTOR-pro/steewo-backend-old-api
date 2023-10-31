@@ -62,7 +62,6 @@ export class ServiceService implements ServiceServiceInterface {
   }
 
   public async deleteService(idToDelete: number) {
-    // TODO: Supprimer les champs de formulaires associés
     const serviceToDelete = await this.serviceRepository.getServiceById(idToDelete)
     if (serviceToDelete.picto_file) {
       await UploadService.deleteFile(serviceToDelete.picto_file)

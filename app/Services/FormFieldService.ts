@@ -62,7 +62,6 @@ export class FormFieldService implements FormFieldServiceInterface {
   }
 
   public async deleteFormField(idToDelete: number) {
-    // TODO: Supprimer les champs de formulaires associés
     const formFieldToDelete = await this.formFieldRepository.getFormFieldById(idToDelete)
 
     if (formFieldToDelete.tooltipImageFile) {

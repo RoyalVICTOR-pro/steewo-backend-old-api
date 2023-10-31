@@ -28,7 +28,6 @@ export default class FormFieldController {
     const newFormField: FormFieldCreateOrUpdateDTO = {
       service_id: params.id_service,
       type: data.type,
-      // TODO : Gérer partout le fait que la langue doit s'ajouter aux noms des champs
       label_fr: data.label_fr,
       mandatory: data.mandatory,
       tooltip_text_fr: data.tooltip_text_fr,

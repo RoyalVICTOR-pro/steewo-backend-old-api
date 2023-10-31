@@ -29,6 +29,7 @@ Route.group(() => {
   Route.post('/register', 'AuthController.register').as('register')
   Route.post('/login', 'AuthController.login').as('login')
 
+  // PROFESSIONS
   Route.get('/professions', 'ProfessionsController.getAllProfessions')
     .as('getAllProfessions')
     .middleware('auth')
@@ -45,6 +46,7 @@ Route.group(() => {
     .as('deleteProfession')
     .middleware(['auth', `role:${[Role.ADMIN]}`])
 
+  // SERVICES
   Route.get('/professions/:id_profession/services', 'ServicesController.getAllServicesByProfession')
     .as('getAllServicesByProfession')
     .middleware('auth')
@@ -62,6 +64,7 @@ Route.group(() => {
     .middleware(['auth', `role:${[Role.ADMIN]}`])
     .middleware(['auth', `role:${[Role.ADMIN]}`])
 
+  // FORM FIELDS
   Route.get('/services/:id_service/form-fields', 'FormFieldsController.getAllFormFieldsByService')
     .as('getAllFormFieldsByService')
     .middleware(['auth', `role:${[Role.ADMIN]}`])
