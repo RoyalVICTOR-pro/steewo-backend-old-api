@@ -85,4 +85,7 @@ test.group('AuthProcess', (group) => {
 
     assert.exists(body.token)
   })
+
+  // TODO : Faire des tests de ce que contient failedLoginAttempts lorsqu'il y a des tentatives de connexion infructueuses 
+  // TODO : Et faire des tests quand on atteint le nombre max de tentatives de connexion infructueuses
 })
