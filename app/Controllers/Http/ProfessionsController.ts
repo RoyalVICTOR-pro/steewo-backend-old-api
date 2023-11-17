@@ -1,9 +1,9 @@
 import { inject } from '@adonisjs/core/build/standalone'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { ProfessionCreateOrUpdateDTO } from 'App/DataAccessLayer/DTO/ProfessionCreateOrUpdateDTO'
-import { ProfessionService } from 'App/Services/ProfessionService'
-import ProfessionCreateValidator from 'App/Validators/ProfessionCreateValidator'
-import ProfessionUpdateValidator from 'App/Validators/ProfessionUpdateValidator'
+import { ProfessionCreateOrUpdateDTO } from '@DTO/ProfessionCreateOrUpdateDTO'
+import { ProfessionService } from '@Services/ProfessionService'
+import ProfessionCreateValidator from '@Validators/ProfessionCreateValidator'
+import ProfessionUpdateValidator from '@Validators/ProfessionUpdateValidator'
 
 @inject()
 export default class ProfessionsController {

@@ -1,4 +1,4 @@
-import AuthentificationMode from 'App/Enums/AuthentificationMode'
+import AuthentificationMode from '@Enums/AuthentificationMode'
 
 export interface UserCreateDTO {
   email: string

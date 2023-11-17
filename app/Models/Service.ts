@@ -2,8 +2,8 @@ import { compose } from '@ioc:Adonis/Core/Helpers'
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 import { DateTime } from 'luxon'
 import { BaseModel, column, belongsTo, BelongsTo, beforeDelete } from '@ioc:Adonis/Lucid/Orm'
-import Profession from 'App/Models/Profession'
-import ServicesFormField from 'App/Models/ServicesFormField'
+import Profession from '@Models/Profession'
+import ServicesFormField from '@Models/ServicesFormField'
 
 export default class Service extends compose(BaseModel, SoftDeletes) {
   @column({ isPrimary: true })

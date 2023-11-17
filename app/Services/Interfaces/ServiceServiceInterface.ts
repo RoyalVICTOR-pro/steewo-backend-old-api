@@ -1,4 +1,4 @@
-import Service from 'App/Models/Service'
+import Service from '@Models/Service'
 import { ServiceCreateOrUpdateDTO } from '@DTO/ServiceCreateOrUpdateDTO'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
 

@@ -1,8 +1,8 @@
 // Générer les méthodes CRUD pour le modèle Service
 
-import Service from 'App/Models/Service'
-import { ServiceCreateOrUpdateDTO } from 'App/DataAccessLayer/DTO/ServiceCreateOrUpdateDTO'
-import ServiceRepositoryInterface from 'App/DataAccessLayer/Interfaces/ServiceRepositoryInterface'
+import Service from '@Models/Service'
+import { ServiceCreateOrUpdateDTO } from '@DTO/ServiceCreateOrUpdateDTO'
+import ServiceRepositoryInterface from '@DALInterfaces/ServiceRepositoryInterface'
 import { inject } from '@adonisjs/core/build/standalone'
 
 @inject()

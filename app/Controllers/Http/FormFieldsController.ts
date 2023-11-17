@@ -2,8 +2,8 @@ import { inject } from '@adonisjs/core/build/standalone'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { FormFieldCreateOrUpdateDTO } from '@DTO/FormFieldCreateOrUpdateDTO'
 import { FormFieldUpdateOrderDTO } from '@DTO/FormFieldUpdateOrderDTO'
-import { FormFieldService } from 'App/Services/FormFieldService'
-import FormFieldCreateOrUpdateValidator from 'App/Validators/FormFieldCreateOrUpdateValidator'
+import { FormFieldService } from '@Services/FormFieldService'
+import FormFieldCreateOrUpdateValidator from '@Validators/FormFieldCreateOrUpdateValidator'
 
 @inject()
 export default class FormFieldController {

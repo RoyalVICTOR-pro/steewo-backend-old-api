@@ -2,7 +2,7 @@ import { compose } from '@ioc:Adonis/Core/Helpers'
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 import { DateTime } from 'luxon'
 import { BaseModel, column, beforeDelete } from '@ioc:Adonis/Lucid/Orm'
-import Service from 'App/Models/Service'
+import Service from '@Models/Service'
 export default class Profession extends compose(BaseModel, SoftDeletes) {
   @column({ isPrimary: true })
   public id: number

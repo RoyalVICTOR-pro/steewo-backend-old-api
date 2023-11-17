@@ -1,5 +1,5 @@
 import supertest from 'supertest'
-import User from 'App/Models/User'
+import User from '@Models/User'
 
 export class FakeUserForTest {
   private email: string = 'fake.user@tests.com'

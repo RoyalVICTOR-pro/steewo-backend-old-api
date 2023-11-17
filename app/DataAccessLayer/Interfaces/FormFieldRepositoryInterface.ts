@@ -1,6 +1,6 @@
-import ServicesFormField from 'App/Models/ServicesFormField'
+import ServicesFormField from '@Models/ServicesFormField'
 import { FormFieldCreateOrUpdateDTO } from '@DTO/FormFieldCreateOrUpdateDTO'
-import { FormFieldUpdateOrderDTO } from 'App/DataAccessLayer/DTO/FormFieldUpdateOrderDTO'
+import { FormFieldUpdateOrderDTO } from '@DTO/FormFieldUpdateOrderDTO'
 
 export default interface ServiceInterface {
   listFormFieldsByService(professionId: number): Promise<ServicesFormField[]>

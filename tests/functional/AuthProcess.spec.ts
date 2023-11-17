@@ -1,6 +1,6 @@
 import { test } from '@japa/runner'
 import supertest from 'supertest'
-import User from 'App/Models/User'
+import User from '@Models/User'
 
 const BASE_URL = `${process.env.API_URL}`
 let userEmail: string = 'test@example.com'

@@ -1,4 +1,4 @@
-import Profession from 'App/Models/Profession'
+import Profession from '@Models/Profession'
 import { ProfessionCreateOrUpdateDTO } from '@DTO/ProfessionCreateOrUpdateDTO'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
 

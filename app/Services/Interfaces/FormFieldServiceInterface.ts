@@ -1,5 +1,5 @@
-import { FormFieldUpdateOrderDTO } from 'App/DataAccessLayer/DTO/FormFieldUpdateOrderDTO'
-import ServicesFormField from 'App/Models/ServicesFormField'
+import { FormFieldUpdateOrderDTO } from '@DTO/FormFieldUpdateOrderDTO'
+import ServicesFormField from '@Models/ServicesFormField'
 import { FormFieldCreateOrUpdateDTO } from '@DTO/FormFieldCreateOrUpdateDTO'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
 

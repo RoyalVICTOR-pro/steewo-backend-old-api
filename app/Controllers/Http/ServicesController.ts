@@ -1,9 +1,9 @@
 import { inject } from '@adonisjs/core/build/standalone'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { ServiceCreateOrUpdateDTO } from 'App/DataAccessLayer/DTO/ServiceCreateOrUpdateDTO'
-import { ServiceService } from 'App/Services/ServiceService'
-import ServiceCreateValidator from 'App/Validators/ServiceCreateValidator'
-import ServiceUpdateValidator from 'App/Validators/ServiceUpdateValidator'
+import { ServiceCreateOrUpdateDTO } from '@DTO/ServiceCreateOrUpdateDTO'
+import { ServiceService } from '@Services/ServiceService'
+import ServiceCreateValidator from '@Validators/ServiceCreateValidator'
+import ServiceUpdateValidator from '@Validators/ServiceUpdateValidator'
 
 @inject()
 export default class ServicesController {

@@ -1,6 +1,6 @@
-import Profession from 'App/Models/Profession'
-import Service from 'App/Models/Service'
-import ServicesFormField from 'App/Models/ServicesFormField'
+import Profession from '@Models/Profession'
+import Service from '@Models/Service'
+import ServicesFormField from '@Models/ServicesFormField'
 
 export const hardDeleteProfession = async (idToDelete: number) => {
   await Profession.query().where('id', idToDelete).delete()

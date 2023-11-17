@@ -1,10 +1,10 @@
-import { FormFieldCreateOrUpdateDTO } from 'App/DataAccessLayer/DTO/FormFieldCreateOrUpdateDTO'
+import { FormFieldCreateOrUpdateDTO } from '@DTO/FormFieldCreateOrUpdateDTO'
 import { inject } from '@adonisjs/core/build/standalone'
-import FormFieldServiceInterface from 'App/Services/Interfaces/FormFieldServiceInterface'
-import { FormFieldRepository } from 'App/DataAccessLayer/Repositories/FormFieldRepository'
+import FormFieldServiceInterface from '@Services/Interfaces/FormFieldServiceInterface'
+import { FormFieldRepository } from '@DALRepositories/FormFieldRepository'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
-import UploadService from 'App/Services/UploadService'
-import { FormFieldUpdateOrderDTO } from 'App/DataAccessLayer/DTO/FormFieldUpdateOrderDTO'
+import UploadService from '@Services/UploadService'
+import { FormFieldUpdateOrderDTO } from '@DTO/FormFieldUpdateOrderDTO'
 
 @inject()
 export class FormFieldService implements FormFieldServiceInterface {

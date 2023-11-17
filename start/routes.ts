@@ -19,7 +19,7 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
-import Role from 'App/Enums/Roles'
+import Role from '@Enums/Roles'
 
 Route.get('/', async () => {
   return { hello: 'world' }

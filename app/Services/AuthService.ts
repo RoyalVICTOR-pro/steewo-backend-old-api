@@ -1,9 +1,9 @@
-import { FailedLoginAttemptRepository } from 'App/DataAccessLayer/Repositories/FailedLoginAttemptRepository'
+import { FailedLoginAttemptRepository } from '@DALRepositories/FailedLoginAttemptRepository'
 import { inject } from '@adonisjs/core/build/standalone'
 import { UserCreateDTO } from '@DTO/UserCreateDTO'
 import Config from '@ioc:Adonis/Core/Config'
-import AuthServiceInterface from 'App/Services/Interfaces/AuthServiceInterface'
-import { UserRepository } from 'App/DataAccessLayer/Repositories/UserRepository'
+import AuthServiceInterface from '@Services/Interfaces/AuthServiceInterface'
+import { UserRepository } from '@DALRepositories/UserRepository'
 import { AuthContract } from '@ioc:Adonis/Addons/Auth'
 import TooManyRequestsException from 'App/Exceptions/TooManyRequestsException'
 

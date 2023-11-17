@@ -1,8 +1,8 @@
 // Générer les méthodes CRUD pour le modèle Profession
 
-import Profession from 'App/Models/Profession'
-import { ProfessionCreateOrUpdateDTO } from 'App/DataAccessLayer/DTO/ProfessionCreateOrUpdateDTO'
-import ProfessionRepositoryInterface from 'App/DataAccessLayer/Interfaces/ProfessionRepositoryInterface'
+import Profession from '@Models/Profession'
+import { ProfessionCreateOrUpdateDTO } from '@DTO/ProfessionCreateOrUpdateDTO'
+import ProfessionRepositoryInterface from '@DALInterfaces/ProfessionRepositoryInterface'
 import { inject } from '@adonisjs/core/build/standalone'
 
 @inject()
