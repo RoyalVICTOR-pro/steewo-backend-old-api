@@ -8,23 +8,20 @@
   ],
   "exceptionHandlerNamespace": "App/Exceptions/Handler",
   "aliases": {
-    "@DALRepositories/*": "./app/DataAccessLayer/Repositories/*",
-    "@Models/*": "./app/Models/*",
-    "@Controllers/*": "./app/Controllers/Http/*",
-    "@Services/*": "./app/Services/*",
-    "@DTO/*": "./app/DataAccessLayer/DTO/*",
-    "@DALInterfaces/*": "./app/DataAccessLayer/Interfaces/*",
-    "@Enums/*": "./app/Enums/*",
-    "@Validators/*": "./app/Validators/*",
     "App": "app",
     "Config": "config",
     "Database": "database",
-    "Contracts": "contracts"
+    "Contracts": "contracts",
+    "@Models": "app/Models",
+    "@Controllers": "app/Controllers/Http",
+    "@Services": "app/Services",
+    "@DTO": "app/DataAccessLayer/DTO",
+    "@DALInterfaces": "app/DataAccessLayer/Interfaces",
+    "@DALRepositories": "app/DataAccessLayer/Repositories",
+    "@Enums": "app/Enums",
+    "@Validators": "app/Validators"
   },
-  "preloads": [
-    "./start/routes",
-    "./start/kernel"
-  ],
+  "preloads": ["./start/routes", "./start/kernel"],
   "providers": [
     "./providers/AppProvider",
     "@adonisjs/core",
@@ -32,21 +29,15 @@
     "@adonisjs/auth",
     "adonis-lucid-soft-deletes"
   ],
-  "aceProviders": [
-    "@adonisjs/repl"
-  ],
+  "aceProviders": ["@adonisjs/repl"],
   "tests": {
     "suites": [
       {
         "name": "functional",
-        "files": [
-          "tests/functional/**/*.spec(.ts|.js)"
-        ],
+        "files": ["tests/functional/**/*.spec(.ts|.js)"],
         "timeout": 60000
       }
     ]
   },
-  "testProviders": [
-    "@japa/preset-adonis/TestsProvider"
-  ]
+  "testProviders": ["@japa/preset-adonis/TestsProvider"]
 }
