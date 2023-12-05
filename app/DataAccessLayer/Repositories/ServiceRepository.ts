@@ -8,7 +8,7 @@ import { inject } from '@adonisjs/core/build/standalone'
 @inject()
 export class ServiceRepository implements ServiceRepositoryInterface {
   public async listServicesByProfession(professionId: number): Promise<Service[]> {
-    const services = await Service.query().where('profession_id', professionId).orderBy('name_fr')
+    const services = await Service.query().where('profession_id', professionId).orderBy('name')
     return services
   }
 
@@ -19,8 +19,8 @@ export class ServiceRepository implements ServiceRepositoryInterface {
 
   public async createService(data: ServiceCreateOrUpdateDTO): Promise<Service> {
     const service = new Service()
-    service.name_fr = data.name_fr
-    service.short_name_fr = data.short_name_fr
+    service.name = data.name
+    service.short_name = data.short_name
     service.profession_id = data.profession_id
     if (data.picto_file) service.picto_file = data.picto_file
     if (data.image_file) service.image_file = data.image_file
@@ -34,8 +34,8 @@ export class ServiceRepository implements ServiceRepositoryInterface {
     data: ServiceCreateOrUpdateDTO
   ): Promise<Service> {
     const service = await Service.findOrFail(idToUpdate)
-    service.name_fr = data.name_fr
-    service.short_name_fr = data.short_name_fr
+    service.name = data.name
+    service.short_name = data.short_name
     service.profession_id = data.profession_id
     if (data.picto_file) service.picto_file = data.picto_file
     if (data.image_file) service.image_file = data.image_file

@@ -33,7 +33,7 @@ test.group('ProfessionRoutes', (group) => {
       .bearerToken(fakeUser.token)
       .file('picto_file', picto1Path)
       .file('image_file', image1Path)
-      .fields({ name_fr: 'Profession Test 1', is_enabled: true })
+      .fields({ name: 'Profession Test 1', is_enabled: true })
     response.assertStatus(401)
   })
 
@@ -41,7 +41,7 @@ test.group('ProfessionRoutes', (group) => {
     const response = await client
       .post('/professions')
       .bearerToken(fakeUser.adminToken)
-      .field('name_fr', '')
+      .field('name', '')
       .field('is_enabled', true)
     response.assertStatus(422)
   })
@@ -52,11 +52,11 @@ test.group('ProfessionRoutes', (group) => {
       .bearerToken(fakeUser.adminToken)
       .file('picto_file', picto1Path)
       .file('image_file', image1Path)
-      .fields({ name_fr: 'Profession Test 1', is_enabled: true })
+      .fields({ name: 'Profession Test 1', is_enabled: true })
 
     response.assertStatus(201)
     response.assertBodyContains({
-      name_fr: 'Profession Test 1',
+      name: 'Profession Test 1',
       picto_file: './professions/pictos/profession-test-1.jpg',
     })
     firstProfessionId = response.body().id
@@ -66,7 +66,7 @@ test.group('ProfessionRoutes', (group) => {
     const response = await client
       .post('/professions')
       .bearerToken(fakeUser.adminToken)
-      .field('name_fr', 'Profession Test 1')
+      .field('name', 'Profession Test 1')
       .field('is_enabled', true)
     response.assertStatus(422)
   })
@@ -77,11 +77,11 @@ test.group('ProfessionRoutes', (group) => {
       .bearerToken(fakeUser.adminToken)
       .file('picto_file', picto2Path)
       .file('image_file', image2Path)
-      .fields({ name_fr: 'Profession Test 2', is_enabled: true })
+      .fields({ name: 'Profession Test 2', is_enabled: true })
     response.assertStatus(201)
 
     secondProfessionId = response.body().id
-    assert.equal(response.body().name_fr, 'Profession Test 2')
+    assert.equal(response.body().name, 'Profession Test 2')
     assert.equal(response.body().image_file, './professions/images/profession-test-2.jpg')
   })
 
@@ -94,7 +94,7 @@ test.group('ProfessionRoutes', (group) => {
         .body()
         .some(
           (profession) =>
-            profession.id === firstProfessionId && profession.name_fr === 'Profession Test 1'
+            profession.id === firstProfessionId && profession.name === 'Profession Test 1'
         )
     )
     assert.isTrue(
@@ -102,7 +102,7 @@ test.group('ProfessionRoutes', (group) => {
         .body()
         .some(
           (profession) =>
-            profession.id === secondProfessionId && profession.name_fr === 'Profession Test 2'
+            profession.id === secondProfessionId && profession.name === 'Profession Test 2'
         )
     )
   })
@@ -111,7 +111,7 @@ test.group('ProfessionRoutes', (group) => {
     const response = await client
       .put('/professions/' + secondProfessionId)
       .bearerToken(fakeUser.adminToken)
-      .field('name_fr', 'Profession Test 1')
+      .field('name', 'Profession Test 1')
       .field('is_enabled', true)
     response.assertStatus(422)
   })
@@ -125,11 +125,11 @@ test.group('ProfessionRoutes', (group) => {
       .bearerToken(fakeUser.adminToken)
       .file('picto_file', picto3Path)
       .file('image_file', image3Path)
-      .fields({ name_fr: 'Profession Test 3', is_enabled: false })
+      .fields({ name: 'Profession Test 3', is_enabled: false })
     response.assertStatus(200)
 
     assert.equal(response.body().id, secondProfessionId)
-    assert.equal(response.body().name_fr, 'Profession Test 3')
+    assert.equal(response.body().name, 'Profession Test 3')
     assert.equal(response.body().image_file, './professions/images/profession-test-3.jpg')
   })
 
@@ -141,7 +141,7 @@ test.group('ProfessionRoutes', (group) => {
 
     assert.containsSubset(response.body(), {
       id: secondProfessionId,
-      name_fr: 'Profession Test 3',
+      name: 'Profession Test 3',
       is_enabled: 1,
     })
   })

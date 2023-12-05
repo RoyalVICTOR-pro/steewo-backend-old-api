@@ -26,8 +26,8 @@ export default class ServicesController {
     const data = await request.validate(ServiceCreateValidator)
 
     const newService: ServiceCreateOrUpdateDTO = {
-      name_fr: data.name_fr,
-      short_name_fr: data.short_name_fr,
+      name: data.name,
+      short_name: data.short_name,
       is_enabled: data.is_enabled,
       profession_id: params.id_profession,
     }
@@ -43,8 +43,8 @@ export default class ServicesController {
   public async updateService({ request, response, params }: HttpContextContract) {
     const data = await request.validate(ServiceUpdateValidator)
     const updatedService = {
-      name_fr: data.name_fr,
-      short_name_fr: data.short_name_fr,
+      name: data.name,
+      short_name: data.short_name,
       is_enabled: data.is_enabled,
       profession_id: params.id_profession,
     }

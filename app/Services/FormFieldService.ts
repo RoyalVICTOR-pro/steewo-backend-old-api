@@ -31,7 +31,7 @@ export class FormFieldService implements FormFieldServiceInterface {
       data.tooltip_image_file = await UploadService.uploadFileTo(
         tootlTipImageFile,
         this.tooltipImagePath,
-        data.label_fr
+        data.label
       )
     }
     return await this.formFieldRepository.createFormField(data)
@@ -50,7 +50,7 @@ export class FormFieldService implements FormFieldServiceInterface {
       data.tooltip_image_file = await UploadService.uploadFileTo(
         tootlTipImageFile,
         this.tooltipImagePath,
-        data.label_fr
+        data.label
       )
     }
 

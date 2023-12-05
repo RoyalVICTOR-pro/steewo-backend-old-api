@@ -8,7 +8,7 @@ export default class Profession extends compose(BaseModel, SoftDeletes) {
   public id: number
 
   @column()
-  public name_fr: string
+  public name: string
 
   @column()
   public picto_file: string | null

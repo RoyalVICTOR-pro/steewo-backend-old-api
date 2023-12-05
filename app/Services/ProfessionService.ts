@@ -28,11 +28,11 @@ export class ProfessionService implements ProfessionServiceInterface {
     imageFile: MultipartFileContract | null = null
   ) {
     if (pictoFile) {
-      data.picto_file = await UploadService.uploadFileTo(pictoFile, this.pictoPath, data.name_fr)
+      data.picto_file = await UploadService.uploadFileTo(pictoFile, this.pictoPath, data.name)
     }
 
     if (imageFile) {
-      data.image_file = await UploadService.uploadFileTo(imageFile, this.imagePath, data.name_fr)
+      data.image_file = await UploadService.uploadFileTo(imageFile, this.imagePath, data.name)
     }
     return await this.professionRepository.createProfession(data)
   }
@@ -49,13 +49,13 @@ export class ProfessionService implements ProfessionServiceInterface {
         if (oldProfession.picto_file) {
           await UploadService.deleteFile(oldProfession.picto_file)
         }
-        data.picto_file = await UploadService.uploadFileTo(pictoFile, this.pictoPath, data.name_fr)
+        data.picto_file = await UploadService.uploadFileTo(pictoFile, this.pictoPath, data.name)
       }
       if (imageFile) {
         if (oldProfession.image_file) {
           await UploadService.deleteFile(oldProfession.image_file)
         }
-        data.image_file = await UploadService.uploadFileTo(imageFile, this.imagePath, data.name_fr)
+        data.image_file = await UploadService.uploadFileTo(imageFile, this.imagePath, data.name)
       }
     }
     return await this.professionRepository.updateProfessionById(idToUpdate, data)

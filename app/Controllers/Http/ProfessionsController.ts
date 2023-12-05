@@ -26,7 +26,7 @@ export default class ProfessionsController {
     const data = await request.validate(ProfessionCreateValidator)
 
     const newProfession: ProfessionCreateOrUpdateDTO = {
-      name_fr: data.name_fr,
+      name: data.name,
       is_enabled: data.is_enabled,
     }
 
@@ -41,7 +41,7 @@ export default class ProfessionsController {
   public async updateProfession({ request, response, params }: HttpContextContract) {
     const data = await request.validate(ProfessionUpdateValidator)
     const newProfession = {
-      name_fr: data.name_fr,
+      name: data.name,
       is_enabled: data.is_enabled,
     }
 

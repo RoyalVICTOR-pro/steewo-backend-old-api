@@ -31,11 +31,11 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .bearerToken(fakeUser.adminToken)
       .file('picto_file', picto1Path)
       .file('image_file', image1Path)
-      .fields({ name_fr: 'Profession Test 1', is_enabled: true })
+      .fields({ name: 'Profession Test 1', is_enabled: true })
 
     response.assertStatus(201)
     response.assertBodyContains({
-      name_fr: 'Profession Test 1',
+      name: 'Profession Test 1',
       picto_file: './professions/pictos/profession-test-1.jpg',
     })
     professionIdForTest = response.body().id
@@ -48,15 +48,15 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .file('picto_file', picto1Path)
       .file('image_file', image1Path)
       .fields({
-        name_fr: 'Service Test 1',
-        short_name_fr: 'Test 1',
+        name: 'Service Test 1',
+        short_name: 'Test 1',
         is_enabled: true,
       })
 
     response.assertStatus(201)
     response.assertBodyContains({
-      name_fr: 'Service Test 1',
-      short_name_fr: 'Test 1',
+      name: 'Service Test 1',
+      short_name: 'Test 1',
       picto_file: './services/pictos/service-test-1.jpg',
     })
     serviceIdForTest = response.body().id
@@ -72,11 +72,11 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .file('tooltip_image_file', tooltipImage1Path)
       .fields({
         type: 'textarea',
-        label_fr: 'Objectifs',
+        label: 'Objectifs',
         mandatory: true,
-        tooltip_text_fr: 'Test 1',
-        description_fr: 'Décrivez vos objectifs en quelques mots',
-        placeholder_fr: 'Ici vos objectifs',
+        tooltip_text: 'Test 1',
+        description: 'Décrivez vos objectifs en quelques mots',
+        placeholder: 'Ici vos objectifs',
       })
     response.assertStatus(401)
   })
@@ -86,9 +86,9 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .post('services/' + serviceIdForTest + '/form-fields')
       .bearerToken(fakeUser.adminToken)
       .fields({
-        label_fr: 'Objectifs',
-        tooltip_text_fr: 'Test 1',
-        description_fr: 'Décrivez vos objectifs en quelques mots',
+        label: 'Objectifs',
+        tooltip_text: 'Test 1',
+        description: 'Décrivez vos objectifs en quelques mots',
       })
     response.assertStatus(422)
   })
@@ -100,16 +100,16 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .file('tooltip_image_file', tooltipImage1Path)
       .fields({
         type: 'textarea',
-        label_fr: 'Objectifs',
+        label: 'Objectifs',
         mandatory: true,
-        tooltip_text_fr: 'Test 1',
-        description_fr: 'Décrivez vos objectifs en quelques mots',
-        placeholder_fr: 'Ici vos objectifs',
+        tooltip_text: 'Test 1',
+        description: 'Décrivez vos objectifs en quelques mots',
+        placeholder: 'Ici vos objectifs',
       })
 
     response.assertStatus(201)
     response.assertBodyContains({
-      label_fr: 'Objectifs',
+      label: 'Objectifs',
       mandatory: true,
     })
     assert.match(response.body().tooltip_image_file, /objectifs/)
@@ -123,14 +123,14 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .bearerToken(fakeUser.adminToken)
       .fields({
         type: 'text',
-        label_fr: 'Nom de la marque',
+        label: 'Nom de la marque',
         mandatory: false,
-        tooltip_text_fr: 'Même si elle est en création',
-        placeholder_fr: 'Saisissez ici',
+        tooltip_text: 'Même si elle est en création',
+        placeholder: 'Saisissez ici',
       })
     response.assertStatus(201)
 
-    assert.equal(response.body().label_fr, 'Nom de la marque')
+    assert.equal(response.body().label, 'Nom de la marque')
     assert.equal(response.body().mandatory, false)
     assert.equal(response.body().tooltip_image_file, null)
     assert.equal(response.body().order, 2)
@@ -143,7 +143,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .bearerToken(fakeUser.adminToken)
       .fields({
         type: 'text',
-        label_fr: 'Label Test 3',
+        label: 'Label Test 3',
         mandatory: false,
       })
     response.assertStatus(201)
@@ -159,7 +159,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .bearerToken(fakeUser.adminToken)
       .fields({
         type: 'text',
-        label_fr: 'Label Test 4',
+        label: 'Label Test 4',
         mandatory: false,
       })
     response.assertStatus(201)
@@ -187,7 +187,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       response
         .body()
         .some(
-          (formField) => formField.id === firstFormFieldId && formField.label_fr === 'Objectifs'
+          (formField) => formField.id === firstFormFieldId && formField.label === 'Objectifs'
         )
     )
     assert.isTrue(
@@ -195,7 +195,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
         .body()
         .some(
           (formField) =>
-            formField.id === secondFormFieldId && formField.label_fr === 'Nom de la marque'
+            formField.id === secondFormFieldId && formField.label === 'Nom de la marque'
         )
     )
   })
@@ -210,17 +210,17 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       .file('tooltip_image_file', tooltipImage2Path)
       .fields({
         type: 'link',
-        label_fr: 'Site web',
+        label: 'Site web',
         mandatory: true,
-        tooltip_text_fr: '',
-        description_fr: 'Donnez ici le lien vers votre site web personnel',
+        tooltip_text: '',
+        description: 'Donnez ici le lien vers votre site web personnel',
       })
     response.assertStatus(200)
 
     assert.equal(response.body().id, secondFormFieldId)
-    assert.equal(response.body().label_fr, 'Site web')
+    assert.equal(response.body().label, 'Site web')
     assert.equal(response.body().mandatory, 1)
-    assert.equal(response.body().placeholder_fr, 'Saisissez ici')
+    assert.equal(response.body().placeholder, 'Saisissez ici')
   })
 
   test('Get form field 2 by ID with admin role', async ({ assert, client }) => {
@@ -232,10 +232,10 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
     assert.containsSubset(response.body(), {
       id: secondFormFieldId,
       type: 'link',
-      label_fr: 'Site web',
+      label: 'Site web',
       mandatory: 1,
-      tooltip_text_fr: null,
-      description_fr: 'Donnez ici le lien vers votre site web personnel',
+      tooltip_text: null,
+      description: 'Donnez ici le lien vers votre site web personnel',
     })
   })
 

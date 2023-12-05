@@ -1,6 +1,6 @@
 export interface ServiceCreateOrUpdateDTO {
-  name_fr: string
-  short_name_fr: string
+  name: string
+  short_name: string
   picto_file?: string | null
   image_file?: string | null
   is_enabled?: boolean

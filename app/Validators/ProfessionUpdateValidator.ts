@@ -9,10 +9,10 @@ export default class ProfessionUpdateValidator {
   })
 
   public schema = schema.create({
-    name_fr: schema.string({}, [
+    name: schema.string({}, [
       rules.unique({
         table: 'professions',
-        column: 'name_fr',
+        column: 'name',
         whereNot: { id: this.refs.id },
       }),
     ]),
@@ -28,8 +28,8 @@ export default class ProfessionUpdateValidator {
   })
 
   public messages: CustomMessages = {
-    'name_fr.required': 'Le nom de la profession est requis.',
-    'name_fr.unique': 'Cette profession existe déjà.',
+    'name.required': 'Le nom de la profession est requis.',
+    'name.unique': 'Cette profession existe déjà.',
     'picto_file.file.extnames': 'Le fichier picto_file doit être au format jpg, png ou jpeg.',
     'picto_file.file.size': 'Le fichier picto_file ne doit pas dépasser 2 Mo.',
     'image_file.file.extnames': 'Le fichier image_file doit être au format jpg, png ou jpeg.',

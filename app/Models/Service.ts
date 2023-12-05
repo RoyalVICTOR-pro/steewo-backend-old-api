@@ -13,10 +13,10 @@ export default class Service extends compose(BaseModel, SoftDeletes) {
   public profession_id: number
 
   @column()
-  public name_fr: string | null
+  public name: string | null
 
   @column()
-  public short_name_fr: string | null
+  public short_name: string | null
 
   @column()
   public picto_file: string | null

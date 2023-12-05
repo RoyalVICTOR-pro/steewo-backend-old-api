@@ -18,7 +18,7 @@ export default class ServicesFormField extends compose(BaseModel, SoftDeletes) {
   public type: string
 
   @column()
-  public label_fr: string
+  public label: string
 
   @column()
   public mandatory: boolean
@@ -27,13 +27,13 @@ export default class ServicesFormField extends compose(BaseModel, SoftDeletes) {
   public tooltipImageFile: string
 
   @column()
-  public tooltipText_fr: string | null
+  public tooltipText: string | null
 
   @column()
-  public description_fr: string | null
+  public description: string | null
 
   @column()
-  public placeholder_fr: string | null
+  public placeholder: string | null
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

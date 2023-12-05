@@ -28,11 +28,11 @@ test.group('Services Management Routes Testing', (group) => {
       .bearerToken(fakeUser.adminToken)
       .file('picto_file', picto1Path)
       .file('image_file', image1Path)
-      .fields({ name_fr: 'Profession Test 1', is_enabled: true })
+      .fields({ name: 'Profession Test 1', is_enabled: true })
 
     response.assertStatus(201)
     response.assertBodyContains({
-      name_fr: 'Profession Test 1',
+      name: 'Profession Test 1',
       picto_file: './professions/pictos/profession-test-1.jpg',
     })
     professionIdForTest = response.body().id
@@ -47,8 +47,8 @@ test.group('Services Management Routes Testing', (group) => {
       .file('picto_file', picto1Path)
       .file('image_file', image1Path)
       .fields({
-        name_fr: 'Service Test 1',
-        short_name_fr: 'Test 1',
+        name: 'Service Test 1',
+        short_name: 'Test 1',
         is_enabled: true,
       })
     response.assertStatus(401)
@@ -58,8 +58,8 @@ test.group('Services Management Routes Testing', (group) => {
     const response = await client
       .post('professions/' + professionIdForTest + '/services')
       .bearerToken(fakeUser.adminToken)
-      .field('name_fr', '')
-      .field('short_name_fr', '')
+      .field('name', '')
+      .field('short_name', '')
       .field('is_enabled', true)
     response.assertStatus(422)
   })
@@ -71,15 +71,15 @@ test.group('Services Management Routes Testing', (group) => {
       .file('picto_file', picto1Path)
       .file('image_file', image1Path)
       .fields({
-        name_fr: 'Service Test 1',
-        short_name_fr: 'Test 1',
+        name: 'Service Test 1',
+        short_name: 'Test 1',
         is_enabled: true,
       })
 
     response.assertStatus(201)
     response.assertBodyContains({
-      name_fr: 'Service Test 1',
-      short_name_fr: 'Test 1',
+      name: 'Service Test 1',
+      short_name: 'Test 1',
       picto_file: './services/pictos/service-test-1.jpg',
     })
     firstServiceId = response.body().id
@@ -89,8 +89,8 @@ test.group('Services Management Routes Testing', (group) => {
     const response = await client
       .post('professions/' + professionIdForTest + '/services')
       .bearerToken(fakeUser.adminToken)
-      .field('name_fr', 'Service Test 1')
-      .field('short_name_fr', 'Test 11')
+      .field('name', 'Service Test 1')
+      .field('short_name', 'Test 11')
       .field('is_enabled', true)
     response.assertStatus(422)
   })
@@ -102,15 +102,15 @@ test.group('Services Management Routes Testing', (group) => {
       .file('picto_file', picto2Path)
       .file('image_file', image2Path)
       .fields({
-        name_fr: 'Service Test 2',
-        short_name_fr: 'Test 2',
+        name: 'Service Test 2',
+        short_name: 'Test 2',
         is_enabled: false,
       })
     response.assertStatus(201)
 
     secondServiceId = response.body().id
-    assert.equal(response.body().name_fr, 'Service Test 2')
-    assert.equal(response.body().short_name_fr, 'Test 2')
+    assert.equal(response.body().name, 'Service Test 2')
+    assert.equal(response.body().short_name, 'Test 2')
     assert.equal(response.body().image_file, './services/images/service-test-2.jpg')
   })
 
@@ -126,12 +126,12 @@ test.group('Services Management Routes Testing', (group) => {
     assert.isTrue(
       response
         .body()
-        .some((service) => service.id === firstServiceId && service.name_fr === 'Service Test 1')
+        .some((service) => service.id === firstServiceId && service.name === 'Service Test 1')
     )
     assert.isTrue(
       response
         .body()
-        .some((service) => service.id === secondServiceId && service.name_fr === 'Service Test 2')
+        .some((service) => service.id === secondServiceId && service.name === 'Service Test 2')
     )
   })
 
@@ -139,8 +139,8 @@ test.group('Services Management Routes Testing', (group) => {
     const response = await client
       .put('professions/' + professionIdForTest + '/services/' + secondServiceId)
       .bearerToken(fakeUser.adminToken)
-      .field('name_fr', 'Service Test 1')
-      .field('short_name_fr', 'Test 1')
+      .field('name', 'Service Test 1')
+      .field('short_name', 'Test 1')
       .field('is_enabled', true)
     response.assertStatus(422)
   })
@@ -152,15 +152,15 @@ test.group('Services Management Routes Testing', (group) => {
       .file('picto_file', picto3Path)
       .file('image_file', image3Path)
       .fields({
-        name_fr: 'Service Test 3',
-        short_name_fr: 'Test 3',
+        name: 'Service Test 3',
+        short_name: 'Test 3',
         is_enabled: false,
       })
     response.assertStatus(200)
 
     assert.equal(response.body().id, secondServiceId)
-    assert.equal(response.body().name_fr, 'Service Test 3')
-    assert.equal(response.body().short_name_fr, 'Test 3')
+    assert.equal(response.body().name, 'Service Test 3')
+    assert.equal(response.body().short_name, 'Test 3')
     assert.equal(response.body().image_file, './services/images/service-test-3.jpg')
   })
 
@@ -172,8 +172,8 @@ test.group('Services Management Routes Testing', (group) => {
 
     assert.containsSubset(response.body(), {
       id: secondServiceId,
-      name_fr: 'Service Test 3',
-      short_name_fr: 'Test 3',
+      name: 'Service Test 3',
+      short_name: 'Test 3',
       is_enabled: 0,
     })
   })

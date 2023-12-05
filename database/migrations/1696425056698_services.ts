@@ -7,8 +7,8 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.integer('profession_id').unsigned().notNullable().index()
-      table.string('name_fr', 70).notNullable()
-      table.string('short_name_fr', 40).notNullable()
+      table.string('name', 70).notNullable()
+      table.string('short_name', 40).notNullable()
       table.string('picto_file', 255).nullable()
       table.string('image_file', 255).nullable()
       table.tinyint('is_enabled').notNullable().defaultTo(0)

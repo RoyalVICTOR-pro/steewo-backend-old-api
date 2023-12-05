@@ -19,7 +19,7 @@ export class ProfessionRepository implements ProfessionRepositoryInterface {
 
   public async createProfession(data: ProfessionCreateOrUpdateDTO): Promise<Profession> {
     const profession = new Profession()
-    profession.name_fr = data.name_fr
+    profession.name = data.name
     if (data.picto_file) profession.picto_file = data.picto_file
     if (data.image_file) profession.image_file = data.image_file
     if (data.is_enabled) profession.is_enabled = data.is_enabled
@@ -32,7 +32,7 @@ export class ProfessionRepository implements ProfessionRepositoryInterface {
     data: ProfessionCreateOrUpdateDTO
   ): Promise<Profession> {
     const profession = await Profession.findOrFail(idToUpdate)
-    profession.name_fr = data.name_fr
+    profession.name = data.name
     if (data.picto_file) profession.picto_file = data.picto_file
     if (data.image_file) profession.image_file = data.image_file
     if (data.is_enabled) profession.is_enabled = data.is_enabled

@@ -28,11 +28,11 @@ export default class FormFieldController {
     const newFormField: FormFieldCreateOrUpdateDTO = {
       service_id: params.id_service,
       type: data.type,
-      label_fr: data.label_fr,
+      label: data.label,
       mandatory: data.mandatory,
-      tooltip_text_fr: data.tooltip_text_fr,
-      description_fr: data.description_fr,
-      placeholder_fr: data.placeholder_fr,
+      tooltip_text: data.tooltip_text,
+      description: data.description,
+      placeholder: data.placeholder,
     }
 
     const formField = await this.formFieldService.createFormField(
@@ -47,11 +47,11 @@ export default class FormFieldController {
     const updatedFormField = {
       service_id: params.id_service,
       type: data.type,
-      label_fr: data.label_fr,
+      label: data.label,
       mandatory: data.mandatory,
-      tooltip_text_fr: data.tooltip_text_fr,
-      description_fr: data.description_fr,
-      placeholder_fr: data.placeholder_fr,
+      tooltip_text: data.tooltip_text,
+      description: data.description,
+      placeholder: data.placeholder,
     }
 
     const formField = await this.formFieldService.updateFormFieldById(
