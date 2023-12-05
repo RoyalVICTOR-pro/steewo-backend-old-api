@@ -4,6 +4,7 @@ import User from '@Models/User'
 import Database from '@ioc:Adonis/Lucid/Database'
 
 const BASE_URL = `${process.env.API_URL}`
+console.log('BASE_URL :>> ', BASE_URL);
 let userEmail: string = 'test@example.com'
 
 test.group('AuthProcess', (group) => {
