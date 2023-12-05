@@ -24,7 +24,7 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 
   public async handle(error: any, ctx: HttpContextContract) {
     // TODO : Gérer les messages d'erreurs en fonction de la langue de l'utilisateur
-    // console.log('error complète :>> ', error)
+    console.log('error complète :>> ', error)
 
     if (error.status === 401) {
       // Gestion des erreurs 404 (Not Found)
