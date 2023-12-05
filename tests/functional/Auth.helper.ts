@@ -5,7 +5,7 @@ export class FakeUserForTest {
   private email: string = 'fake.user@tests.com'
   private password: string = 'FakeUser1234'
   private passwordConfirmation: string = 'FakeUser1234'
-  private BASE_URL = `${process.env.API_URL}`
+  private BASE_URL = `${process.env.TEST_API_URL}`
   private ADMIN_EMAIL = `${process.env.ADMIN_EMAIL_FOR_TESTS}`
   private ADMIN_PASSWORD = `${process.env.ADMIN_PASSWORD_FOR_TESTS}`
   private userId: number

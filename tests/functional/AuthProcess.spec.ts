@@ -3,7 +3,7 @@ import supertest from 'supertest'
 import User from '@Models/User'
 import Database from '@ioc:Adonis/Lucid/Database'
 
-const BASE_URL = `${process.env.API_URL}`
+const BASE_URL = `${process.env.TEST_API_URL}`
 console.log('BASE_URL :>> ', BASE_URL);
 let userEmail: string = 'test@example.com'
 
