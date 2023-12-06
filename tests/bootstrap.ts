@@ -22,7 +22,7 @@ import { assert, specReporter, apiClient } from '@japa/preset-adonis'
 |
 */
 // export const plugins: Required<Config>['plugins'] = [assert(), runFailedTests(), apiClient(`${process.env.API_URL}`)]
-export const plugins: Required<Config>['plugins'] = [assert(), apiClient(`${process.env.API_URL}`)]
+export const plugins: Required<Config>['plugins'] = [assert(), apiClient(`${process.env.TEST_API_URL}`)]
 
 /*
 |--------------------------------------------------------------------------
