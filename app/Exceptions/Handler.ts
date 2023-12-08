@@ -56,7 +56,7 @@ export default class ExceptionHandler extends HttpExceptionHandler {
     // Gestion des autres erreurs
     return ctx.response.status(error.status).send({
       // message: 'Une erreur est survenue, merci de réessayer plus tard',
-      message: `Voici le message d'erreur : ${error.message} et voici l'erreur complète : ${error}`,
+      message: `Voici le message d'erreur : ${error.message}, voici l'erreur d'origine : ${error.original} et voici l'erreur complète : ${error}`,
     })
   }
 }
