@@ -1,17 +1,17 @@
 import { test } from '@japa/runner'
 import supertest from 'supertest'
 import User from '@Models/User'
-import Database from '@ioc:Adonis/Lucid/Database'
+// import Database from '@ioc:Adonis/Lucid/Database'
 
 const BASE_URL = `${process.env.TEST_API_URL}`
-console.log('BASE_URL :>> ', BASE_URL);
+// console.log('BASE_URL :>> ', BASE_URL);
 let userEmail: string = 'test@example.com'
 
 test.group('AuthProcess', (group) => {
-  group.setup(async () => {
-    const connectionNode = Database.manager.get('mysql')
-    console.log(connectionNode)
-  })
+  // group.setup(async () => {
+  //   const connectionNode = Database.manager.get('mysql')
+  //   console.log(connectionNode)
+  // })
   group.teardown(async () => {
     await User.query().where('email', userEmail).delete()
   })
