@@ -33,7 +33,7 @@ test.group('Services Management Routes Testing', (group) => {
     response.assertStatus(201)
     response.assertBodyContains({
       name: 'Profession Test 1',
-      picto_file: './professions/pictos/profession-test-1.jpg',
+      picto_file: 'professions/pictos/profession-test-1.jpg',
     })
     professionIdForTest = response.body().id
   })
@@ -80,7 +80,7 @@ test.group('Services Management Routes Testing', (group) => {
     response.assertBodyContains({
       name: 'Service Test 1',
       short_name: 'Test 1',
-      picto_file: './services/pictos/service-test-1.jpg',
+      picto_file: 'services/pictos/service-test-1.jpg',
     })
     firstServiceId = response.body().id
   })
@@ -111,7 +111,7 @@ test.group('Services Management Routes Testing', (group) => {
     secondServiceId = response.body().id
     assert.equal(response.body().name, 'Service Test 2')
     assert.equal(response.body().short_name, 'Test 2')
-    assert.equal(response.body().image_file, './services/images/service-test-2.jpg')
+    assert.equal(response.body().image_file, 'services/images/service-test-2.jpg')
   })
 
   test('Get all services for a profession with logged simple user role', async ({
@@ -161,7 +161,7 @@ test.group('Services Management Routes Testing', (group) => {
     assert.equal(response.body().id, secondServiceId)
     assert.equal(response.body().name, 'Service Test 3')
     assert.equal(response.body().short_name, 'Test 3')
-    assert.equal(response.body().image_file, './services/images/service-test-3.jpg')
+    assert.equal(response.body().image_file, 'services/images/service-test-3.jpg')
   })
 
   test('Get service 2 by ID with logged simple user role', async ({ assert, client }) => {
@@ -192,9 +192,97 @@ test.group('Services Management Routes Testing', (group) => {
     response.assertStatus(204)
     hardDeleteService(secondServiceId)
   })
+  test('Delete created profession by ID with admin role', async ({ client }) => {
+    const response = await client
+      .delete('/professions/' + professionIdForTest)
+      .bearerToken(fakeUser.adminToken)
+    response.assertStatus(204)
+    hardDeleteProfession(professionIdForTest)
+  })
+  test('Create a profession for casacade deleting tests', async ({ client }) => {
+    const response = await client
+      .post('/professions')
+      .bearerToken(fakeUser.adminToken)
+      .file('picto_file', picto1Path)
+      .file('image_file', image1Path)
+      .fields({ name: 'Profession Test Cascade Deleting', is_enabled: true })
 
+    response.assertStatus(201)
+    response.assertBodyContains({
+      name: 'Profession Test Cascade Deleting',
+      picto_file: 'professions/pictos/profession-test-cascade-deleting.jpg',
+    })
+    professionIdForTest = response.body().id
+  })
+  test('Create a first service with valid data with admin role', async ({ client }) => {
+    const response = await client
+      .post('professions/' + professionIdForTest + '/services')
+      .bearerToken(fakeUser.adminToken)
+      .file('picto_file', picto1Path)
+      .file('image_file', image1Path)
+      .fields({
+        name: 'Service Test 1 Cascade',
+        short_name: 'Test 1',
+        is_enabled: true,
+      })
+
+    response.assertStatus(201)
+    response.assertBodyContains({
+      name: 'Service Test 1 Cascade',
+      short_name: 'Test 1',
+      picto_file: 'services/pictos/service-test-1-cascade.jpg',
+    })
+    firstServiceId = response.body().id
+  })
+  test('Create a second service with valid data with admin role', async ({ assert, client }) => {
+    const response = await client
+      .post('professions/' + professionIdForTest + '/services')
+      .bearerToken(fakeUser.adminToken)
+      .file('picto_file', picto2Path)
+      .file('image_file', image2Path)
+      .fields({
+        name: 'Service Test 2 Cascade',
+        short_name: 'Test 2',
+        is_enabled: false,
+      })
+    response.assertStatus(201)
+
+    secondServiceId = response.body().id
+    assert.equal(response.body().name, 'Service Test 2 Cascade')
+    assert.equal(response.body().short_name, 'Test 2')
+    assert.equal(response.body().image_file, 'services/images/service-test-2-cascade.jpg')
+  })
+  test('Delete profession created for cascading deleting tests by ID with admin role', async ({ client }) => {
+    const response = await client
+      .delete('/professions/' + professionIdForTest)
+      .bearerToken(fakeUser.adminToken)
+    response.assertStatus(204)
+    hardDeleteProfession(professionIdForTest)
+  })
+  test('Get all services for a profession with logged simple user role', async ({
+    assert,
+    client,
+  }) => {
+    const response = await client
+      .get('professions/' + professionIdForTest + '/services')
+      .bearerToken(fakeUser.token)
+    response.assertStatus(200)
+
+    assert.isFalse(
+      response
+        .body()
+        .some((service) => service.id === firstServiceId && service.name === 'Service Test 1 Cascade')
+    )
+    assert.isFalse(
+      response
+        .body()
+        .some((service) => service.id === secondServiceId && service.name === 'Service Test 2 Cascade')
+    )
+  })
   group.teardown(async () => {
     await fakeUser.deleteFakeUser()
     await hardDeleteProfession(professionIdForTest)
+    await hardDeleteService(firstServiceId)
+    await hardDeleteService(secondServiceId)
   })
 })

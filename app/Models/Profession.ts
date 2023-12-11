@@ -3,6 +3,8 @@ import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 import { DateTime } from 'luxon'
 import { BaseModel, column, beforeDelete } from '@ioc:Adonis/Lucid/Orm'
 import Service from '@Models/Service'
+import UploadService from '@Services/UploadService'
+
 export default class Profession extends compose(BaseModel, SoftDeletes) {
   @column({ isPrimary: true })
   public id: number
@@ -32,6 +34,10 @@ export default class Profession extends compose(BaseModel, SoftDeletes) {
   public static async deleteServices(profession: Profession) {
     const services = await Service.query().where('profession_id', profession.id)
     for (let service of services) {
+      if (service.picto_file)
+        await UploadService.deleteFile(service.picto_file)
+      if (service.image_file)
+        await UploadService.deleteFile(service.image_file)
       await service.delete()
     }
   }
