@@ -7,8 +7,8 @@ import UploadService from '@Services/UploadService'
 @inject()
 export class ProfessionService implements ProfessionServiceInterface {
   private professionRepository: ProfessionRepository
-  private readonly pictoPath = './professions/pictos/'
-  private readonly imagePath = './professions/images/'
+  private readonly pictoPath = 'professions/pictos/'
+  private readonly imagePath = 'professions/images/'
 
   constructor(professionRepository: ProfessionRepository) {
     this.professionRepository = professionRepository

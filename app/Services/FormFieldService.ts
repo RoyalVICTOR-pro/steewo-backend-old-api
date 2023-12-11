@@ -9,7 +9,7 @@ import { FormFieldUpdateOrderDTO } from '@DTO/FormFieldUpdateOrderDTO'
 @inject()
 export class FormFieldService implements FormFieldServiceInterface {
   private formFieldRepository: FormFieldRepository
-  private readonly tooltipImagePath = './form-fields/tooltip-images/'
+  private readonly tooltipImagePath = 'form-fields/tooltip-images/'
 
   constructor(formFieldRepository: FormFieldRepository) {
     this.formFieldRepository = formFieldRepository

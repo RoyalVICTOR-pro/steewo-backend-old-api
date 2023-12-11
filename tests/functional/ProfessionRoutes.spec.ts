@@ -57,7 +57,7 @@ test.group('ProfessionRoutes', (group) => {
     response.assertStatus(201)
     response.assertBodyContains({
       name: 'Profession Test 1',
-      picto_file: './professions/pictos/profession-test-1.jpg',
+      picto_file: 'professions/pictos/profession-test-1.jpg',
     })
     firstProfessionId = response.body().id
   })
@@ -82,7 +82,7 @@ test.group('ProfessionRoutes', (group) => {
 
     secondProfessionId = response.body().id
     assert.equal(response.body().name, 'Profession Test 2')
-    assert.equal(response.body().image_file, './professions/images/profession-test-2.jpg')
+    assert.equal(response.body().image_file, 'professions/images/profession-test-2.jpg')
   })
 
   test('Get all professions with logged simple user role', async ({ assert, client }) => {
@@ -130,7 +130,7 @@ test.group('ProfessionRoutes', (group) => {
 
     assert.equal(response.body().id, secondProfessionId)
     assert.equal(response.body().name, 'Profession Test 3')
-    assert.equal(response.body().image_file, './professions/images/profession-test-3.jpg')
+    assert.equal(response.body().image_file, 'professions/images/profession-test-3.jpg')
   })
 
   test('Get profession 2 by ID with logged simple user role', async ({ assert, client }) => {

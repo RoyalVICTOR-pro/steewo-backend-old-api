@@ -7,8 +7,8 @@ import UploadService from '@Services/UploadService'
 @inject()
 export class ServiceService implements ServiceServiceInterface {
   private serviceRepository: ServiceRepository
-  private readonly pictoPath = './services/pictos/'
-  private readonly imagePath = './services/images/'
+  private readonly pictoPath = 'services/pictos/'
+  private readonly imagePath = 'services/images/'
 
   constructor(serviceRepository: ServiceRepository) {
     this.serviceRepository = serviceRepository

@@ -36,7 +36,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
     response.assertStatus(201)
     response.assertBodyContains({
       name: 'Profession Test 1',
-      picto_file: './professions/pictos/profession-test-1.jpg',
+      picto_file: 'professions/pictos/profession-test-1.jpg',
     })
     professionIdForTest = response.body().id
   })
@@ -57,7 +57,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
     response.assertBodyContains({
       name: 'Service Test 1',
       short_name: 'Test 1',
-      picto_file: './services/pictos/service-test-1.jpg',
+      picto_file: 'services/pictos/service-test-1.jpg',
     })
     serviceIdForTest = response.body().id
   })
