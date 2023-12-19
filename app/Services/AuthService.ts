@@ -38,6 +38,11 @@ export class AuthService implements AuthServiceInterface {
       return false
     }
 
-    return response.token
+    const responseData = {
+      token: response.token,
+      user: user,
+    }
+
+    return responseData
   }
 }

@@ -186,9 +186,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
     assert.isTrue(
       response
         .body()
-        .some(
-          (formField) => formField.id === firstFormFieldId && formField.label === 'Objectifs'
-        )
+        .some((formField) => formField.id === firstFormFieldId && formField.label === 'Objectifs')
     )
     assert.isTrue(
       response

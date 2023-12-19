@@ -32,7 +32,7 @@ export class FakeUserForTest {
       })
       .expect(200)
 
-    this.token = loggedUser.token
+    this.token = loggedUser.loginResponse.token
     return this.token
   }
 
@@ -45,7 +45,7 @@ export class FakeUserForTest {
       })
       .expect(200)
 
-    this.adminToken = loggedUser.token
+    this.adminToken = loggedUser.loginResponse.token
     return this.adminToken
   }
 
