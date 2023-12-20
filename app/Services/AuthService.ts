@@ -45,4 +45,8 @@ export class AuthService implements AuthServiceInterface {
 
     return responseData
   }
+
+  public async logoutUser(auth: AuthContract) {
+    await auth.logout()
+  }
 }

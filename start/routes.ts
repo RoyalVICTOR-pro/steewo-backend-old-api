@@ -28,6 +28,7 @@ Route.get('/', async () => {
 Route.group(() => {
   Route.post('/register', 'AuthController.register').as('register')
   Route.post('/login', 'AuthController.login').as('login')
+  Route.get('/logout', 'AuthController.logout').as('logout').middleware('auth')
 
   // PROFESSIONS
   Route.get('/professions', 'ProfessionsController.getAllProfessions')
