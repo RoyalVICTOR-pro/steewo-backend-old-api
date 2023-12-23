@@ -15,6 +15,7 @@ export class ProfessionService implements ProfessionServiceInterface {
   }
 
   public async listProfessions() {
+    console.log('listProfessions appelé')
     return await this.professionRepository.listProfessions()
   }
 

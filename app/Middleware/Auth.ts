@@ -36,6 +36,7 @@ export default class AuthMiddleware {
       guardLastAttempted = guard
 
       if (await auth.use(guard).check()) {
+        console.log('Utilisateur authentifié')
         /**
          * Instruct auth to use the given guard as the default guard for
          * the rest of the request, since the user authenticated
@@ -69,6 +70,7 @@ export default class AuthMiddleware {
      * Uses the user defined guards or the default guard mentioned in
      * the config file
      */
+    console.log('passé dans handle du auth middleware')
     const guards = customGuards.length ? customGuards : [auth.name]
     await this.authenticate(auth, guards)
     await next()
