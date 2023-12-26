@@ -11,7 +11,7 @@ const acceptLanguage = require('accept-language-parser')
 
 @inject()
 export default class AuthController {
-  private authService: AuthS ervice
+  private authService: AuthService
   constructor(authService: AuthService) {
     this.authService = authService
   }
