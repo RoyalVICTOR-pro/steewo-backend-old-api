@@ -46,6 +46,12 @@ export class AuthService implements AuthServiceInterface {
     return responseData
   }
 
+  public async getAuthenticatedUser(auth: AuthContract) {
+    const user = await auth.authenticate()
+    console.log('user :>> ', user)
+    return user
+  }
+
   public async logoutUser(auth: AuthContract) {
     await auth.logout()
   }

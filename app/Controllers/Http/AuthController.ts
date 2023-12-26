@@ -11,7 +11,7 @@ const acceptLanguage = require('accept-language-parser')
 
 @inject()
 export default class AuthController {
-  private authService: AuthService
+  private authService: AuthS ervice
   constructor(authService: AuthService) {
     this.authService = authService
   }
@@ -52,6 +52,11 @@ export default class AuthController {
         return response.status(401).json({ errors: 'Invalid credentials' })
       }
     }
+  }
+
+  public async me({ response, auth }: HttpContextContract) {
+    const user = await this.authService.getAuthenticatedUser(auth)
+    return response.status(200).json({ user })
   }
 
   public async logout({ response, auth }: HttpContextContract) {
