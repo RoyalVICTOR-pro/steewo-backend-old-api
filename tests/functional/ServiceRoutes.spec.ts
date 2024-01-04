@@ -25,7 +25,7 @@ test.group('Services Management Routes Testing', (group) => {
   test('Create a profession for tests', async ({ client }) => {
     const response = await client
       .post('/professions')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .file('picto_file', picto1Path)
       .file('image_file', image1Path)
       .fields({ name: 'Profession Test 1', is_enabled: true })
@@ -43,7 +43,7 @@ test.group('Services Management Routes Testing', (group) => {
   }) => {
     const response = await client
       .post('professions/' + professionIdForTest + '/services')
-      .bearerToken(fakeUser.token)
+      .header('Cookie', fakeUser.tokenCookie)
       .file('picto_file', picto1Path)
       .file('image_file', image1Path)
       .fields({
@@ -57,7 +57,7 @@ test.group('Services Management Routes Testing', (group) => {
   test('Create a first service with missing data with admin role', async ({ client }) => {
     const response = await client
       .post('professions/' + professionIdForTest + '/services')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .field('name', '')
       .field('short_name', '')
       .field('is_enabled', true)
@@ -67,7 +67,7 @@ test.group('Services Management Routes Testing', (group) => {
   test('Create a first service with valid data with admin role', async ({ client }) => {
     const response = await client
       .post('professions/' + professionIdForTest + '/services')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .file('picto_file', picto1Path)
       .file('image_file', image1Path)
       .fields({
@@ -88,7 +88,7 @@ test.group('Services Management Routes Testing', (group) => {
   test('Create a second service with already used name with admin role', async ({ client }) => {
     const response = await client
       .post('professions/' + professionIdForTest + '/services')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .field('name', 'Service Test 1')
       .field('short_name', 'Test 11')
       .field('is_enabled', true)
@@ -98,7 +98,7 @@ test.group('Services Management Routes Testing', (group) => {
   test('Create a second service with valid data with admin role', async ({ assert, client }) => {
     const response = await client
       .post('professions/' + professionIdForTest + '/services')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .file('picto_file', picto2Path)
       .file('image_file', image2Path)
       .fields({
@@ -120,7 +120,7 @@ test.group('Services Management Routes Testing', (group) => {
   }) => {
     const response = await client
       .get('professions/' + professionIdForTest + '/services')
-      .bearerToken(fakeUser.token)
+      .header('Cookie', fakeUser.tokenCookie)
     response.assertStatus(200)
 
     assert.isTrue(
@@ -138,7 +138,7 @@ test.group('Services Management Routes Testing', (group) => {
   test('Update a second service with already used name with admin role', async ({ client }) => {
     const response = await client
       .put('professions/' + professionIdForTest + '/services/' + secondServiceId)
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .field('name', 'Service Test 1')
       .field('short_name', 'Test 1')
       .field('is_enabled', true)
@@ -148,7 +148,7 @@ test.group('Services Management Routes Testing', (group) => {
   test('Update the second service with valid data with admin role', async ({ assert, client }) => {
     const response = await client
       .put('professions/' + professionIdForTest + '/services/' + secondServiceId)
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .file('picto_file', picto3Path)
       .file('image_file', image3Path)
       .fields({
@@ -167,7 +167,7 @@ test.group('Services Management Routes Testing', (group) => {
   test('Get service 2 by ID with logged simple user role', async ({ assert, client }) => {
     const response = await client
       .get('professions/' + professionIdForTest + '/services/' + secondServiceId)
-      .bearerToken(fakeUser.token)
+      .header('Cookie', fakeUser.tokenCookie)
     response.assertStatus(200)
 
     assert.containsSubset(response.body(), {
@@ -181,28 +181,28 @@ test.group('Services Management Routes Testing', (group) => {
   test('Delete service 1 by ID with admin role', async ({ client }) => {
     const response = await client
       .delete('professions/' + professionIdForTest + '/services/' + firstServiceId)
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
     response.assertStatus(204)
     hardDeleteService(firstServiceId)
   })
   test('Delete service 2 by ID with admin role', async ({ client }) => {
     const response = await client
       .delete('professions/' + professionIdForTest + '/services/' + secondServiceId)
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
     response.assertStatus(204)
     hardDeleteService(secondServiceId)
   })
   test('Delete created profession by ID with admin role', async ({ client }) => {
     const response = await client
       .delete('/professions/' + professionIdForTest)
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
     response.assertStatus(204)
     hardDeleteProfession(professionIdForTest)
   })
   test('Create a profession for casacade deleting tests', async ({ client }) => {
     const response = await client
       .post('/professions')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .file('picto_file', picto1Path)
       .file('image_file', image1Path)
       .fields({ name: 'Profession Test Cascade Deleting', is_enabled: true })
@@ -217,7 +217,7 @@ test.group('Services Management Routes Testing', (group) => {
   test('Create a first service with valid data with admin role', async ({ client }) => {
     const response = await client
       .post('professions/' + professionIdForTest + '/services')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .file('picto_file', picto1Path)
       .file('image_file', image1Path)
       .fields({
@@ -237,7 +237,7 @@ test.group('Services Management Routes Testing', (group) => {
   test('Create a second service with valid data with admin role', async ({ assert, client }) => {
     const response = await client
       .post('professions/' + professionIdForTest + '/services')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .file('picto_file', picto2Path)
       .file('image_file', image2Path)
       .fields({
@@ -252,10 +252,12 @@ test.group('Services Management Routes Testing', (group) => {
     assert.equal(response.body().short_name, 'Test 2')
     assert.equal(response.body().image_file, 'services/images/service-test-2-cascade.jpg')
   })
-  test('Delete profession created for cascading deleting tests by ID with admin role', async ({ client }) => {
+  test('Delete profession created for cascading deleting tests by ID with admin role', async ({
+    client,
+  }) => {
     const response = await client
       .delete('/professions/' + professionIdForTest)
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
     response.assertStatus(204)
     hardDeleteProfession(professionIdForTest)
   })
@@ -265,18 +267,22 @@ test.group('Services Management Routes Testing', (group) => {
   }) => {
     const response = await client
       .get('professions/' + professionIdForTest + '/services')
-      .bearerToken(fakeUser.token)
+      .header('Cookie', fakeUser.tokenCookie)
     response.assertStatus(200)
 
     assert.isFalse(
       response
         .body()
-        .some((service) => service.id === firstServiceId && service.name === 'Service Test 1 Cascade')
+        .some(
+          (service) => service.id === firstServiceId && service.name === 'Service Test 1 Cascade'
+        )
     )
     assert.isFalse(
       response
         .body()
-        .some((service) => service.id === secondServiceId && service.name === 'Service Test 2 Cascade')
+        .some(
+          (service) => service.id === secondServiceId && service.name === 'Service Test 2 Cascade'
+        )
     )
   })
   group.teardown(async () => {

@@ -1,5 +1,5 @@
 import { FailedLoginAttemptRepository } from '@DALRepositories/FailedLoginAttemptRepository'
-import { inject } from '@adonisjs/core/build/standalone'
+import { inject, Exception } from '@adonisjs/core/build/standalone'
 import { UserCreateDTO } from '@DTO/UserCreateDTO'
 import Config from '@ioc:Adonis/Core/Config'
 import AuthServiceInterface from '@Services/Interfaces/AuthServiceInterface'
@@ -47,9 +47,13 @@ export class AuthService implements AuthServiceInterface {
   }
 
   public async getAuthenticatedUser(auth: AuthContract) {
-    const user = await auth.authenticate()
-    console.log('user :>> ', user)
-    return user
+    try {
+      const user = await auth.authenticate()
+      return user
+    } catch (error) {
+      // console.log('error :>> ', error)
+      throw new Exception(error.message, error.status, error.code)
+    }
   }
 
   public async logoutUser(auth: AuthContract) {

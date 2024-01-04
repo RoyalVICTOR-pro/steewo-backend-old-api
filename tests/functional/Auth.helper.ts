@@ -9,10 +9,11 @@ export class FakeUserForTest {
   private ADMIN_EMAIL = `${process.env.ADMIN_EMAIL_FOR_TESTS}`
   private ADMIN_PASSWORD = `${process.env.ADMIN_PASSWORD_FOR_TESTS}`
   private userId: number
-  public token: string
-  public adminToken: string
+  public tokenCookie: string
+  public adminTokenCookie: string
 
   public async registerAndLoginFakeUser() {
+    console.log('là')
     let { body: createdUser } = await supertest(this.BASE_URL)
       .post('/register')
       .send({
@@ -24,7 +25,7 @@ export class FakeUserForTest {
 
     this.userId = createdUser.id
 
-    let { body: loggedUser } = await supertest(this.BASE_URL)
+    const authResponse = await supertest(this.BASE_URL)
       .post('/login')
       .send({
         email: this.email,
@@ -32,12 +33,13 @@ export class FakeUserForTest {
       })
       .expect(200)
 
-    this.token = loggedUser.loginResponse.token
-    return this.token
+    console.log('headers :>> ', authResponse.headers)
+    this.tokenCookie = authResponse.headers['set-cookie'][0]
+    return this.tokenCookie
   }
 
   public async loginAdminUser() {
-    let { body: loggedUser } = await supertest(this.BASE_URL)
+    const authResponse = await supertest(this.BASE_URL)
       .post('/login')
       .send({
         email: this.ADMIN_EMAIL,
@@ -45,8 +47,9 @@ export class FakeUserForTest {
       })
       .expect(200)
 
-    this.adminToken = loggedUser.loginResponse.token
-    return this.adminToken
+    console.log('headers :>> ', authResponse.headers)
+    this.adminTokenCookie = authResponse.headers['set-cookie'][0]
+    return this.adminTokenCookie
   }
 
   public async deleteFakeUser() {

@@ -43,7 +43,20 @@ export default class AuthController {
       if (!loginResponse) {
         return response.status(401).json({ errors: 'Invalid credentials' })
       }
-      return response.status(200).json({ loginResponse })
+
+      try {
+        const twentyFourHoursInMilliseconds = 24 * 60 * 60 * 1000
+        response.cookie('access_token', loginResponse.token, {
+          httpOnly: true,
+          secure: true,
+          sameSite: 'none',
+          maxAge: twentyFourHoursInMilliseconds,
+        })
+      } catch (error) {
+        console.log(error)
+      }
+
+      return response.status(200).send({ user: loginResponse.user })
     } catch (error) {
       // console.log('error :>> ', error)
       if (error instanceof TooManyRequestsException) {
@@ -55,12 +68,15 @@ export default class AuthController {
   }
 
   public async me({ response, auth }: HttpContextContract) {
-    const user = await this.authService.getAuthenticatedUser(auth)
-    return response.status(200).json({ user })
+    try {
+      const user = await this.authService.getAuthenticatedUser(auth)
+      return response.status(200).json({ user })
+    } catch (error) {
+      return response.status(401).json({ errors: 'Unauthorized access' })
+    }
   }
 
   public async logout({ response, auth }: HttpContextContract) {
-    console.log('entree dans le logout du controller')
     this.authService.logoutUser(auth)
     return response.status(204).json({ message: 'User logged out' })
   }

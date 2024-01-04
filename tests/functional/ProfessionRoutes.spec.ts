@@ -17,6 +17,7 @@ test.group('ProfessionRoutes', (group) => {
   let fakeUser = new FakeUserForTest()
 
   group.setup(async () => {
+    console.log('ici')
     await fakeUser.registerAndLoginFakeUser()
     await fakeUser.loginAdminUser()
   })
@@ -30,7 +31,7 @@ test.group('ProfessionRoutes', (group) => {
   }) => {
     const response = await client
       .post('/professions')
-      .bearerToken(fakeUser.token)
+      .header('Cookie', fakeUser.tokenCookie)
       .file('picto_file', picto1Path)
       .file('image_file', image1Path)
       .fields({ name: 'Profession Test 1', is_enabled: true })
@@ -40,7 +41,7 @@ test.group('ProfessionRoutes', (group) => {
   test('Create a first profession with missing name with admin role', async ({ client }) => {
     const response = await client
       .post('/professions')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .field('name', '')
       .field('is_enabled', true)
     response.assertStatus(422)
@@ -49,7 +50,7 @@ test.group('ProfessionRoutes', (group) => {
   test('Create a first profession with valid data with admin role', async ({ client }) => {
     const response = await client
       .post('/professions')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .file('picto_file', picto1Path)
       .file('image_file', image1Path)
       .fields({ name: 'Profession Test 1', is_enabled: true })
@@ -65,7 +66,7 @@ test.group('ProfessionRoutes', (group) => {
   test('Create a second profession with already used name with admin role', async ({ client }) => {
     const response = await client
       .post('/professions')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .field('name', 'Profession Test 1')
       .field('is_enabled', true)
     response.assertStatus(422)
@@ -74,7 +75,7 @@ test.group('ProfessionRoutes', (group) => {
   test('Create a second profession with valid data with admin role', async ({ assert, client }) => {
     const response = await client
       .post('/professions')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .file('picto_file', picto2Path)
       .file('image_file', image2Path)
       .fields({ name: 'Profession Test 2', is_enabled: true })
@@ -86,7 +87,7 @@ test.group('ProfessionRoutes', (group) => {
   })
 
   test('Get all professions with logged simple user role', async ({ assert, client }) => {
-    const response = await client.get('/professions').bearerToken(fakeUser.token)
+    const response = await client.get('/professions').header('Cookie', fakeUser.tokenCookie)
     response.assertStatus(200)
 
     assert.isTrue(
@@ -110,7 +111,7 @@ test.group('ProfessionRoutes', (group) => {
   test('Update a second profession with already used name with admin role', async ({ client }) => {
     const response = await client
       .put('/professions/' + secondProfessionId)
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .field('name', 'Profession Test 1')
       .field('is_enabled', true)
     response.assertStatus(422)
@@ -122,7 +123,7 @@ test.group('ProfessionRoutes', (group) => {
   }) => {
     const response = await client
       .put('/professions/' + secondProfessionId)
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .file('picto_file', picto3Path)
       .file('image_file', image3Path)
       .fields({ name: 'Profession Test 3', is_enabled: false })
@@ -136,7 +137,7 @@ test.group('ProfessionRoutes', (group) => {
   test('Get profession 2 by ID with logged simple user role', async ({ assert, client }) => {
     const response = await client
       .get('/professions/' + secondProfessionId)
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
     response.assertStatus(200)
 
     assert.containsSubset(response.body(), {
@@ -149,14 +150,14 @@ test.group('ProfessionRoutes', (group) => {
   test('Delete profession 1 by ID with admin role', async ({ client }) => {
     const response = await client
       .delete('/professions/' + firstProfessionId)
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
     response.assertStatus(204)
     hardDeleteProfession(firstProfessionId)
   })
   test('Delete profession 2 by ID with admin role', async ({ client }) => {
     const response = await client
       .delete('/professions/' + secondProfessionId)
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
     response.assertStatus(204)
     hardDeleteProfession(secondProfessionId)
   })

@@ -28,7 +28,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
   test('Create a profession for tests', async ({ client }) => {
     const response = await client
       .post('/professions')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .file('picto_file', picto1Path)
       .file('image_file', image1Path)
       .fields({ name: 'Profession Test 1', is_enabled: true })
@@ -44,7 +44,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
   test('Create a service for tests', async ({ client }) => {
     const response = await client
       .post('professions/' + professionIdForTest + '/services')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .file('picto_file', picto1Path)
       .file('image_file', image1Path)
       .fields({
@@ -68,7 +68,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
   }) => {
     const response = await client
       .post('services/' + serviceIdForTest + '/form-fields')
-      .bearerToken(fakeUser.token)
+      .header('Cookie', fakeUser.tokenCookie)
       .file('tooltip_image_file', tooltipImage1Path)
       .fields({
         type: 'textarea',
@@ -84,7 +84,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
   test('Create a first form field with missing data with admin role', async ({ client }) => {
     const response = await client
       .post('services/' + serviceIdForTest + '/form-fields')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .fields({
         label: 'Objectifs',
         tooltip_text: 'Test 1',
@@ -96,7 +96,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
   test('Create a first form field with valid data with admin role', async ({ client, assert }) => {
     const response = await client
       .post('services/' + serviceIdForTest + '/form-fields')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .file('tooltip_image_file', tooltipImage1Path)
       .fields({
         type: 'textarea',
@@ -120,7 +120,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
   test('Create a second form field with valid data with admin role', async ({ assert, client }) => {
     const response = await client
       .post('services/' + serviceIdForTest + '/form-fields')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .fields({
         type: 'text',
         label: 'Nom de la marque',
@@ -140,7 +140,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
   test('Create a third form field with valid data with admin role', async ({ assert, client }) => {
     const response = await client
       .post('services/' + serviceIdForTest + '/form-fields')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .fields({
         type: 'text',
         label: 'Label Test 3',
@@ -156,7 +156,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
   test('Create a fourth form field with valid data with admin role', async ({ assert, client }) => {
     const response = await client
       .post('services/' + serviceIdForTest + '/form-fields')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .fields({
         type: 'text',
         label: 'Label Test 4',
@@ -174,13 +174,13 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
   }) => {
     const response = await client
       .get('services/' + serviceIdForTest + '/form-fields')
-      .bearerToken(fakeUser.token)
+      .header('Cookie', fakeUser.tokenCookie)
     response.assertStatus(401)
   })
   test('Get all form fields for a service with logged admin role', async ({ assert, client }) => {
     const response = await client
       .get('services/' + serviceIdForTest + '/form-fields')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
     response.assertStatus(200)
 
     assert.isTrue(
@@ -204,7 +204,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
   }) => {
     const response = await client
       .put('services/' + serviceIdForTest + '/form-fields/' + secondFormFieldId)
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .file('tooltip_image_file', tooltipImage2Path)
       .fields({
         type: 'link',
@@ -224,7 +224,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
   test('Get form field 2 by ID with admin role', async ({ assert, client }) => {
     const response = await client
       .get('services/' + serviceIdForTest + '/form-fields/' + secondFormFieldId)
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
     response.assertStatus(200)
 
     assert.containsSubset(response.body(), {
@@ -262,7 +262,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
 
     const response = await client
       .patch('services/' + serviceIdForTest + '/form-fields/order')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
       .json({ formFields: reorderedFormFields })
     response.assertStatus(204)
   })
@@ -270,7 +270,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
   test('Get all form fields for a service with logged admin role', async ({ assert, client }) => {
     const response = await client
       .get('services/' + serviceIdForTest + '/form-fields')
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
     response.assertStatus(200)
 
     assert.isTrue(
@@ -288,28 +288,28 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
   test('Delete form field 1 by ID with admin role', async ({ client }) => {
     const response = await client
       .delete('services/' + serviceIdForTest + '/form-fields/' + firstFormFieldId)
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
     response.assertStatus(204)
     hardDeleteFormField(firstFormFieldId)
   })
   test('Delete form field 2 by ID with admin role', async ({ client }) => {
     const response = await client
       .delete('services/' + serviceIdForTest + '/form-fields/' + secondFormFieldId)
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
     response.assertStatus(204)
     hardDeleteFormField(secondFormFieldId)
   })
   test('Delete form field 3 by ID with admin role', async ({ client }) => {
     const response = await client
       .delete('services/' + serviceIdForTest + '/form-fields/' + thirdFormFieldId)
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
     response.assertStatus(204)
     hardDeleteFormField(thirdFormFieldId)
   })
   test('Delete form field 4 by ID with admin role', async ({ client }) => {
     const response = await client
       .delete('services/' + serviceIdForTest + '/form-fields/' + fourthFormFieldId)
-      .bearerToken(fakeUser.adminToken)
+      .header('Cookie', fakeUser.adminTokenCookie)
     response.assertStatus(204)
     hardDeleteFormField(fourthFormFieldId)
   })
