@@ -33,7 +33,6 @@ export class FakeUserForTest {
       })
       .expect(200)
 
-    console.log('headers :>> ', authResponse.headers)
     this.tokenCookie = authResponse.headers['set-cookie'][0]
     return this.tokenCookie
   }
@@ -47,7 +46,6 @@ export class FakeUserForTest {
       })
       .expect(200)
 
-    console.log('headers :>> ', authResponse.headers)
     this.adminTokenCookie = authResponse.headers['set-cookie'][0]
     return this.adminTokenCookie
   }
