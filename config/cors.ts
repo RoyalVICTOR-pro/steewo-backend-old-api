@@ -44,7 +44,12 @@ const corsConfig: CorsConfig = {
   |                     one of the above values.
   |
   */
-  origin: ['http://localhost:3000'],
+  origin: [
+    'http://localhost:3000',
+    'https://avengers.steewo.io',
+    'https://fr.app.steewo.io',
+    'https://fr.dev.app.steewo.io',
+  ],
 
   /*
   |--------------------------------------------------------------------------
