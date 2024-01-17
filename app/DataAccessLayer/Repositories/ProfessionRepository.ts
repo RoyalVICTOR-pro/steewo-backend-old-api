@@ -8,7 +8,8 @@ import { inject } from '@adonisjs/core/build/standalone'
 @inject()
 export class ProfessionRepository implements ProfessionRepositoryInterface {
   public async listProfessions(): Promise<Profession[]> {
-    const professions = await Profession.all()
+    // const professions = await Profession.all()
+    const professions = await Profession.query().orderBy('name', 'asc')
     return professions
   }
 
