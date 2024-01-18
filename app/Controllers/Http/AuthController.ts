@@ -44,12 +44,11 @@ export default class AuthController {
         return response.status(401).json({ errors: 'Invalid credentials' })
       }
 
-      const twentyFourHoursInMilliseconds = 24 * 60 * 60 * 1000
       response.cookie('access_token', loginResponse.token, {
         httpOnly: true,
         secure: true,
         sameSite: 'none',
-        maxAge: twentyFourHoursInMilliseconds,
+        maxAge: '24h',
       })
 
       return response.status(200).send({ user: loginResponse.user })
