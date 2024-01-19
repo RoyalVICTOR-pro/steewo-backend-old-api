@@ -28,7 +28,6 @@ export default class ExceptionHandler extends HttpExceptionHandler {
     // console.log('error complète :>> ', error)
 
     if (error.status === 401) {
-      // Gestion des erreurs 404 (Not Found)
       return ctx.response.status(error.status).send({
         message: "Vous n'avez pas accès à cette ressource",
       })
