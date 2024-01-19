@@ -2,6 +2,7 @@
 
 import Service from '@Models/Service'
 import { ServiceCreateOrUpdateDTO } from '@DTO/ServiceCreateOrUpdateDTO'
+import { ServiceStatusUpdateDTO } from '@DTO/ServiceStatusUpdateDTO'
 import ServiceRepositoryInterface from '@DALInterfaces/ServiceRepositoryInterface'
 import { inject } from '@adonisjs/core/build/standalone'
 
@@ -40,6 +41,16 @@ export class ServiceRepository implements ServiceRepositoryInterface {
     if (data.picto_file) service.picto_file = data.picto_file
     if (data.image_file) service.image_file = data.image_file
     if (data.is_enabled) service.is_enabled = data.is_enabled
+    await service.save()
+    return service
+  }
+
+  public async updateServiceStatusById(
+    idToUpdate: number,
+    data: ServiceStatusUpdateDTO
+  ): Promise<Service> {
+    const service = await Service.findOrFail(idToUpdate)
+    service.is_enabled = data.is_enabled
     await service.save()
     return service
   }

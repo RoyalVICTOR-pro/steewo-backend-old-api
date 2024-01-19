@@ -1,4 +1,5 @@
 import { ServiceCreateOrUpdateDTO } from '@DTO/ServiceCreateOrUpdateDTO'
+import { ServiceStatusUpdateDTO } from '@DTO/ServiceStatusUpdateDTO'
 import { inject } from '@adonisjs/core/build/standalone'
 import ServiceServiceInterface from '@Services/Interfaces/ServiceServiceInterface'
 import { ServiceRepository } from '@DALRepositories/ServiceRepository'
@@ -59,6 +60,10 @@ export class ServiceService implements ServiceServiceInterface {
       }
     }
     return await this.serviceRepository.updateServiceById(idToUpdate, data)
+  }
+
+  public async updateServiceStatusById(idToUpdate: number, data: ServiceStatusUpdateDTO) {
+    return await this.serviceRepository.updateServiceStatusById(idToUpdate, data)
   }
 
   public async deleteService(idToDelete: number) {

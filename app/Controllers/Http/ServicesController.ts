@@ -4,6 +4,7 @@ import { ServiceCreateOrUpdateDTO } from '@DTO/ServiceCreateOrUpdateDTO'
 import { ServiceService } from '@Services/ServiceService'
 import ServiceCreateValidator from '@Validators/ServiceCreateValidator'
 import ServiceUpdateValidator from '@Validators/ServiceUpdateValidator'
+import ServiceStatusUpdateValidator from '@Validators/ServiceStatusUpdateValidator'
 
 @inject()
 export default class ServicesController {
@@ -54,6 +55,19 @@ export default class ServicesController {
       updatedService,
       data.picto_file,
       data.image_file
+    )
+    return response.ok(service)
+  }
+
+  public async updateServiceStatus({ request, response, params }: HttpContextContract) {
+    const data = await request.validate(ServiceStatusUpdateValidator)
+    const updatedServiceStatus = {
+      is_enabled: data.is_enabled || false,
+    }
+
+    const service = await this.serviceService.updateServiceStatusById(
+      params.id,
+      updatedServiceStatus
     )
     return response.ok(service)
   }
