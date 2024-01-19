@@ -13,7 +13,6 @@ export class FakeUserForTest {
   public adminTokenCookie: string
 
   public async registerAndLoginFakeUser() {
-    console.log('là')
     let { body: createdUser } = await supertest(this.BASE_URL)
       .post('/register')
       .send({
