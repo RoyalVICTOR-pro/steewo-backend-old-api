@@ -1,4 +1,5 @@
 import { ProfessionCreateOrUpdateDTO } from '@DTO/ProfessionCreateOrUpdateDTO'
+import { ProfessionStatusUpdateDTO } from '@DTO/ProfessionStatusUpdateDTO'
 import { inject } from '@adonisjs/core/build/standalone'
 import ProfessionServiceInterface from '@Services/Interfaces/ProfessionServiceInterface'
 import { ProfessionRepository } from '@DALRepositories/ProfessionRepository'
@@ -60,6 +61,10 @@ export class ProfessionService implements ProfessionServiceInterface {
       }
     }
     return await this.professionRepository.updateProfessionById(idToUpdate, data)
+  }
+
+  public async updateProfessionStatusById(idToUpdate: number, data: ProfessionStatusUpdateDTO) {
+    return await this.professionRepository.updateProfessionStatusById(idToUpdate, data)
   }
 
   public async deleteProfession(idToDelete: number) {

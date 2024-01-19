@@ -2,6 +2,7 @@
 
 import Profession from '@Models/Profession'
 import { ProfessionCreateOrUpdateDTO } from '@DTO/ProfessionCreateOrUpdateDTO'
+import { ProfessionStatusUpdateDTO } from '@DTO/ProfessionStatusUpdateDTO'
 import ProfessionRepositoryInterface from '@DALInterfaces/ProfessionRepositoryInterface'
 import { inject } from '@adonisjs/core/build/standalone'
 
@@ -37,6 +38,13 @@ export class ProfessionRepository implements ProfessionRepositoryInterface {
     if (data.picto_file) profession.picto_file = data.picto_file
     if (data.image_file) profession.image_file = data.image_file
     if (data.is_enabled) profession.is_enabled = data.is_enabled
+    await profession.save()
+    return profession
+  }
+
+  public async updateProfessionStatusById(idToUpdate: number, data: ProfessionStatusUpdateDTO) {
+    const profession = await Profession.findOrFail(idToUpdate)
+    profession.is_enabled = data.is_enabled
     await profession.save()
     return profession
   }

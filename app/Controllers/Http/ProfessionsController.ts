@@ -4,6 +4,7 @@ import { ProfessionCreateOrUpdateDTO } from '@DTO/ProfessionCreateOrUpdateDTO'
 import { ProfessionService } from '@Services/ProfessionService'
 import ProfessionCreateValidator from '@Validators/ProfessionCreateValidator'
 import ProfessionUpdateValidator from '@Validators/ProfessionUpdateValidator'
+import ProfessionUpdateStatusValidator from '@Validators/ProfessionUpdateStatusValidator'
 
 @inject()
 export default class ProfessionsController {
@@ -50,6 +51,19 @@ export default class ProfessionsController {
       newProfession,
       data.picto_file,
       data.image_file
+    )
+    return response.ok(profession)
+  }
+
+  public async updateProfessionStatus({ request, response, params }: HttpContextContract) {
+    const data = await request.validate(ProfessionUpdateStatusValidator)
+    const updatedStatus = {
+      is_enabled: data.is_enabled || false,
+    }
+
+    const profession = await this.professionService.updateProfessionStatusById(
+      params.id,
+      updatedStatus
     )
     return response.ok(profession)
   }
