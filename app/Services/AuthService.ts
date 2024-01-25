@@ -35,7 +35,7 @@ export class AuthService implements AuthServiceInterface {
 
     if (user.role !== Role.ADMIN) {
       await failedLoginAttemptRepository.addFailedAttempt(loginData.email)
-      throw new Exception('Unauthorized access', 401, 'E_UNAUTHORIZED_ACCESS')
+      throw new Exception('Forbidden', 403, 'E_FORBIDDEN')
     }
 
     try {
