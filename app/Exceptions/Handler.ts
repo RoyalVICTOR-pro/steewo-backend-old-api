@@ -28,24 +28,21 @@ export default class ExceptionHandler extends HttpExceptionHandler {
     // console.log('error complète :>> ', error)
 
     if (error.status === 401) {
-      return ctx.response.status(error.status).send({
-        message: "Vous n'avez pas accès à cette ressource",
-      })
+      return ctx.response.status(error.status).send("Vous n'avez pas accès à cette ressource")
+      // return ctx.response.status(error.status).json({
+      //   message: "Vous n'avez pas accès à cette ressource",
+      // })
     }
 
     if (error.status === 404) {
       // Gestion des erreurs 404 (Not Found)
-      return ctx.response.status(error.status).send({
-        message: 'Ressource introuvable',
-      })
+      return ctx.response.status(error.status).send('Ressource introuvable')
     }
 
     if (error.status === 422) {
       // console.log('error.messages :>> ', JSON.stringify(error.messages))
       // Gestion des erreurs de validation
-      return ctx.response.status(error.status).send({
-        message: error.messages,
-      })
+      return ctx.response.status(error.status).send(error.messages)
     }
 
     if (!error.status) {
@@ -53,9 +50,10 @@ export default class ExceptionHandler extends HttpExceptionHandler {
       error.status = 500
     }
     // Gestion des autres erreurs
-    return ctx.response.status(error.status).send({
-      // message: 'Une erreur est survenue, merci de réessayer plus tard',
-      message: `Voici le message d'erreur : ${error.message}, voici l'erreur d'origine : ${error.original} et voici l'erreur complète : ${error}`,
-    })
+    return ctx.response
+      .status(error.status)
+      .send(
+        `Voici le message d'erreur : ${error.message}, voici l'erreur d'origine : ${error.original} et voici l'erreur complète : ${error}`
+      )
   }
 }

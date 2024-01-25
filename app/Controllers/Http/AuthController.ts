@@ -41,7 +41,7 @@ export default class AuthController {
       const loginResponse: any = await this.authService.authenticateUser(loginData, auth)
 
       if (!loginResponse) {
-        return response.status(401).json({ errors: 'Invalid credentials' })
+        return response.status(401).send('Identifiant et/ou mot de passe incorrects.')
       }
 
       response.cookie('access_token', loginResponse.token, {
@@ -53,11 +53,12 @@ export default class AuthController {
 
       return response.status(200).send({ user: loginResponse.user })
     } catch (error) {
-      // console.log('error :>> ', error)
       if (error instanceof TooManyRequestsException) {
-        return response.status(429).json({ errors: error.message })
+        return response
+          .status(429)
+          .send('Trop de tentatives de connexion infructueuses. Réessayez plus tard.')
       } else {
-        return response.status(401).json({ errors: 'Invalid credentials' })
+        return response.status(401).send('Identifiant et/ou mot de passe incorrects.')
       }
     }
   }
@@ -67,12 +68,12 @@ export default class AuthController {
       const user = await this.authService.getAuthenticatedUser(auth)
       return response.status(200).json({ user })
     } catch (error) {
-      return response.status(401).json({ errors: 'Unauthorized access' })
+      return response.status(401).send('Accès non-autorisé.')
     }
   }
 
   public async logout({ response, auth }: HttpContextContract) {
     this.authService.logoutUser(auth)
-    return response.status(204).json({ message: 'User logged out' })
+    return response.status(204).send('Vous avez été déconnecté avec succès.')
   }
 }
