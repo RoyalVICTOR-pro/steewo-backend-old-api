@@ -17,7 +17,6 @@ test.group('ProfessionRoutes', (group) => {
   let fakeUser = new FakeUserForTest()
 
   group.setup(async () => {
-    console.log('ici')
     await fakeUser.registerAndLoginFakeUser()
     await fakeUser.loginAdminUser()
   })
