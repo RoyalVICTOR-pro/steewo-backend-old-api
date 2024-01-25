@@ -6,6 +6,7 @@ import AuthServiceInterface from '@Services/Interfaces/AuthServiceInterface'
 import { UserRepository } from '@DALRepositories/UserRepository'
 import { AuthContract } from '@ioc:Adonis/Addons/Auth'
 import TooManyRequestsException from 'App/Exceptions/TooManyRequestsException'
+import Role from 'App/Enums/Roles'
 
 @inject()
 export class AuthService implements AuthServiceInterface {
@@ -26,24 +27,29 @@ export class AuthService implements AuthServiceInterface {
     }
 
     const user = await this.userRepository.getUserByEmail(loginData.email)
+
     if (!user) {
       await failedLoginAttemptRepository.addFailedAttempt(loginData.email)
       return false
     }
 
-    const response = await auth.attempt(loginData.email, loginData.password)
+    if (user.role !== Role.ADMIN) {
+      await failedLoginAttemptRepository.addFailedAttempt(loginData.email)
+      throw new Exception('Unauthorized access', 401, 'E_UNAUTHORIZED_ACCESS')
+    }
 
-    if (!response) {
+    try {
+      const response = await auth.attempt(loginData.email, loginData.password)
+      const responseData = {
+        token: response.token,
+        user: user,
+      }
+
+      return responseData
+    } catch (error) {
       await failedLoginAttemptRepository.addFailedAttempt(loginData.email)
       return false
     }
-
-    const responseData = {
-      token: response.token,
-      user: user,
-    }
-
-    return responseData
   }
 
   public async getAuthenticatedUser(auth: AuthContract) {
@@ -51,7 +57,6 @@ export class AuthService implements AuthServiceInterface {
       const user = await auth.authenticate()
       return user
     } catch (error) {
-      // console.log('error :>> ', error)
       throw new Exception(error.message, error.status, error.code)
     }
   }

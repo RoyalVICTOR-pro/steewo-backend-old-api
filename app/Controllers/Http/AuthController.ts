@@ -6,6 +6,7 @@ import AuthentificationMode from '@Enums/AuthentificationMode'
 import UserCreateValidator from '@Validators/UserCreateValidator'
 import UserLoginValidator from '@Validators/UserLoginValidator'
 import TooManyRequestsException from 'App/Exceptions/TooManyRequestsException'
+import Role from 'App/Enums/Roles'
 
 const acceptLanguage = require('accept-language-parser')
 
@@ -57,6 +58,8 @@ export default class AuthController {
         return response
           .status(429)
           .send('Trop de tentatives de connexion infructueuses. Réessayez plus tard.')
+      } else if (error.status === 401) {
+        return response.status(401).send('Accès non-autorisé.')
       } else {
         return response.status(401).send('Identifiant et/ou mot de passe incorrects.')
       }
@@ -72,8 +75,18 @@ export default class AuthController {
     }
   }
 
+  public async meAsAdmin({ response, auth }: HttpContextContract) {
+    try {
+      const user = await this.authService.getAuthenticatedUser(auth)
+      if (user.role !== Role.ADMIN) return response.status(401).send('Accès non-autorisé.')
+      return response.status(200).json({ user })
+    } catch (error) {
+      return response.status(401).send('Accès non-autorisé.')
+    }
+  }
+
   public async logout({ response, auth }: HttpContextContract) {
     this.authService.logoutUser(auth)
-    return response.status(204).send('Vous avez été déconnecté avec succès.')
+    return response.status(200).send('Vous avez été déconnecté avec succès.')
   }
 }
