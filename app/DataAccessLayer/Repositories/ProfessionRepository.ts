@@ -24,7 +24,7 @@ export class ProfessionRepository implements ProfessionRepositoryInterface {
     profession.name = data.name
     if (data.picto_file) profession.picto_file = data.picto_file
     if (data.image_file) profession.image_file = data.image_file
-    if (data.is_enabled) profession.is_enabled = data.is_enabled
+    if (data.is_enabled !== undefined) profession.is_enabled = data.is_enabled
     await profession.save()
     return profession
   }
@@ -37,7 +37,7 @@ export class ProfessionRepository implements ProfessionRepositoryInterface {
     profession.name = data.name
     if (data.picto_file) profession.picto_file = data.picto_file
     if (data.image_file) profession.image_file = data.image_file
-    if (data.is_enabled) profession.is_enabled = data.is_enabled
+    if (data.is_enabled !== undefined) profession.is_enabled = data.is_enabled
     await profession.save()
     return profession
   }

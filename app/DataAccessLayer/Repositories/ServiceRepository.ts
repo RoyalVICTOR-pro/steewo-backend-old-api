@@ -25,7 +25,7 @@ export class ServiceRepository implements ServiceRepositoryInterface {
     service.profession_id = data.profession_id
     if (data.picto_file) service.picto_file = data.picto_file
     if (data.image_file) service.image_file = data.image_file
-    if (data.is_enabled) service.is_enabled = data.is_enabled
+    if (data.is_enabled !== undefined) service.is_enabled = data.is_enabled
     await service.save()
     return service
   }
@@ -38,9 +38,9 @@ export class ServiceRepository implements ServiceRepositoryInterface {
     service.name = data.name
     service.short_name = data.short_name
     service.profession_id = data.profession_id
+    if (data.is_enabled !== undefined) service.is_enabled = data.is_enabled
     if (data.picto_file) service.picto_file = data.picto_file
     if (data.image_file) service.image_file = data.image_file
-    if (data.is_enabled) service.is_enabled = data.is_enabled
     await service.save()
     return service
   }
