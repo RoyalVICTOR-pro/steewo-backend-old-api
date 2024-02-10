@@ -48,6 +48,12 @@ Route.group(() => {
   Route.patch('/professions/:id', 'ProfessionsController.updateProfessionStatus')
     .as('updateProfessionStatus')
     .middleware(['auth', `role:${[Role.ADMIN]}`])
+  Route.patch('/professions/:id/delete-picto', 'ProfessionsController.deleteProfessionPicto')
+    .as('deleteProfessionPicto')
+    .middleware(['auth', `role:${[Role.ADMIN]}`])
+  Route.patch('/professions/:id/delete-image', 'ProfessionsController.deleteProfessionImage')
+    .as('deleteProfessionImage')
+    .middleware(['auth', `role:${[Role.ADMIN]}`])
   Route.delete('/professions/:id', 'ProfessionsController.deleteProfession')
     .as('deleteProfession')
     .middleware(['auth', `role:${[Role.ADMIN]}`])
@@ -67,6 +73,18 @@ Route.group(() => {
     .middleware(['auth', `role:${[Role.ADMIN]}`])
   Route.patch('/professions/:id_profession/services/:id', 'ServicesController.updateServiceStatus')
     .as('updateServiceStatus')
+    .middleware(['auth', `role:${[Role.ADMIN]}`])
+  Route.patch(
+    '/professions/:id_profession/services/:id/delete-picto',
+    'ServicesController.deleteServicePicto'
+  )
+    .as('deleteServicePicto')
+    .middleware(['auth', `role:${[Role.ADMIN]}`])
+  Route.patch(
+    '/professions/:id_profession/services/:id/delete-image',
+    'ServicesController.deleteServiceImage'
+  )
+    .as('deleteServiceImage')
     .middleware(['auth', `role:${[Role.ADMIN]}`])
   Route.delete('/professions/:id_profession/services/:id', 'ServicesController.deleteService')
     .as('deleteService')

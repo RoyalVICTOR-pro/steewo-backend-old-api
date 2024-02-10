@@ -49,6 +49,20 @@ export class ProfessionRepository implements ProfessionRepositoryInterface {
     return profession
   }
 
+  public async deleteProfessionPicto(id: number): Promise<boolean> {
+    const profession = await Profession.findOrFail(id)
+    profession.picto_file = null
+    await profession.save()
+    return true
+  }
+
+  public async deleteProfessionImage(id: number): Promise<boolean> {
+    const profession = await Profession.findOrFail(id)
+    profession.image_file = null
+    await profession.save()
+    return true
+  }
+
   public async deleteProfession(id: number): Promise<boolean> {
     const profession = await Profession.findOrFail(id)
     await profession.delete()

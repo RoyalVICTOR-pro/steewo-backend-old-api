@@ -68,6 +68,16 @@ export default class ProfessionsController {
     return response.ok(profession)
   }
 
+  public async deleteProfessionPicto({ response, params }: HttpContextContract) {
+    await this.professionService.deleteProfessionPicto(params.id)
+    return response.noContent()
+  }
+
+  public async deleteProfessionImage({ response, params }: HttpContextContract) {
+    await this.professionService.deleteProfessionImage(params.id)
+    return response.noContent()
+  }
+
   public async deleteProfession({ response, params }: HttpContextContract) {
     await this.professionService.deleteProfession(params.id)
     return response.noContent()
