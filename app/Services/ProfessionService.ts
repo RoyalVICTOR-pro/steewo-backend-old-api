@@ -44,8 +44,9 @@ export class ProfessionService implements ProfessionServiceInterface {
     pictoFile: MultipartFileContract | null = null,
     imageFile: MultipartFileContract | null = null
   ) {
+    const oldProfession = await this.professionRepository.getProfessionById(idToUpdate)
+
     if (pictoFile || imageFile) {
-      const oldProfession = await this.professionRepository.getProfessionById(idToUpdate)
       if (pictoFile) {
         if (oldProfession.picto_file) {
           await UploadService.deleteFile(oldProfession.picto_file)
@@ -58,6 +59,13 @@ export class ProfessionService implements ProfessionServiceInterface {
         }
         data.image_file = await UploadService.uploadFileTo(imageFile, this.imagePath, data.name)
       }
+    }
+
+    if (oldProfession.name !== data.name && oldProfession.picto_file && !pictoFile) {
+      data.picto_file = await UploadService.renameFile(oldProfession.picto_file, data.name)
+    }
+    if (oldProfession.name !== data.name && oldProfession.image_file && !imageFile) {
+      data.image_file = await UploadService.renameFile(oldProfession.image_file, data.name)
     }
     return await this.professionRepository.updateProfessionById(idToUpdate, data)
   }

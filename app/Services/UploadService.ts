@@ -18,6 +18,22 @@ export default class UploadService {
     return folder + newName
   }
 
+  public static async renameFile(oldPath: string, newName: string) {
+    const splittedPath = oldPath.split('/')
+    const fileName = splittedPath[splittedPath.length - 1]
+    const extension = fileName.split('.').pop()
+    const pathElements = splittedPath.slice(0, splittedPath.length - 1)
+    const path = pathElements.join('/')
+    const sanitizedName = slugify(newName, { lower: true, strict: true })
+    const newPath = path + '/' + sanitizedName + '.' + extension
+
+    if (await Drive.exists(oldPath)) {
+      await Drive.move(oldPath, newPath)
+      return newPath
+    }
+    return oldPath
+  }
+
   public static async deleteFile(path: string) {
     await Drive.delete(path)
   }
