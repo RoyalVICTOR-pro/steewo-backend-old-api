@@ -110,6 +110,12 @@ Route.group(() => {
   )
     .as('updateFormFieldOrder')
     .middleware(['auth', `role:${[Role.ADMIN]}`])
+  Route.patch(
+    '/services/:id_service/form-fields/:id/delete-tooltip-image',
+    'FormFieldsController.deleteFormFieldTooltipImage'
+  )
+    .as('deleteFormFieldTooltipImage')
+    .middleware(['auth', `role:${[Role.ADMIN]}`])
   Route.delete('/services/:id_service/form-fields/:id', 'FormFieldsController.deleteFormField')
     .as('deleteFormField')
     .middleware(['auth', `role:${[Role.ADMIN]}`])

@@ -34,13 +34,14 @@ export class FormFieldRepository implements FormFieldRepositoryInterface {
     }
 
     const formField = new ServicesFormField()
-    formField.serviceId = data.service_id
+    formField.service_id = data.service_id
     formField.type = data.type
     formField.label = data.label
     formField.mandatory = data.mandatory
     formField.order = order
-    if (data.tooltip_image_file !== undefined) formField.tooltipImageFile = data.tooltip_image_file
-    if (data.tooltip_text !== undefined) formField.tooltipText = data.tooltip_text
+    if (data.tooltip_image_file !== undefined)
+      formField.tooltip_image_file = data.tooltip_image_file
+    if (data.tooltip_text !== undefined) formField.tooltip_text = data.tooltip_text
     if (data.description !== undefined) formField.description = data.description
     if (data.placeholder !== undefined) formField.placeholder = data.placeholder
 
@@ -58,8 +59,9 @@ export class FormFieldRepository implements FormFieldRepositoryInterface {
     formField.mandatory = data.mandatory
     // Pendant les tests, je me suis rendu compte que la mise à jour ne fonctionnait pas si on envoyait une chaîne de caractères vide
     // car Adonis la considère comme undefined.J'ai donc ajouté ces conditions pour éviter ce problème.
-    if (data.tooltip_image_file !== undefined) formField.tooltipImageFile = data.tooltip_image_file
-    if (data.tooltip_text !== undefined) formField.tooltipText = data.tooltip_text
+    if (data.tooltip_image_file !== undefined)
+      formField.tooltip_image_file = data.tooltip_image_file
+    if (data.tooltip_text !== undefined) formField.tooltip_text = data.tooltip_text
     if (data.description !== undefined) formField.description = data.description
     if (data.placeholder !== undefined) formField.placeholder = data.placeholder
     await formField.save()
@@ -74,6 +76,13 @@ export class FormFieldRepository implements FormFieldRepositoryInterface {
       formFieldToUpdate.order = formField.order
       await formFieldToUpdate.save()
     }
+    return true
+  }
+
+  public async deleteFormFieldTooltipImage(id: number): Promise<boolean> {
+    const formField = await ServicesFormField.findOrFail(id)
+    formField.tooltip_image_file = null
+    await formField.save()
     return true
   }
 

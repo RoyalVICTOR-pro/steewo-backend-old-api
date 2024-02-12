@@ -72,6 +72,16 @@ export default class ServicesController {
     return response.ok(service)
   }
 
+  public async deleteServicePicto({ response, params }: HttpContextContract) {
+    await this.serviceService.deleteServicePicto(params.id)
+    return response.noContent()
+  }
+
+  public async deleteServiceImage({ response, params }: HttpContextContract) {
+    await this.serviceService.deleteServiceImage(params.id)
+    return response.noContent()
+  }
+
   public async deleteService({ response, params }: HttpContextContract) {
     await this.serviceService.deleteService(params.id)
     return response.noContent()

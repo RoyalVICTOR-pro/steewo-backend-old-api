@@ -69,6 +69,11 @@ export default class FormFieldController {
     return response.noContent()
   }
 
+  public async deleteFormFieldTooltipImage({ response, params }: HttpContextContract) {
+    await this.formFieldService.deleteFormFieldTooltipImage(params.id)
+    return response.noContent()
+  }
+
   public async deleteFormField({ response, params }: HttpContextContract) {
     await this.formFieldService.deleteFormField(params.id)
     return response.noContent()

@@ -25,11 +25,11 @@ export class FormFieldService implements FormFieldServiceInterface {
 
   public async createFormField(
     data: FormFieldCreateOrUpdateDTO,
-    tootlTipImageFile: MultipartFileContract | null = null
+    tooltip_image_file: MultipartFileContract | null = null
   ) {
-    if (tootlTipImageFile) {
+    if (tooltip_image_file) {
       data.tooltip_image_file = await UploadService.uploadFileTo(
-        tootlTipImageFile,
+        tooltip_image_file,
         this.tooltipImagePath,
         data.label
       )
@@ -40,20 +40,30 @@ export class FormFieldService implements FormFieldServiceInterface {
   public async updateFormFieldById(
     idToUpdate: number,
     data: FormFieldCreateOrUpdateDTO,
-    tootlTipImageFile: MultipartFileContract | null = null
+    tooltip_image_file: MultipartFileContract | null = null
   ) {
-    if (tootlTipImageFile) {
-      const oldFormField = await this.formFieldRepository.getFormFieldById(idToUpdate)
-      if (oldFormField.tooltipImageFile) {
-        await UploadService.deleteFile(oldFormField.tooltipImageFile)
+    const oldFormField = await this.formFieldRepository.getFormFieldById(idToUpdate)
+    if (tooltip_image_file) {
+      if (oldFormField.tooltip_image_file) {
+        await UploadService.deleteFile(oldFormField.tooltip_image_file)
       }
       data.tooltip_image_file = await UploadService.uploadFileTo(
-        tootlTipImageFile,
+        tooltip_image_file,
         this.tooltipImagePath,
         data.label
       )
     }
 
+    if (
+      oldFormField.label !== data.label &&
+      oldFormField.tooltip_image_file &&
+      !tooltip_image_file
+    ) {
+      data.tooltip_image_file = await UploadService.renameFile(
+        oldFormField.tooltip_image_file,
+        data.label
+      )
+    }
     return await this.formFieldRepository.updateFormFieldById(idToUpdate, data)
   }
 
@@ -61,11 +71,19 @@ export class FormFieldService implements FormFieldServiceInterface {
     return await this.formFieldRepository.updateFormFieldOrder(reorderedFormFields)
   }
 
+  public async deleteFormFieldTooltipImage(idToDelete: number) {
+    const formFieldToDelete = await this.formFieldRepository.getFormFieldById(idToDelete)
+    if (formFieldToDelete.tooltip_image_file) {
+      await UploadService.deleteFile(formFieldToDelete.tooltip_image_file)
+    }
+    return await this.formFieldRepository.deleteFormFieldTooltipImage(idToDelete)
+  }
+
   public async deleteFormField(idToDelete: number) {
     const formFieldToDelete = await this.formFieldRepository.getFormFieldById(idToDelete)
 
-    if (formFieldToDelete.tooltipImageFile) {
-      await UploadService.deleteFile(formFieldToDelete.tooltipImageFile)
+    if (formFieldToDelete.tooltip_image_file) {
+      await UploadService.deleteFile(formFieldToDelete.tooltip_image_file)
     }
     return await this.formFieldRepository.deleteFormField(idToDelete)
   }

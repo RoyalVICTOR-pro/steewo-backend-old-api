@@ -8,7 +8,7 @@ export default interface FormFieldServiceInterface {
   getFormFieldById(id: number): Promise<ServicesFormField>
   createFormField(
     data: FormFieldCreateOrUpdateDTO,
-    tootlTipImageFile: MultipartFileContract | null
+    tooltip_image_file: MultipartFileContract | null
   ): Promise<ServicesFormField>
   updateFormFieldById(
     idToUpdate: number,

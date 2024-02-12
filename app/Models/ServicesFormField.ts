@@ -9,7 +9,7 @@ export default class ServicesFormField extends compose(BaseModel, SoftDeletes) {
   public id: number
 
   @column()
-  public serviceId: number
+  public service_id: number
 
   @column()
   public order: number
@@ -24,10 +24,10 @@ export default class ServicesFormField extends compose(BaseModel, SoftDeletes) {
   public mandatory: boolean
 
   @column()
-  public tooltipImageFile: string
+  public tooltip_image_file: string | null
 
   @column()
-  public tooltipText: string | null
+  public tooltip_text: string | null
 
   @column()
   public description: string | null

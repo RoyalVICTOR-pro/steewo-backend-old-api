@@ -55,6 +55,20 @@ export class ServiceRepository implements ServiceRepositoryInterface {
     return service
   }
 
+  public async deleteServicePicto(id: number): Promise<boolean> {
+    const service = await Service.findOrFail(id)
+    service.picto_file = null
+    await service.save()
+    return true
+  }
+
+  public async deleteServiceImage(id: number): Promise<boolean> {
+    const service = await Service.findOrFail(id)
+    service.image_file = null
+    await service.save()
+    return true
+  }
+
   public async deleteService(id: number): Promise<boolean> {
     const service = await Service.findOrFail(id)
     await service.delete()

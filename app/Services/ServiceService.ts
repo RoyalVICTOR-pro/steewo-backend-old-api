@@ -44,8 +44,8 @@ export class ServiceService implements ServiceServiceInterface {
     pictoFile: MultipartFileContract | null = null,
     imageFile: MultipartFileContract | null = null
   ) {
+    const oldService = await this.serviceRepository.getServiceById(idToUpdate)
     if (pictoFile || imageFile) {
-      const oldService = await this.serviceRepository.getServiceById(idToUpdate)
       if (pictoFile) {
         if (oldService.picto_file) {
           await UploadService.deleteFile(oldService.picto_file)
@@ -59,11 +59,34 @@ export class ServiceService implements ServiceServiceInterface {
         data.image_file = await UploadService.uploadFileTo(imageFile, this.imagePath, data.name)
       }
     }
+
+    if (oldService.name !== data.name && oldService.picto_file && !pictoFile) {
+      data.picto_file = await UploadService.renameFile(oldService.picto_file, data.name)
+    }
+    if (oldService.name !== data.name && oldService.image_file && !imageFile) {
+      data.image_file = await UploadService.renameFile(oldService.image_file, data.name)
+    }
     return await this.serviceRepository.updateServiceById(idToUpdate, data)
   }
 
   public async updateServiceStatusById(idToUpdate: number, data: ServiceStatusUpdateDTO) {
     return await this.serviceRepository.updateServiceStatusById(idToUpdate, data)
+  }
+
+  public async deleteServicePicto(idToDelete: number) {
+    const serviceToDelete = await this.serviceRepository.getServiceById(idToDelete)
+    if (serviceToDelete.picto_file) {
+      await UploadService.deleteFile(serviceToDelete.picto_file)
+    }
+    return await this.serviceRepository.deleteServicePicto(idToDelete)
+  }
+
+  public async deleteServiceImage(idToDelete: number) {
+    const serviceToDelete = await this.serviceRepository.getServiceById(idToDelete)
+    if (serviceToDelete.image_file) {
+      await UploadService.deleteFile(serviceToDelete.image_file)
+    }
+    return await this.serviceRepository.deleteServiceImage(idToDelete)
   }
 
   public async deleteService(idToDelete: number) {
