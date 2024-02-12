@@ -74,16 +74,10 @@ Route.group(() => {
   Route.patch('/professions/:id_profession/services/:id', 'ServicesController.updateServiceStatus')
     .as('updateServiceStatus')
     .middleware(['auth', `role:${[Role.ADMIN]}`])
-  Route.patch(
-    '/professions/:id_profession/services/:id/delete-picto',
-    'ServicesController.deleteServicePicto'
-  )
+  Route.patch('/services/:id/delete-picto', 'ServicesController.deleteServicePicto')
     .as('deleteServicePicto')
     .middleware(['auth', `role:${[Role.ADMIN]}`])
-  Route.patch(
-    '/professions/:id_profession/services/:id/delete-image',
-    'ServicesController.deleteServiceImage'
-  )
+  Route.patch('/services/:id/delete-image', 'ServicesController.deleteServiceImage')
     .as('deleteServiceImage')
     .middleware(['auth', `role:${[Role.ADMIN]}`])
   Route.delete('/professions/:id_profession/services/:id', 'ServicesController.deleteService')
@@ -111,7 +105,7 @@ Route.group(() => {
     .as('updateFormFieldOrder')
     .middleware(['auth', `role:${[Role.ADMIN]}`])
   Route.patch(
-    '/services/:id_service/form-fields/:id/delete-tooltip-image',
+    '/form-fields/:id/delete-tooltip-image',
     'FormFieldsController.deleteFormFieldTooltipImage'
   )
     .as('deleteFormFieldTooltipImage')
