@@ -33,6 +33,7 @@ export default class FormFieldController {
       tooltip_text: data.tooltip_text,
       description: data.description,
       placeholder: data.placeholder,
+      possible_values: data.possible_values,
     }
 
     const formField = await this.formFieldService.createFormField(
@@ -52,6 +53,7 @@ export default class FormFieldController {
       tooltip_text: data.tooltip_text,
       description: data.description,
       placeholder: data.placeholder,
+      possible_values: data.possible_values,
     }
 
     const formField = await this.formFieldService.updateFormFieldById(

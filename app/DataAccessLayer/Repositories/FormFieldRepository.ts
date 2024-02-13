@@ -44,6 +44,7 @@ export class FormFieldRepository implements FormFieldRepositoryInterface {
     if (data.tooltip_text !== undefined) formField.tooltip_text = data.tooltip_text
     if (data.description !== undefined) formField.description = data.description
     if (data.placeholder !== undefined) formField.placeholder = data.placeholder
+    if (data.possible_values !== undefined) formField.possible_values = data.possible_values
 
     await formField.save()
     return formField
@@ -64,6 +65,7 @@ export class FormFieldRepository implements FormFieldRepositoryInterface {
     if (data.tooltip_text !== undefined) formField.tooltip_text = data.tooltip_text
     if (data.description !== undefined) formField.description = data.description
     if (data.placeholder !== undefined) formField.placeholder = data.placeholder
+    if (data.possible_values !== undefined) formField.possible_values = data.possible_values
     await formField.save()
     return formField
   }

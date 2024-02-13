@@ -7,4 +7,5 @@ export interface FormFieldCreateOrUpdateDTO {
   tooltip_text?: string | null
   description?: string | null
   placeholder?: string | null
+  possible_values?: Object | null
 }

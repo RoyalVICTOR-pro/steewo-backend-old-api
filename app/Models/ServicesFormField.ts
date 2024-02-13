@@ -35,6 +35,9 @@ export default class ServicesFormField extends compose(BaseModel, SoftDeletes) {
   @column()
   public placeholder: string | null
 
+  @column()
+  public possible_values: Object | null
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
