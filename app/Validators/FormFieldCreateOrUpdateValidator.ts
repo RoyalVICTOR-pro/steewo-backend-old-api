@@ -14,7 +14,7 @@ export default class FormFieldCreateOrUpdateValidator {
     }),
     description: schema.string.nullableAndOptional(),
     placeholder: schema.string.nullableAndOptional(),
-    possible_values: schema.object.nullableAndOptional().anyMembers(),
+    possible_values: schema.string.nullableAndOptional(),
     tooltip_text: schema.string.nullableAndOptional(),
     mandatory: schema.boolean(),
   })
