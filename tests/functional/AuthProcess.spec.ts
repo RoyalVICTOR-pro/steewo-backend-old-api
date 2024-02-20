@@ -2,6 +2,7 @@ import { test } from '@japa/runner'
 import supertest from 'supertest'
 import User from '@Models/User'
 import FailedLoginAttempt from '@Models/FailedLoginAttempt'
+import { FakeUserForTest } from './Auth.helper'
 // import Database from '@ioc:Adonis/Lucid/Database'
 
 const BASE_URL = `${process.env.TEST_API_URL}`
@@ -10,12 +11,16 @@ const ADMIN_EMAIL = `${process.env.ADMIN_EMAIL_FOR_TESTS}`
 const ADMIN_PASSWORD = `${process.env.ADMIN_PASSWORD_FOR_TESTS}`
 
 test.group('AuthProcess', (group) => {
-  // group.setup(async () => {
-  //   const connectionNode = Database.manager.get('mysql')
-  //   console.log(connectionNode)
-  // })
+  let fakeUser = new FakeUserForTest()
+
+  group.setup(async () => {
+    await fakeUser.registerAndLoginFakeUser()
+    await fakeUser.loginAdminUser()
+  })
+
   group.teardown(async () => {
     await User.query().where('email', userEmail).delete()
+    await fakeUser.deleteFakeUser()
   })
   test('register returns an error with invalid email', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
@@ -164,5 +169,49 @@ test.group('AuthProcess', (group) => {
       .expect(200)
 
     assert.exists(body.user)
+  })
+
+  test('Checking Me Route for check user authentication', async ({ client }) => {
+    const response = await client.get('/me').header('Cookie', fakeUser.tokenCookie)
+
+    response.assertStatus(200)
+  })
+
+  test('Checking Me As Admin Route for check admin authentication', async ({ client }) => {
+    const response = await client.get('/me-as-admin').header('Cookie', fakeUser.adminTokenCookie)
+
+    response.assertStatus(200)
+  })
+
+  test('Checking Me As Admin Route with simple user : should fail', async ({ client }) => {
+    const response = await client.get('/me-as-admin').header('Cookie', fakeUser.tokenCookie)
+
+    response.assertStatus(403)
+  })
+  test('Checking Me Route for check user authentication with wrong token', async ({ client }) => {
+    const response = await client.get('/me').header('Cookie', 'fzefzefzefzefzefzef')
+
+    response.assertStatus(401)
+  })
+
+  test('Checking Me As Admin Route for check admin authentication with wrong token', async ({
+    client,
+  }) => {
+    const response = await client.get('/me-as-admin').header('Cookie', 'poepfo,zpo,ezofzepo,')
+
+    response.assertStatus(401)
+  })
+  test('Checking Me Route for check user authentication without token', async ({ client }) => {
+    const response = await client.get('/me')
+
+    response.assertStatus(401)
+  })
+
+  test('Checking Me As Admin Route for check admin authentication without token', async ({
+    client,
+  }) => {
+    const response = await client.get('/me-as-admin')
+
+    response.assertStatus(401)
   })
 })
