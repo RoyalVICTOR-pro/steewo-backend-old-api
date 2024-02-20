@@ -146,6 +146,36 @@ test.group('ProfessionRoutes', (group) => {
     })
   })
 
+  test('Update the second profession status with valid data with admin role', async ({
+    assert,
+    client,
+  }) => {
+    const response = await client
+      .patch('/professions/' + secondProfessionId)
+      .header('Cookie', fakeUser.adminTokenCookie)
+      .fields({ is_enabled: true })
+    response.assertStatus(200)
+
+    assert.equal(response.body().id, secondProfessionId)
+    assert.equal(response.body().is_enabled, 1)
+  })
+
+  test('Get profession 2 by ID with logged simple user role after status update', async ({
+    assert,
+    client,
+  }) => {
+    const response = await client
+      .get('/professions/' + secondProfessionId)
+      .header('Cookie', fakeUser.tokenCookie)
+    response.assertStatus(200)
+
+    assert.containsSubset(response.body(), {
+      id: secondProfessionId,
+      name: 'Profession Test 3',
+      is_enabled: 1,
+    })
+  })
+
   test('Delete profession 1 by ID with admin role', async ({ client }) => {
     const response = await client
       .delete('/professions/' + firstProfessionId)

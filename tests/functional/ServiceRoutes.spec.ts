@@ -178,6 +178,39 @@ test.group('Services Management Routes Testing', (group) => {
     })
   })
 
+  test('Update the second service status with valid data with admin role', async ({
+    assert,
+    client,
+  }) => {
+    const response = await client
+      .patch('professions/' + professionIdForTest + '/services/' + secondServiceId)
+      .header('Cookie', fakeUser.adminTokenCookie)
+      .fields({
+        is_enabled: true,
+      })
+    response.assertStatus(200)
+
+    assert.equal(response.body().id, secondServiceId)
+    assert.equal(response.body().is_enabled, 1)
+  })
+
+  test('Get service 2 by ID with logged simple user role after status update', async ({
+    assert,
+    client,
+  }) => {
+    const response = await client
+      .get('professions/' + professionIdForTest + '/services/' + secondServiceId)
+      .header('Cookie', fakeUser.tokenCookie)
+    response.assertStatus(200)
+
+    assert.containsSubset(response.body(), {
+      id: secondServiceId,
+      name: 'Service Test 3',
+      short_name: 'Test 3',
+      is_enabled: 1,
+    })
+  })
+
   test('Delete service 1 by ID with admin role', async ({ client }) => {
     const response = await client
       .delete('professions/' + professionIdForTest + '/services/' + firstServiceId)
