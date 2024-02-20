@@ -15,5 +15,6 @@ export default interface FormFieldServiceInterface {
     data: FormFieldCreateOrUpdateDTO
   ): Promise<ServicesFormField>
   updateFormFieldOrder(reorderedFormFields: FormFieldUpdateOrderDTO[]): Promise<boolean>
+  deleteFormFieldTooltipImage(id: number): Promise<boolean>
   deleteFormField(id: number): Promise<boolean>
 }
