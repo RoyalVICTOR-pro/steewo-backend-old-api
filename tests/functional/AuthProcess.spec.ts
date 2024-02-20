@@ -1,10 +1,13 @@
 import { test } from '@japa/runner'
 import supertest from 'supertest'
 import User from '@Models/User'
+import FailedLoginAttempt from '@Models/FailedLoginAttempt'
 // import Database from '@ioc:Adonis/Lucid/Database'
 
 const BASE_URL = `${process.env.TEST_API_URL}`
 let userEmail: string = 'test@example.com'
+const ADMIN_EMAIL = `${process.env.ADMIN_EMAIL_FOR_TESTS}`
+const ADMIN_PASSWORD = `${process.env.ADMIN_PASSWORD_FOR_TESTS}`
 
 test.group('AuthProcess', (group) => {
   // group.setup(async () => {
@@ -68,17 +71,6 @@ test.group('AuthProcess', (group) => {
     assert.equal(body.email, 'test@example.com')
   })
 
-  test('login with invalid credentials', async ({ assert }) => {
-    const { body } = await supertest(BASE_URL)
-      .post('/login')
-      .send({
-        email: 'test@example.com',
-        password: 'Password1235',
-      })
-      .expect(401)
-
-    assert.exists(body)
-  })
   test('login with valid credentials', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
       .post('/login')
@@ -91,6 +83,86 @@ test.group('AuthProcess', (group) => {
     assert.exists(body.user)
   })
 
-  // TODO : Faire des tests de ce que contient failedLoginAttempts lorsqu'il y a des tentatives de connexion infructueuses
-  // TODO : Et faire des tests quand on atteint le nombre max de tentatives de connexion infructueuses
+  test('login with invalid credentials', async ({ assert }) => {
+    const { body } = await supertest(BASE_URL)
+      .post('/login')
+      .send({
+        email: 'test@example.com',
+        password: 'Password1235',
+      })
+      .expect(401)
+
+    assert.exists(body)
+  })
+  test('login with invalid credentials second time', async ({ assert }) => {
+    const { body } = await supertest(BASE_URL)
+      .post('/login')
+      .send({
+        email: 'test@example.com',
+        password: 'Password1235',
+      })
+      .expect(401)
+
+    assert.exists(body)
+  })
+  test('login with invalid credentials third time', async ({ assert }) => {
+    const { body } = await supertest(BASE_URL)
+      .post('/login')
+      .send({
+        email: 'test@example.com',
+        password: 'Password1235',
+      })
+      .expect(401)
+
+    assert.exists(body)
+  })
+
+  test('login with invalid credentials fourth time will fail with too many attempts', async () => {
+    await supertest(BASE_URL)
+      .post('/login')
+      .send({
+        email: 'test@example.com',
+        password: 'Password1235',
+      })
+      .expect(429)
+
+    await FailedLoginAttempt.query().where('email', userEmail).delete()
+    await FailedLoginAttempt.query().where('email', 'test_admin@example.com').delete()
+  })
+
+  test('admin login with simple user valid credentials', async ({ assert }) => {
+    const { body } = await supertest(BASE_URL)
+      .post('/admin/login')
+      .send({
+        email: 'test@example.com',
+        password: 'Password1234',
+      })
+      .expect(403)
+
+    assert.exists(body)
+  })
+
+  test('admin login with invalid credentials', async ({ assert }) => {
+    const { body } = await supertest(BASE_URL)
+      .post('/admin/login')
+      .send({
+        email: 'test_admin@example.com',
+        password: 'Password1235',
+      })
+      .expect(401)
+
+    assert.exists(body)
+  })
+
+  test('admin login with valid admin credentials', async ({ assert }) => {
+    const { body } = await supertest(BASE_URL)
+      .post('/admin/login')
+      .send({
+        email: ADMIN_EMAIL,
+        password: ADMIN_PASSWORD,
+      })
+      .expect(200)
+
+    assert.exists(body.user)
+  })
 })
