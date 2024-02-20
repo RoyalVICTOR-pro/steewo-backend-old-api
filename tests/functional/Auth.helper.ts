@@ -38,7 +38,7 @@ export class FakeUserForTest {
 
   public async loginAdminUser() {
     const authResponse = await supertest(this.BASE_URL)
-      .post('/login')
+      .post('/admin/login')
       .send({
         email: this.ADMIN_EMAIL,
         password: this.ADMIN_PASSWORD,

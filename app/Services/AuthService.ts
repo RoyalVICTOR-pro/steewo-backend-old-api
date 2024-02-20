@@ -6,7 +6,6 @@ import AuthServiceInterface from '@Services/Interfaces/AuthServiceInterface'
 import { UserRepository } from '@DALRepositories/UserRepository'
 import { AuthContract } from '@ioc:Adonis/Addons/Auth'
 import TooManyRequestsException from 'App/Exceptions/TooManyRequestsException'
-import Role from 'App/Enums/Roles'
 
 @inject()
 export class AuthService implements AuthServiceInterface {
@@ -31,11 +30,6 @@ export class AuthService implements AuthServiceInterface {
     if (!user) {
       await failedLoginAttemptRepository.addFailedAttempt(loginData.email)
       return false
-    }
-
-    if (user.role !== Role.ADMIN) {
-      await failedLoginAttemptRepository.addFailedAttempt(loginData.email)
-      throw new Exception('Forbidden', 403, 'E_FORBIDDEN')
     }
 
     try {

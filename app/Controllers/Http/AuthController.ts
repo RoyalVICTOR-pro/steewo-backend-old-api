@@ -1,4 +1,4 @@
-import { inject } from '@adonisjs/core/build/standalone'
+import { inject, Exception } from '@adonisjs/core/build/standalone'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { AuthService } from '@Services/AuthService'
 import { UserCreateDTO } from '@DTO/UserCreateDTO'
@@ -35,7 +35,6 @@ export default class AuthController {
   }
 
   public async login({ request, response, auth }: HttpContextContract) {
-    // TODO : Activer le mode strict de la politique CORS
     try {
       const loginData = await request.validate(UserLoginValidator)
 
@@ -72,6 +71,41 @@ export default class AuthController {
       return response.status(200).json({ user })
     } catch (error) {
       return response.status(401).send('Accès non-autorisé.')
+    }
+  }
+
+  public async loginAsAdmin({ request, response, auth }: HttpContextContract) {
+    try {
+      const loginData = await request.validate(UserLoginValidator)
+
+      const loginResponse: any = await this.authService.authenticateUser(loginData, auth)
+
+      if (!loginResponse) {
+        return response.status(401).send('Identifiant et/ou mot de passe incorrects.')
+      }
+
+      response.cookie('access_token', loginResponse.token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        maxAge: '24h',
+      })
+
+      if (loginResponse.user.role !== Role.ADMIN) {
+        throw new Exception('Forbidden', 403, 'E_FORBIDDEN')
+      }
+
+      return response.status(200).send({ user: loginResponse.user })
+    } catch (error) {
+      if (error instanceof TooManyRequestsException) {
+        return response
+          .status(429)
+          .send('Trop de tentatives de connexion infructueuses. Réessayez plus tard.')
+      } else if (error.status === 403) {
+        return response.status(403).send('Accès non-autorisé.')
+      } else {
+        return response.status(401).send('Identifiant et/ou mot de passe incorrects.')
+      }
     }
   }
 

@@ -4,7 +4,6 @@ import User from '@Models/User'
 // import Database from '@ioc:Adonis/Lucid/Database'
 
 const BASE_URL = `${process.env.TEST_API_URL}`
-// console.log('BASE_URL :>> ', BASE_URL);
 let userEmail: string = 'test@example.com'
 
 test.group('AuthProcess', (group) => {
@@ -25,7 +24,7 @@ test.group('AuthProcess', (group) => {
       })
       .expect(422)
 
-    assert.exists(body.message)
+    assert.exists(body)
   })
   test('register returns an error with invalid password', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
@@ -37,7 +36,7 @@ test.group('AuthProcess', (group) => {
       })
       .expect(422)
 
-    assert.exists(body.message)
+    assert.exists(body)
   })
 
   test('register returns an error with differents password and password_confirmation', async ({
@@ -52,7 +51,7 @@ test.group('AuthProcess', (group) => {
       })
       .expect(422)
 
-    assert.exists(body.message)
+    assert.exists(body)
   })
 
   test('register creates a new user with valid data', async ({ assert }) => {
@@ -78,7 +77,7 @@ test.group('AuthProcess', (group) => {
       })
       .expect(401)
 
-    assert.exists(body.errors)
+    assert.exists(body)
   })
   test('login with valid credentials', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)

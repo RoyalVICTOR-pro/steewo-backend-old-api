@@ -136,13 +136,13 @@ test.group('ProfessionRoutes', (group) => {
   test('Get profession 2 by ID with logged simple user role', async ({ assert, client }) => {
     const response = await client
       .get('/professions/' + secondProfessionId)
-      .header('Cookie', fakeUser.adminTokenCookie)
+      .header('Cookie', fakeUser.tokenCookie)
     response.assertStatus(200)
 
     assert.containsSubset(response.body(), {
       id: secondProfessionId,
       name: 'Profession Test 3',
-      is_enabled: 1,
+      is_enabled: 0,
     })
   })
 

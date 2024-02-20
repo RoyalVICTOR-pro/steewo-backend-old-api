@@ -28,6 +28,7 @@ Route.get('/', async () => {
 Route.group(() => {
   Route.post('/register', 'AuthController.register').as('register')
   Route.post('/login', 'AuthController.login').as('login')
+  Route.post('/admin/login', 'AuthController.loginAsAdmin').as('loginAsAdmin')
   Route.get('/me', 'AuthController.me').as('me')
   Route.get('/me-as-admin', 'AuthController.meAsAdmin').as('meAsAdmin')
   Route.get('/logout', 'AuthController.logout').as('logout').middleware('auth')
