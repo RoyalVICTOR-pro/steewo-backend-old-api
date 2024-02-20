@@ -32,7 +32,7 @@ export default class Profession extends compose(BaseModel, SoftDeletes) {
 
   @beforeDelete()
   public static async deleteServices(profession: Profession) {
-    const services = await Service.query().where('profession_id', profession.id)
+    const services: Service[] = await Service.query().where('profession_id', profession.id)
     for (let service of services) {
       if (service.picto_file) await UploadService.deleteFile(service.picto_file)
       if (service.image_file) await UploadService.deleteFile(service.image_file)

@@ -41,7 +41,10 @@ export default class Service extends compose(BaseModel, SoftDeletes) {
 
   @beforeDelete()
   public static async deleteFormFields(service: Service) {
-    const formFieldsOfThisService = await ServicesFormField.query().where('service_id', service.id)
+    const formFieldsOfThisService: ServicesFormField[] = await ServicesFormField.query().where(
+      'service_id',
+      service.id
+    )
     for (let formField of formFieldsOfThisService) {
       await formField.delete()
     }
