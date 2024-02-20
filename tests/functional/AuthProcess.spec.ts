@@ -132,7 +132,6 @@ test.group('AuthProcess', (group) => {
       .expect(429)
 
     await FailedLoginAttempt.query().where('email', userEmail).delete()
-    await FailedLoginAttempt.query().where('email', 'test_admin@example.com').delete()
   })
 
   test('admin login with simple user valid credentials', async ({ assert }) => {
@@ -157,6 +156,7 @@ test.group('AuthProcess', (group) => {
       .expect(401)
 
     assert.exists(body)
+    await FailedLoginAttempt.query().where('email', 'test_admin@example.com').delete()
   })
 
   test('admin login with valid admin credentials', async ({ assert }) => {
