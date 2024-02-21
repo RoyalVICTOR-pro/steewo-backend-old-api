@@ -169,13 +169,11 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
     fourthFormFieldId = response.body().id
   })
 
-  test('Get all form fields for a service with logged simple user role : should fail', async ({
-    client,
-  }) => {
+  test('Get all form fields for a service with logged simple user role', async ({ client }) => {
     const response = await client
       .get('services/' + serviceIdForTest + '/form-fields')
       .header('Cookie', fakeUser.tokenCookie)
-    response.assertStatus(401)
+    response.assertStatus(200)
   })
   test('Get all form fields for a service with logged admin role', async ({ assert, client }) => {
     const response = await client

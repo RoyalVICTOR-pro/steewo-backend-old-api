@@ -89,7 +89,7 @@ Route.group(() => {
   // FORM FIELDS
   Route.get('/services/:id_service/form-fields', 'FormFieldsController.getAllFormFieldsByService')
     .as('getAllFormFieldsByService')
-    .middleware(['auth', `role:${[Role.ADMIN]}`])
+    .middleware('auth')
   Route.get('/services/:id_service/form-fields/:id', 'FormFieldsController.getFormFieldById')
     .as('getFormFieldById')
     .middleware(['auth', `role:${[Role.ADMIN]}`])
