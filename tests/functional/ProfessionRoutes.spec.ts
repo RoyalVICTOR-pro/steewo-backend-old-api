@@ -2,6 +2,7 @@ import { test } from '@japa/runner'
 // import supertest from 'supertest'
 import { FakeUserForTest } from './Auth.helper'
 import { hardDeleteProfession } from './Utils.helper'
+import Drive from '@ioc:Adonis/Core/Drive'
 
 // const BASE_URL = `${process.env.API_URL}`
 const picto1Path = './tests/functional/files_for_tests/red_img_test_50x50.jpg'
@@ -131,6 +132,7 @@ test.group('ProfessionRoutes', (group) => {
     assert.equal(response.body().id, secondProfessionId)
     assert.equal(response.body().name, 'Profession Test 3')
     assert.equal(response.body().image_file, 'professions/images/profession-test-3.jpg')
+    assert.equal(await Drive.exists('professions/images/profession-test-3.jpg'), true)
   })
 
   test('Get profession 2 by ID with logged simple user role', async ({ assert, client }) => {
@@ -174,6 +176,29 @@ test.group('ProfessionRoutes', (group) => {
       name: 'Profession Test 3',
       is_enabled: 1,
     })
+  })
+
+  test('Update the second profession name for checking the renaming of the file', async ({
+    client,
+    assert,
+  }) => {
+    const response = await client
+      .put('/professions/' + secondProfessionId)
+      .header('Cookie', fakeUser.adminTokenCookie)
+      .field('name', 'Profession Test 4')
+      .field('is_enabled', true)
+    response.assertStatus(200)
+    assert.equal(response.body().image_file, 'professions/images/profession-test-4.jpg')
+    assert.equal(await Drive.exists('professions/images/profession-test-3.jpg'), false)
+    assert.equal(await Drive.exists(response.body().image_file), true)
+  })
+
+  test('Delete Image of profession 1 with admin role', async ({ client, assert }) => {
+    const response = await client
+      .patch('/professions/' + firstProfessionId + '/delete-image')
+      .header('Cookie', fakeUser.adminTokenCookie)
+    assert.equal(await Drive.exists('professions/images/profession-test-1.jpg'), false)
+    response.assertStatus(204)
   })
 
   test('Delete profession 1 by ID with admin role', async ({ client }) => {

@@ -2,6 +2,7 @@ import { test } from '@japa/runner'
 // import supertest from 'supertest'
 import { FakeUserForTest } from './Auth.helper'
 import { hardDeleteProfession, hardDeleteService } from './Utils.helper'
+import Drive from '@ioc:Adonis/Core/Drive'
 
 // const BASE_URL = `${process.env.API_URL}`
 const picto1Path = './tests/functional/files_for_tests/red_img_test_50x50.jpg'
@@ -162,6 +163,7 @@ test.group('Services Management Routes Testing', (group) => {
     assert.equal(response.body().name, 'Service Test 3')
     assert.equal(response.body().short_name, 'Test 3')
     assert.equal(response.body().image_file, 'services/images/service-test-3.jpg')
+    assert.equal(await Drive.exists('services/images/service-test-3.jpg'), true)
   })
 
   test('Get service 2 by ID with logged simple user role', async ({ assert, client }) => {
@@ -285,6 +287,34 @@ test.group('Services Management Routes Testing', (group) => {
     assert.equal(response.body().short_name, 'Test 2')
     assert.equal(response.body().image_file, 'services/images/service-test-2-cascade.jpg')
   })
+
+  test('Update the second service name for checking the renaming of the file', async ({
+    client,
+    assert,
+  }) => {
+    const response = await client
+      .put('professions/' + professionIdForTest + '/services/' + secondServiceId)
+      .header('Cookie', fakeUser.adminTokenCookie)
+      .fields({
+        name: 'Service Test 4',
+        short_name: 'Test 4',
+        is_enabled: false,
+      })
+    response.assertStatus(200)
+
+    assert.equal(response.body().image_file, 'services/images/service-test-4.jpg')
+    assert.equal(await Drive.exists('services/images/service-test-3.jpg'), false)
+    assert.equal(await Drive.exists(response.body().image_file), true)
+  })
+
+  test('Delete Image of service 1 with admin role', async ({ client, assert }) => {
+    const response = await client
+      .patch('/services/' + firstServiceId + '/delete-image')
+      .header('Cookie', fakeUser.adminTokenCookie)
+    assert.equal(await Drive.exists('services/images/service-test-1.jpg'), false)
+    response.assertStatus(204)
+  })
+
   test('Delete profession created for cascading deleting tests by ID with admin role', async ({
     client,
   }) => {

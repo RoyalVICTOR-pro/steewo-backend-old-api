@@ -2,6 +2,7 @@ import { test } from '@japa/runner'
 // import supertest from 'supertest'
 import { FakeUserForTest } from './Auth.helper'
 import { hardDeleteProfession, hardDeleteService, hardDeleteFormField } from './Utils.helper'
+import Drive from '@ioc:Adonis/Core/Drive'
 
 // const BASE_URL = `${process.env.API_URL}`
 const picto1Path = './tests/functional/files_for_tests/red_img_test_50x50.jpg'
@@ -233,6 +234,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
       tooltip_text: null,
       description: 'Donnez ici le lien vers votre site web personnel',
     })
+    assert.equal(await Drive.exists('form-fields/tooltip-images/site-web.jpg'), true)
   })
 
   test('Update the form fields order with valid data with admin role', async ({ client }) => {
@@ -281,6 +283,35 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
         .body()
         .some((formField) => formField.id === fourthFormFieldId && formField.order === 2)
     )
+  })
+
+  test('Update the second form field name for checking the renaming of the file', async ({
+    assert,
+    client,
+  }) => {
+    const response = await client
+      .put('services/' + serviceIdForTest + '/form-fields/' + secondFormFieldId)
+      .header('Cookie', fakeUser.adminTokenCookie)
+      .fields({
+        type: 'link',
+        label: 'Site web 2',
+        mandatory: true,
+        tooltip_text: '',
+        description: 'Donnez ici le lien vers votre site web personnel',
+      })
+    response.assertStatus(200)
+
+    assert.equal(response.body().tooltip_image_file, 'form-fields/tooltip-images/site-web-2.jpg')
+    assert.equal(await Drive.exists('form-fields/tooltip-images/site-web.jpg'), false)
+    assert.equal(await Drive.exists(response.body().tooltip_image_file), true)
+  })
+
+  test('Delete Image of form field 2 with admin role', async ({ client, assert }) => {
+    const response = await client
+      .patch('/form-fields/' + secondFormFieldId + '/delete-tooltip-image')
+      .header('Cookie', fakeUser.adminTokenCookie)
+    assert.equal(await Drive.exists('form-fields/tooltip-images/site-web-2.jpg'), false)
+    response.assertStatus(204)
   })
 
   test('Delete form field 1 by ID with admin role', async ({ client }) => {
