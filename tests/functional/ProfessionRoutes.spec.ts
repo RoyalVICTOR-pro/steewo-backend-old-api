@@ -86,7 +86,7 @@ test.group('ProfessionRoutes', (group) => {
     assert.equal(response.body().image_file, 'professions/images/profession-test-2.jpg')
   })
 
-  test('Get all professions with logged simple user role without is_valid_email = 1', async ({
+  test('Get all professions with logged simple user role with is_valid_email = 0', async ({
     client,
   }) => {
     const response = await client.get('/professions').header('Cookie', fakeUser.tokenCookie)
