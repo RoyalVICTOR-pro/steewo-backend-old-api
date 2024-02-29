@@ -18,8 +18,11 @@
 |
 */
 
-import './routes/auth'
-import './routes/professions'
-import './routes/services'
-import './routes/formfields'
-import './routes/students'
+import Route from '@ioc:Adonis/Core/Route'
+
+Route.group(() => {
+  // STUDENTS
+  Route.post('/register-student', 'StudentController.createStudentProfile')
+    .as('createStudentProfile')
+    .middleware('auth')
+}).prefix('/v1')
