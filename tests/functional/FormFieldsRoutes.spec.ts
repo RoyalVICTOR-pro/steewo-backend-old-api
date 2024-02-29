@@ -1,6 +1,6 @@
 import { test } from '@japa/runner'
 // import supertest from 'supertest'
-import { FakeUserForTest } from './Auth.helper'
+import { FakeUserForTest } from './helpers/Auth.helper'
 import { hardDeleteProfession, hardDeleteService, hardDeleteFormField } from './Utils.helper'
 import Drive from '@ioc:Adonis/Core/Drive'
 

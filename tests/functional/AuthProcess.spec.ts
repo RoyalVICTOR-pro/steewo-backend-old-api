@@ -2,7 +2,7 @@ import { test } from '@japa/runner'
 import supertest from 'supertest'
 import User from '@Models/User'
 import FailedLoginAttempt from '@Models/FailedLoginAttempt'
-import { FakeUserForTest } from './Auth.helper'
+import { FakeUserForTest } from './helpers/Auth.helper'
 // import Database from '@ioc:Adonis/Lucid/Database'
 
 const BASE_URL = `${process.env.TEST_API_URL}`

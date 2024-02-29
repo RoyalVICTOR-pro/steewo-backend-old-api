@@ -1,6 +1,6 @@
 import { test } from '@japa/runner'
 // import supertest from 'supertest'
-import { FakeUserForTest } from './Auth.helper'
+import { FakeUserForTest } from './helpers/Auth.helper'
 import { hardDeleteProfession } from './Utils.helper'
 import Drive from '@ioc:Adonis/Core/Drive'
 
@@ -86,7 +86,17 @@ test.group('ProfessionRoutes', (group) => {
     assert.equal(response.body().image_file, 'professions/images/profession-test-2.jpg')
   })
 
-  test('Get all professions with logged simple user role', async ({ assert, client }) => {
+  test('Get all professions with logged simple user role without is_valid_email = 1', async ({
+    client,
+  }) => {
+    const response = await client.get('/professions').header('Cookie', fakeUser.tokenCookie)
+    response.assertStatus(401)
+  })
+  test('Get all professions with logged simple user role with is_valid_email = 1', async ({
+    assert,
+    client,
+  }) => {
+    await fakeUser.validateUserEmail()
     const response = await client.get('/professions').header('Cookie', fakeUser.tokenCookie)
     response.assertStatus(200)
 

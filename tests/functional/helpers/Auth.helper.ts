@@ -49,6 +49,10 @@ export class FakeUserForTest {
     return this.adminTokenCookie
   }
 
+  public async validateUserEmail() {
+    await User.query().where('id', this.userId).update({ is_valid_email: 1 })
+  }
+
   public async deleteFakeUser() {
     await User.query().where('id', this.userId).delete()
   }
