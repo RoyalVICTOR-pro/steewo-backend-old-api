@@ -1,6 +1,5 @@
 import { test } from '@japa/runner'
 import supertest from 'supertest'
-import User from '@Models/User'
 import { FakeStudentForTest } from './helpers/Student.helper'
 
 const BASE_URL = `${process.env.TEST_API_URL}`
