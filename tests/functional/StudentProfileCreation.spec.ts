@@ -1,6 +1,8 @@
 import { test } from '@japa/runner'
 import supertest from 'supertest'
 import { FakeStudentForTest } from './helpers/Student.helper'
+import Role from 'App/Enums/Roles'
+import StudentUserStatus from 'App/Enums/StudentUserStatus'
 
 const BASE_URL = `${process.env.TEST_API_URL}`
 
@@ -18,7 +20,9 @@ test.group('Student Profile Creation Process', (group) => {
     const { body } = await supertest(BASE_URL)
       .post('/register-student')
       .send({
-        id: fakeStudent.userId,
+        user_id: fakeStudent.userId,
+        role: Role.STUDENT,
+        status: StudentUserStatus.ACCOUNT_CREATED,
         firstname: '',
         lastname: 'Garp',
         mobile: '0612345678',
@@ -38,7 +42,9 @@ test.group('Student Profile Creation Process', (group) => {
     const { body } = await supertest(BASE_URL)
       .post('/register-student')
       .send({
-        id: fakeStudent.userId,
+        user_id: fakeStudent.userId,
+        role: Role.STUDENT,
+        status: StudentUserStatus.ACCOUNT_CREATED,
         firstname: 'Fabien',
         lastname: '',
         mobile: '0612345678',
@@ -58,7 +64,9 @@ test.group('Student Profile Creation Process', (group) => {
     const { body } = await supertest(BASE_URL)
       .post('/register-student')
       .send({
-        id: fakeStudent.userId,
+        user_id: fakeStudent.userId,
+        role: Role.STUDENT,
+        status: StudentUserStatus.ACCOUNT_CREATED,
         firstname: 'Fabien',
         lastname: 'Garp',
         mobile: '0612345678',
@@ -78,7 +86,9 @@ test.group('Student Profile Creation Process', (group) => {
     const { body } = await supertest(BASE_URL)
       .post('/register-student')
       .send({
-        id: fakeStudent.userId,
+        user_id: fakeStudent.userId,
+        role: Role.STUDENT,
+        status: StudentUserStatus.ACCOUNT_CREATED,
         firstname: 'Fabien',
         lastname: 'Garp',
         mobile: '0612345678',
@@ -98,7 +108,9 @@ test.group('Student Profile Creation Process', (group) => {
     const { body } = await supertest(BASE_URL)
       .post('/register-student')
       .send({
-        id: fakeStudent.userId,
+        user_id: fakeStudent.userId,
+        role: Role.STUDENT,
+        status: StudentUserStatus.ACCOUNT_CREATED,
         firstname: 'Fabien',
         lastname: 'Garp',
         mobile: '0612345678',
@@ -118,7 +130,9 @@ test.group('Student Profile Creation Process', (group) => {
     const { body } = await supertest(BASE_URL)
       .post('/register-student')
       .send({
-        id: fakeStudent.userId,
+        user_id: fakeStudent.userId,
+        role: Role.STUDENT,
+        status: StudentUserStatus.ACCOUNT_CREATED,
         firstname: 'Fabien',
         lastname: 'Garp',
         mobile: '0612345678',
@@ -138,7 +152,9 @@ test.group('Student Profile Creation Process', (group) => {
     const { body } = await supertest(BASE_URL)
       .post('/register-student')
       .send({
-        id: fakeStudent.userId,
+        user_id: fakeStudent.userId,
+        role: Role.STUDENT,
+        status: StudentUserStatus.ACCOUNT_CREATED,
         firstname: 'Fabien',
         lastname: 'Garp',
         mobile: '0612345678',
@@ -158,7 +174,9 @@ test.group('Student Profile Creation Process', (group) => {
     const { body } = await supertest(BASE_URL)
       .post('/register-student')
       .send({
-        id: fakeStudent.userId,
+        user_id: fakeStudent.userId,
+        role: Role.STUDENT,
+        status: StudentUserStatus.ACCOUNT_CREATED,
         firstname: 'Fabien',
         lastname: 'Garp',
         mobile: '0612345678',
@@ -178,7 +196,9 @@ test.group('Student Profile Creation Process', (group) => {
     const { body } = await supertest(BASE_URL)
       .post('/register-student')
       .send({
-        id: fakeStudent.userId,
+        user_id: fakeStudent.userId,
+        role: Role.STUDENT,
+        status: StudentUserStatus.ACCOUNT_CREATED,
         firstname: 'Fabien',
         lastname: 'Garp',
         mobile: '0612345678',

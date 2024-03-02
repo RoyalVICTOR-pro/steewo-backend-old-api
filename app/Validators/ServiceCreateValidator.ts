@@ -6,9 +6,7 @@ export default class ServiceCreateValidator {
 
   public schema = schema.create({
     name: schema.string({}, [rules.unique({ table: 'services', column: 'name' })]),
-    short_name: schema.string({}, [
-      rules.unique({ table: 'services', column: 'short_name' }),
-    ]),
+    short_name: schema.string({}, [rules.unique({ table: 'services', column: 'short_name' })]),
     picto_file: schema.file.optional({
       size: '2mb',
       extnames: ['jpg', 'png', 'jpeg'],

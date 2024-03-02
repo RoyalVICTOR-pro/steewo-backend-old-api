@@ -8,7 +8,7 @@ export default class IsValidEmail {
     if (user && user.is_valid_email) {
       await next()
     } else {
-      throw new AuthenticationException('Accès non autorisé', 'E_UNAUTHORIZED_ACCESS')
+      throw new AuthenticationException('Email non validé', 'E_UNAUTHORIZED_ACCESS')
     }
   }
 }

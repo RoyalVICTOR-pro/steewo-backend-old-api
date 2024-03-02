@@ -9,6 +9,7 @@ import TooManyRequestsException from 'App/Exceptions/TooManyRequestsException'
 import Role from 'App/Enums/Roles'
 
 const acceptLanguage = require('accept-language-parser')
+const { v4: uuidv4 } = require('uuid')
 
 @inject()
 export default class AuthController {
@@ -23,11 +24,14 @@ export default class AuthController {
     const acceptLangHeader = request.header('Accept-Language')
     const languages = acceptLanguage.parse(acceptLangHeader)
 
+    const verificationToken = uuidv4()
+
     const userData: UserCreateDTO = {
       email: data.email,
       password: data.password,
       user_language: languages[0],
       internal_or_sso: AuthentificationMode.INTERNAL,
+      email_validation_token: verificationToken,
     }
 
     const user = await this.authService.createUserAccount(userData)
