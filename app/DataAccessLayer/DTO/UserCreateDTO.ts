@@ -5,5 +5,5 @@ export interface UserCreateDTO {
   password: string
   user_language: string | ''
   internal_or_sso: AuthentificationMode
-  email_validation_token: string
+  email_validation_token?: string
 }

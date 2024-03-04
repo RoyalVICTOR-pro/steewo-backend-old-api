@@ -6,6 +6,8 @@ import AuthServiceInterface from '@Services/Interfaces/AuthServiceInterface'
 import { UserRepository } from '@DALRepositories/UserRepository'
 import { AuthContract } from '@ioc:Adonis/Addons/Auth'
 import TooManyRequestsException from 'App/Exceptions/TooManyRequestsException'
+import { v4 as uuidv4 } from 'uuid'
+import { UserUpdateDTO } from '@DTO/UserUpdateDTO'
 
 @inject()
 export class AuthService implements AuthServiceInterface {
@@ -15,8 +17,25 @@ export class AuthService implements AuthServiceInterface {
   }
 
   public async createUserAccount(data: UserCreateDTO) {
+    const verificationToken = uuidv4()
+    data.email_validation_token = verificationToken
     if (!data.user_language) data.user_language = Config.get('custom.DEFAULT_LANGUAGE')
     return this.userRepository.createUser(data)
+  }
+
+  public async validateEmail(token: string, email: string) {
+    const user = await this.userRepository.getUserByEmail(email)
+    if (!user) {
+      throw new Exception('User not found', 404, 'E_NOT_FOUND')
+    }
+    if (user.email_validation_token !== token) {
+      throw new Exception('Invalid token', 401, 'E_UNAUTHORIZED')
+    }
+    const userDataToUpdate: UserUpdateDTO = {
+      email_validation_token: '',
+      is_valid_email: true,
+    }
+    return this.userRepository.updateUserData(user, userDataToUpdate)
   }
 
   public async authenticateUser(loginData: any, auth: AuthContract) {

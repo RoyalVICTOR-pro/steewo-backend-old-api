@@ -3,7 +3,6 @@ import { StudentProfileService } from '@Services/StudentProfileService'
 import StudentProfileCreateValidator from '@Validators/StudentProfileCreateValidator'
 import { StudentProfileCreateDTO } from '@DTO/StudentProfileCreateDTO'
 import { inject } from '@adonisjs/core/build/standalone'
-import { DateTime } from 'luxon' // Import DateTime from the 'luxon' package
 
 @inject()
 export default class StudentProfilesController {

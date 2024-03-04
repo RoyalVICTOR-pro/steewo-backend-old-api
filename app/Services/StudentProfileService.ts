@@ -2,9 +2,10 @@ import { StudentProfileRepository } from './../DataAccessLayer/Repositories/Stud
 import { UserRepository } from 'App/DataAccessLayer/Repositories/UserRepository'
 import { StudentProfileCreateDTO } from '@DTO/StudentProfileCreateDTO'
 import { inject } from '@adonisjs/core/build/standalone'
+import StudentProfileServiceInterface from '@Services/Interfaces/StudentProfileServiceInterface'
 
 @inject()
-export class StudentProfileService {
+export class StudentProfileService implements StudentProfileServiceInterface {
   private studentProfileRepository: StudentProfileRepository
   private userRepository: UserRepository
 

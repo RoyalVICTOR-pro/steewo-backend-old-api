@@ -12,6 +12,7 @@ export class UserRepository implements UserRepositoryInterface {
     user.password = data.password
     user.user_language = data.user_language
     user.internal_or_sso = data.internal_or_sso
+    if (data.email_validation_token) user.email_validation_token = data.email_validation_token
     await user.save()
     return user
   }
@@ -32,6 +33,9 @@ export class UserRepository implements UserRepositoryInterface {
     }
     if (data.cgv_acceptation) {
       user.cgv_acceptation = data.cgv_acceptation
+    }
+    if (data.email_validation_token) {
+      user.email_validation_token = data.email_validation_token
     }
     if (data.is_valid_email) {
       user.is_valid_email = data.is_valid_email
