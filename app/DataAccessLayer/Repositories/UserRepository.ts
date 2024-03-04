@@ -3,7 +3,6 @@ import User from '@Models/User'
 import { UserCreateDTO } from '@DTO/UserCreateDTO'
 import UserRepositoryInterface from '@DALInterfaces/UserRepositoryInterface'
 import { UserUpdateDTO } from '../DTO/UserUpdateDTO'
-import { DateTime } from 'luxon'
 
 @inject()
 export class UserRepository implements UserRepositoryInterface {

@@ -2,7 +2,6 @@ import { inject } from '@adonisjs/core/build/standalone'
 import StudentProfile from 'App/Models/StudentProfile'
 import { StudentProfileCreateDTO } from '@DTO/StudentProfileCreateDTO'
 import StudentProfileRepositoryInterface from '@DALInterfaces/StudentProfileRepositoryInterface'
-import { DateTime } from 'luxon'
 
 @inject()
 export class StudentProfileRepository implements StudentProfileRepositoryInterface {
