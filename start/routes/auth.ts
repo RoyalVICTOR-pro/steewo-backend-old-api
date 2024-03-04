@@ -31,4 +31,5 @@ Route.group(() => {
   Route.get('/me', 'AuthController.me').as('me')
   Route.get('/me-as-admin', 'AuthController.meAsAdmin').as('meAsAdmin')
   Route.get('/logout', 'AuthController.logout').as('logout').middleware('auth')
+  Route.get('validate-email/:token/:email', 'AuthController.validateEmail').as('validateEmail')
 }).prefix('/v1')
