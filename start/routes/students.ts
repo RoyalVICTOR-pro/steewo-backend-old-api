@@ -22,7 +22,7 @@ import Route from '@ioc:Adonis/Core/Route'
 
 Route.group(() => {
   // STUDENTS
-  Route.post('/register-student', 'StudentsController.createStudentProfile')
-    .as('createStudentProfile')
-    .middleware('auth')
+  Route.post('/register-student', 'StudentsController.createStudentProfile').as(
+    'createStudentProfile'
+  )
 }).prefix('/v1')

@@ -5,5 +5,6 @@ import { UserUpdateDTO } from '@DTO/UserUpdateDTO'
 export default interface UserRepositoryInterface {
   createUser(data: UserCreateDTO): Promise<User>
   getUserByEmail(email: string): Promise<User | null>
-  updateUserById(id: number, data: UserUpdateDTO): Promise<User>
+  getUserById(id: number): Promise<User | null>
+  updateUserData(user: User, data: UserUpdateDTO): Promise<User>
 }

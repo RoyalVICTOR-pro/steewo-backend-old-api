@@ -1,5 +1,6 @@
 import supertest from 'supertest'
 import User from '@Models/User'
+import StudentProfile from '@Models/StudentProfile'
 
 export class FakeStudentForTest {
   public email: string = 'fabien.garp@tests.com'
@@ -42,6 +43,7 @@ export class FakeStudentForTest {
   }
 
   public async deleteFakeStudent() {
+    await StudentProfile.query().where('user_id', this.userId).delete()
     await User.query().where('id', this.userId).delete()
   }
 }

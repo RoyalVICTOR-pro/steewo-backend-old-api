@@ -171,6 +171,7 @@ test.group("Service's Form Fields Management Routes Testing", (group) => {
   })
 
   test('Get all form fields for a service with logged simple user role', async ({ client }) => {
+    await fakeUser.validateUserEmail()
     const response = await client
       .get('services/' + serviceIdForTest + '/form-fields')
       .header('Cookie', fakeUser.tokenCookie)

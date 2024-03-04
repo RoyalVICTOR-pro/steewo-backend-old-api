@@ -35,7 +35,6 @@ export default class extends BaseSchema {
         .inTable('users')
         .onDelete('NO ACTION')
         .onUpdate('NO ACTION')
-      table.timestamps()
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
       table.timestamp('deleted_at', { useTz: true }).nullable()

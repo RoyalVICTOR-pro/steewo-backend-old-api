@@ -1,5 +1,20 @@
-// import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { StudentProfileService } from '@Services/StudentProfileService'
+import StudentProfileCreateValidator from '@Validators/StudentProfileCreateValidator'
+import { StudentProfileCreateDTO } from '@DTO/StudentProfileCreateDTO'
+import { inject } from '@adonisjs/core/build/standalone'
+import { DateTime } from 'luxon' // Import DateTime from the 'luxon' package
 
+@inject()
 export default class StudentProfilesController {
-  public async createStudentProfile({ request, response }: HttpContextContract) {}
+  private studentProfileService: StudentProfileService
+  constructor(studentProfileService: StudentProfileService) {
+    this.studentProfileService = studentProfileService
+  }
+
+  public async createStudentProfile({ request, response }: HttpContextContract) {
+    const data: StudentProfileCreateDTO = await request.validate(StudentProfileCreateValidator)
+    const studentProfile = await this.studentProfileService.createStudentProfile(data)
+    return response.created(studentProfile) // 201 CREATED
+  }
 }

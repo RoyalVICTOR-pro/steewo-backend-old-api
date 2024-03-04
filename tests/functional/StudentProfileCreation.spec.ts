@@ -16,6 +16,28 @@ test.group('Student Profile Creation Process', (group) => {
   group.teardown(async () => {
     await fakeStudent.deleteFakeStudent()
   })
+  test('Register student without user id', async ({ assert }) => {
+    const { body } = await supertest(BASE_URL)
+      .post('/register-student')
+      .send({
+        user_id: '',
+        role: Role.STUDENT,
+        status: StudentUserStatus.ACCOUNT_CREATED,
+        firstname: '',
+        lastname: 'Garp',
+        mobile: '0612345678',
+        date_of_birth: '1984-08-24',
+        current_diploma: 'Directeur graphique',
+        current_school: 'MJM Graphic Design',
+        last_diploma: 'Bac Scientifique',
+        last_diploma_school: 'Lycée Condorcet',
+        privacy_acceptation: '2024-08-24 11:48:12',
+        cgv_acceptation: '2024-08-24 11:48:12',
+      })
+      .expect(422)
+
+    assert.exists(body)
+  })
   test('Register student without firstname', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
       .post('/register-student')
@@ -213,6 +235,13 @@ test.group('Student Profile Creation Process', (group) => {
       .expect(201)
 
     assert.exists(body)
+  })
+  test('Get all professions with logged simple user role with is_valid_email = 0', async ({
+    client,
+  }) => {
+    await fakeStudent.loginFakeStudent()
+    const response = await client.get('/professions').header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(401)
   })
   test('Validate Student Email with wrong token', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)

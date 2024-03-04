@@ -119,6 +119,7 @@ test.group('Services Management Routes Testing', (group) => {
     assert,
     client,
   }) => {
+    await fakeUser.validateUserEmail()
     const response = await client
       .get('professions/' + professionIdForTest + '/services')
       .header('Cookie', fakeUser.tokenCookie)
