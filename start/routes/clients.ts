@@ -18,9 +18,15 @@
 |
 */
 
-import './routes/auth'
-import './routes/professions'
-import './routes/services'
-import './routes/formfields'
-import './routes/students'
-import './routes/clients'
+import Route from '@ioc:Adonis/Core/Route'
+
+Route.group(() => {
+  // CLIENTS
+  Route.post('/register-individual-client', 'ClientsController.createIndividualClientProfile').as(
+    'createIndividualClientProfile'
+  )
+  Route.post(
+    '/register-professional-client',
+    'ClientsController.createProfessionnalClientProfile'
+  ).as('createProfessionnalClientProfile')
+}).prefix('/v1')
