@@ -8,6 +8,7 @@ import { AuthContract } from '@ioc:Adonis/Addons/Auth'
 import TooManyRequestsException from 'App/Exceptions/TooManyRequestsException'
 import { v4 as uuidv4 } from 'uuid'
 import { UserUpdateDTO } from '@DTO/UserUpdateDTO'
+import Mail from '@ioc:Adonis/Addons/Mail'
 
 @inject()
 export class AuthService implements AuthServiceInterface {
@@ -18,6 +19,14 @@ export class AuthService implements AuthServiceInterface {
 
   public async createUserAccount(data: UserCreateDTO) {
     const verificationToken = uuidv4()
+
+    await Mail.send((message) => {
+      message
+        .from('no-reply@steewo.io')
+        .to(data.email)
+        .subject('Steewo - Merci de vérifier votre email')
+        .htmlView('emails/email_validation', { token: verificationToken, email: data.email })
+    })
     data.email_validation_token = verificationToken
     if (!data.user_language) data.user_language = Config.get('custom.DEFAULT_LANGUAGE')
     return this.userRepository.createUser(data)

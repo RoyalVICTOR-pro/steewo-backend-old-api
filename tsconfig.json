@@ -58,7 +58,8 @@
       "@adonisjs/auth",
       "adonis-lucid-soft-deletes",
       "@adonisjs/drive-s3",
-      "@adonisjs/mail"
+      "@adonisjs/mail",
+      "@adonisjs/view"
     ]
   }
 }
