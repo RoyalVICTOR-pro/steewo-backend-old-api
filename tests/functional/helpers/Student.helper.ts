@@ -23,7 +23,6 @@ export class FakeStudentForTest {
 
     this.userId = createdUser.id
     this.createdUser = createdUser
-    console.log('createdUser :>> ', createdUser)
   }
 
   public async loginFakeStudent() {
