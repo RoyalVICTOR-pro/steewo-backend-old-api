@@ -8,6 +8,7 @@ import { AuthContract } from '@ioc:Adonis/Addons/Auth'
 import TooManyRequestsException from 'App/Exceptions/TooManyRequestsException'
 import { v4 as uuidv4 } from 'uuid'
 import { UserUpdateDTO } from '@DTO/UserUpdateDTO'
+import { DateTime } from 'luxon'
 
 @inject()
 export class AuthService implements AuthServiceInterface {
@@ -52,8 +53,15 @@ export class AuthService implements AuthServiceInterface {
       return false
     }
 
+    let expirationDate = DateTime.now().plus({ hours: 24 })
+    if (loginData.remember_me) {
+      expirationDate = DateTime.now().plus({ days: 15 })
+    }
+
     try {
-      const response = await auth.attempt(loginData.email, loginData.password)
+      const response = await auth.attempt(loginData.email, loginData.password, {
+        expiresAt: expirationDate,
+      })
       const responseData = {
         token: response.token,
         user: user,

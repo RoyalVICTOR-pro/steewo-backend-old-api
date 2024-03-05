@@ -13,5 +13,6 @@ export default class UserLoginValidator {
       rules.regex(/[A-Z]/), // Au moins une majuscule
       rules.regex(/[0-9]/), // Au moins un chiffre
     ]),
+    remember_me: schema.boolean.optional(),
   })
 }

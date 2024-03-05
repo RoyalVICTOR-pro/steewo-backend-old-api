@@ -53,6 +53,10 @@ export default class AuthController {
         return response.status(401).send('Identifiant et/ou mot de passe incorrects.')
       }
 
+      let cookieMaxAge = '24h'
+      if (loginData.remember_me) {
+        cookieMaxAge = '15d'
+      }
       response.cookie('access_token', loginResponse.token, {
         httpOnly: true,
         secure: true,
