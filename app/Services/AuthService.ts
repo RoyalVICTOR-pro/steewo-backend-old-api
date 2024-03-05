@@ -33,7 +33,7 @@ export class AuthService implements AuthServiceInterface {
       throw new Exception('Invalid token', 401, 'E_UNAUTHORIZED')
     }
     const userDataToUpdate: UserUpdateDTO = {
-      email_validation_token: '',
+      email_validation_token: null,
       is_valid_email: true,
     }
     return this.userRepository.updateUserData(user, userDataToUpdate)

@@ -10,5 +10,5 @@ export interface UserUpdateDTO {
   cgv_acceptation?: DateTime | null
   is_valid_email?: boolean
   has_enabled_notifications?: boolean
-  email_validation_token?: string
+  email_validation_token?: string | null
 }

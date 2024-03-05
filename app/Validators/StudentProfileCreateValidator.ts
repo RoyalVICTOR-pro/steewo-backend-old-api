@@ -20,12 +20,18 @@ export default class StudentProfileCreateValidator {
     last_diploma_school: schema.string({}, [rules.required()]),
     current_diploma: schema.string({}, [rules.required()]),
     current_school: schema.string({}, [rules.required()]),
-    cgv_acceptation: schema.date({
-      format: 'yyyy-MM-dd HH:mm:ss',
-    }),
-    privacy_acceptation: schema.date({
-      format: 'yyyy-MM-dd HH:mm:ss',
-    }),
+    cgv_acceptation: schema.date(
+      {
+        format: 'yyyy-MM-dd HH:mm:ss',
+      },
+      [rules.required()]
+    ),
+    privacy_acceptation: schema.date(
+      {
+        format: 'yyyy-MM-dd HH:mm:ss',
+      },
+      [rules.required()]
+    ),
   })
 
   public messages: CustomMessages = {
@@ -41,9 +47,9 @@ export default class StudentProfileCreateValidator {
     'last_diploma_school.required': "L'école du dernier diplôme est requise.",
     'current_diploma.required': 'Le diplôme actuel est requis.',
     'current_school.required': "L'école actuelle est requise.",
-    'cgv_acceptation.date.format':
-      "La date d'acceptation des CGV doit être au format yyyy-MM-dd HH:mm:ss.",
-    'privacy_acceptation.date.format':
-      "La date d'acceptation de la politique de confidentialité doit être au format yyyy-MM-dd HH:mm:ss.",
+    'cgv_acceptation.required':
+      'Vous devez accepter les conditions générales de vente pour vous inscrire.',
+    'privacy_acceptation.required':
+      'Vous devez accepter la politique de confidentialité pour vous inscrire.',
   }
 }

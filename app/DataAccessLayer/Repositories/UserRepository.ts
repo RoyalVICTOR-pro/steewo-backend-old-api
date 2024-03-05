@@ -34,7 +34,7 @@ export class UserRepository implements UserRepositoryInterface {
     if (data.cgv_acceptation) {
       user.cgv_acceptation = data.cgv_acceptation
     }
-    if (data.email_validation_token) {
+    if (data.email_validation_token !== undefined) {
       user.email_validation_token = data.email_validation_token
     }
     if (data.is_valid_email) {

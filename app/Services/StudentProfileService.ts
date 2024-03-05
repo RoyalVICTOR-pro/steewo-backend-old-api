@@ -4,6 +4,7 @@ import { StudentProfileCreateDTO } from '@DTO/StudentProfileCreateDTO'
 import { inject } from '@adonisjs/core/build/standalone'
 import StudentProfileServiceInterface from '@Services/Interfaces/StudentProfileServiceInterface'
 import Mail from '@ioc:Adonis/Addons/Mail'
+import Env from '@ioc:Adonis/Core/Env'
 
 @inject()
 export class StudentProfileService implements StudentProfileServiceInterface {
@@ -24,8 +25,9 @@ export class StudentProfileService implements StudentProfileServiceInterface {
     if (!user) {
       throw new Error('User not found')
     }
-    const sendEmail = Config.get('app.send_email', true)
-    if (sendEmail) {
+
+    const sendEmail = Env.get('SEND_EMAIL')
+    if (sendEmail === 'true') {
       await Mail.send((message) => {
         message
           .from('no-reply@steewo.io')
