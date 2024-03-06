@@ -53,14 +53,14 @@ export class AuthService implements AuthServiceInterface {
       return false
     }
 
-    let expirationDate = DateTime.now().plus({ hours: 24 })
+    let expirationPeriod = '1d'
     if (loginData.remember_me) {
-      expirationDate = DateTime.now().plus({ days: 15 })
+      expirationPeriod = '15d'
     }
 
     try {
       const response = await auth.attempt(loginData.email, loginData.password, {
-        expiresAt: expirationDate,
+        expiresIn: expirationPeriod,
       })
       const responseData = {
         token: response.token,
