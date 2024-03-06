@@ -7,6 +7,7 @@ import User from './User'
 export default class ClientProfile extends compose(BaseModel, SoftDeletes) {
   @column({ isPrimary: true })
   public id: number
+
   @column()
   public user_id: number
 
