@@ -7,6 +7,7 @@ import UserCreateValidator from '@Validators/UserCreateValidator'
 import UserLoginValidator from '@Validators/UserLoginValidator'
 import TooManyRequestsException from 'App/Exceptions/TooManyRequestsException'
 import Role from 'App/Enums/Roles'
+import UserStatus from 'App/Enums/UserStatus'
 
 const acceptLanguage = require('accept-language-parser')
 
@@ -28,6 +29,7 @@ export default class AuthController {
       password: data.password,
       user_language: languages[0],
       internal_or_sso: AuthentificationMode.INTERNAL,
+      status: UserStatus.EMAIL_REGISTERED,
     }
 
     const user = await this.authService.createUserAccount(userData)
