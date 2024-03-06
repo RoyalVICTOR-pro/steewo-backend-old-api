@@ -8,7 +8,6 @@ import { AuthContract } from '@ioc:Adonis/Addons/Auth'
 import TooManyRequestsException from 'App/Exceptions/TooManyRequestsException'
 import { v4 as uuidv4 } from 'uuid'
 import { UserUpdateDTO } from '@DTO/UserUpdateDTO'
-import { DateTime } from 'luxon'
 
 @inject()
 export class AuthService implements AuthServiceInterface {
