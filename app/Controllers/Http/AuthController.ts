@@ -5,6 +5,8 @@ import { UserCreateDTO } from '@DTO/UserCreateDTO'
 import AuthentificationMode from '@Enums/AuthentificationMode'
 import UserCreateValidator from '@Validators/UserCreateValidator'
 import UserLoginValidator from '@Validators/UserLoginValidator'
+import UserForgotPasswordValidator from '@Validators/UserForgotPasswordValidator'
+import UserResetPasswordValidator from '@Validators/UserResetPasswordValidator'
 import TooManyRequestsException from 'App/Exceptions/TooManyRequestsException'
 import Role from 'App/Enums/Roles'
 import UserStatus from 'App/Enums/UserStatus'
@@ -132,6 +134,20 @@ export default class AuthController {
     } catch (error) {
       return response.status(401).send('Accès non-autorisé.')
     }
+  }
+
+  public async forgotPassword({ request, response }: HttpContextContract) {
+    const data = await request.validate(UserForgotPasswordValidator)
+    await this.authService.forgotPassword(data.email)
+    return response.status(200).send('Un email de réinitialisation de mot de passe a été envoyé.')
+  }
+
+  public async resetPassword({ request, response }: HttpContextContract) {
+    const data = await request.validate(UserResetPasswordValidator)
+    const token = request.param('token')
+    const email = request.param('email')
+    await this.authService.resetPassword(token, email, data.password)
+    return response.status(200).send('Votre mot de passe a été réinitialisé avec succès.')
   }
 
   public async logout({ response, auth }: HttpContextContract) {

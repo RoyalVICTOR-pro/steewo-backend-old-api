@@ -11,4 +11,6 @@ export interface UserUpdateDTO {
   is_valid_email?: boolean
   has_enabled_notifications?: boolean
   email_validation_token?: string | null
+  password_reset_token?: string | null
+  password_reset_token_expiration_datetime?: DateTime | null
 }

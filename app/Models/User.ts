@@ -56,10 +56,10 @@ export default class User extends compose(BaseModel, SoftDeletes) {
   public rememberMeToken: string | null
 
   @column()
-  public password_forgotten: string | null
+  public password_reset_token: string | null
 
   @column.dateTime()
-  public password_forgotten_datetime: DateTime | null
+  public password_reset_token_expiration_datetime: DateTime | null
 
   @column()
   public has_enabled_notifications: boolean

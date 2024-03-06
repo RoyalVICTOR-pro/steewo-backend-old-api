@@ -32,4 +32,6 @@ Route.group(() => {
   Route.get('/me-as-admin', 'AuthController.meAsAdmin').as('meAsAdmin')
   Route.get('/logout', 'AuthController.logout').as('logout').middleware('auth')
   Route.get('validate-email/:token/:email', 'AuthController.validateEmail').as('validateEmail')
+  Route.post('/forgot-password', 'AuthController.forgotPassword').as('forgotPassword')
+  Route.post('/reset-password/:token/:email', 'AuthController.resetPassword').as('resetPassword')
 }).prefix('/v1')

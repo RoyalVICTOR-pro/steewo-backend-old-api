@@ -8,6 +8,12 @@ import { AuthContract } from '@ioc:Adonis/Addons/Auth'
 import TooManyRequestsException from 'App/Exceptions/TooManyRequestsException'
 import { v4 as uuidv4 } from 'uuid'
 import { UserUpdateDTO } from '@DTO/UserUpdateDTO'
+import { UserUpdatePasswordDTO } from '@DTO/UserUpdatePasswordDTO'
+import { DateTime } from 'luxon'
+import User from 'App/Models/User'
+import Env from '@ioc:Adonis/Core/Env'
+import Mail from '@ioc:Adonis/Addons/Mail'
+import ApiToken from 'App/Models/ApiToken'
 
 @inject()
 export class AuthService implements AuthServiceInterface {
@@ -80,6 +86,63 @@ export class AuthService implements AuthServiceInterface {
     } catch (error) {
       throw new Exception(error.message, error.status, error.code)
     }
+  }
+
+  public async forgotPassword(email: string) {
+    const user = await this.userRepository.getUserByEmail(email)
+    if (!user) {
+      // For security reasons, we don't want to reveal if the email exists or not
+      console.log("le user n'a pas été trouvé")
+      return
+    }
+    const passwordResetToken = uuidv4()
+    const passwordResetTokenExpiration = DateTime.now().plus({ minutes: 15 })
+    const userDataToUpdate: UserUpdateDTO = {
+      password_reset_token: passwordResetToken,
+      password_reset_token_expiration_datetime: passwordResetTokenExpiration,
+    }
+
+    const sendEmail = Env.get('SEND_EMAIL')
+    if (sendEmail === 'true') {
+      await Mail.send((message) => {
+        message
+          .from('no-reply@steewo.io')
+          .to(email)
+          .subject('Steewo - Modifiez votre mot de passe')
+          .htmlView('emails/password_reset', {
+            token: passwordResetToken,
+            email: email,
+          })
+      })
+    }
+    return this.userRepository.updateUserData(user, userDataToUpdate)
+  }
+
+  public async resetPassword(token: string, email: string, newPassword: string) {
+    const user = await this.userRepository.getUserByEmail(email)
+    if (!user) {
+      throw new Exception('User not found', 404, 'E_NOT_FOUND')
+    }
+    if (user.password_reset_token !== token) {
+      throw new Exception('Invalid token', 401, 'E_UNAUTHORIZED')
+    }
+    if (
+      user.password_reset_token_expiration_datetime &&
+      user.password_reset_token_expiration_datetime < DateTime.now()
+    ) {
+      throw new Exception('Token expired', 401, 'E_UNAUTHORIZED')
+    }
+    const userDataToUpdate: UserUpdatePasswordDTO = {
+      password_reset_token: null,
+      password_reset_token_expiration_datetime: null,
+      password: newPassword,
+    }
+    await this.deleteAllApiTokens(user)
+    return this.userRepository.updateUserPassword(user, userDataToUpdate)
+  }
+
+  private async deleteAllApiTokens(user: User) {
+    await ApiToken.query().where('user_id', user.id).delete()
   }
 
   public async logoutUser(auth: AuthContract) {

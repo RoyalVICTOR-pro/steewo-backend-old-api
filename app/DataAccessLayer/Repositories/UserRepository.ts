@@ -3,6 +3,7 @@ import User from '@Models/User'
 import { UserCreateDTO } from '@DTO/UserCreateDTO'
 import UserRepositoryInterface from '@DALInterfaces/UserRepositoryInterface'
 import { UserUpdateDTO } from '../DTO/UserUpdateDTO'
+import { UserUpdatePasswordDTO } from '../DTO/UserUpdatePasswordDTO'
 
 @inject()
 export class UserRepository implements UserRepositoryInterface {
@@ -29,6 +30,12 @@ export class UserRepository implements UserRepositoryInterface {
   }
 
   public async updateUserData(user: User, data: UserUpdateDTO): Promise<User> {
+    if (data.role) {
+      user.role = data.role
+    }
+    if (data.status) {
+      user.status = data.status
+    }
     if (data.privacy_acceptation) {
       user.privacy_acceptation = data.privacy_acceptation
     }
@@ -44,6 +51,20 @@ export class UserRepository implements UserRepositoryInterface {
     if (data.has_enabled_notifications) {
       user.has_enabled_notifications = data.has_enabled_notifications
     }
+    if (data.password_reset_token) {
+      user.password_reset_token = data.password_reset_token
+    }
+    if (data.password_reset_token_expiration_datetime) {
+      user.password_reset_token_expiration_datetime = data.password_reset_token_expiration_datetime
+    }
+    await user.save()
+    return user
+  }
+
+  public async updateUserPassword(user: User, data: UserUpdatePasswordDTO): Promise<User> {
+    user.password_reset_token = data.password_reset_token
+    user.password_reset_token_expiration_datetime = data.password_reset_token_expiration_datetime
+    user.password = data.password
     await user.save()
     return user
   }
