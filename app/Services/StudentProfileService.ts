@@ -1,7 +1,7 @@
 import { StudentProfileRepository } from './../DataAccessLayer/Repositories/StudentProfileRepository'
 import { UserRepository } from 'App/DataAccessLayer/Repositories/UserRepository'
 import { StudentProfileCreateDTO } from '@DTO/StudentProfileCreateDTO'
-import { inject } from '@adonisjs/core/build/standalone'
+import { inject, Exception } from '@adonisjs/core/build/standalone'
 import StudentProfileServiceInterface from '@Services/Interfaces/StudentProfileServiceInterface'
 import Mail from '@ioc:Adonis/Addons/Mail'
 import Env from '@ioc:Adonis/Core/Env'
@@ -23,7 +23,14 @@ export class StudentProfileService implements StudentProfileServiceInterface {
     }
     const user = await this.userRepository.getUserById(data.user_id)
     if (!user) {
-      throw new Error('User not found')
+      throw new Exception('User not found', 404, 'E_NOT_FOUND')
+    }
+
+    const studentProfile = await this.studentProfileRepository.getStudentProfileByUserId(
+      data.user_id
+    )
+    if (studentProfile) {
+      throw new Exception('Student profile already exists', 409, 'E_CONFLICT')
     }
 
     const sendEmail = Env.get('SEND_EMAIL')

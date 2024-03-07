@@ -1,7 +1,7 @@
 import { ClientProfileRepository } from './../DataAccessLayer/Repositories/ClientProfileRepository'
 import { UserRepository } from 'App/DataAccessLayer/Repositories/UserRepository'
 import { ClientProfileCreateDTO } from '@DTO/ClientProfileCreateDTO'
-import { inject } from '@adonisjs/core/build/standalone'
+import { inject, Exception } from '@adonisjs/core/build/standalone'
 import ClientProfileServiceInterface from '@Services/Interfaces/ClientProfileServiceInterface'
 import Mail from '@ioc:Adonis/Addons/Mail'
 import Env from '@ioc:Adonis/Core/Env'
@@ -23,7 +23,12 @@ export class ClientProfileService implements ClientProfileServiceInterface {
     }
     const user = await this.userRepository.getUserById(data.user_id)
     if (!user) {
-      throw new Error('User not found')
+      throw new Exception('User not found', 404, 'E_NOT_FOUND')
+    }
+
+    const clientProfile = await this.clientProfileRepository.getClientProfileByUserId(data.user_id)
+    if (clientProfile) {
+      throw new Exception('Client profile already exists', 409, 'E_CONFLICT')
     }
 
     const sendEmail = Env.get('SEND_EMAIL')

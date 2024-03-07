@@ -28,8 +28,8 @@ export class ClientProfileRepository implements ClientProfileRepositoryInterface
     return clientProfile
   }
 
-  public async getClientProfileById(id: number): Promise<ClientProfile | null> {
-    const clientProfile = await ClientProfile.find(id)
+  public async getClientProfileByUserId(userId: number): Promise<ClientProfile | null> {
+    const clientProfile = await ClientProfile.findBy('user_id', userId)
     return clientProfile
   }
 }

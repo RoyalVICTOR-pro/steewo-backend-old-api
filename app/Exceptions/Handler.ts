@@ -39,6 +39,11 @@ export default class ExceptionHandler extends HttpExceptionHandler {
       return ctx.response.status(error.status).send('Ressource introuvable')
     }
 
+    if (error.status === 409) {
+      // Gestion des erreurs 404 (Not Found)
+      return ctx.response.status(error.status).send('Ressource déjà existante')
+    }
+
     if (error.status === 422) {
       // console.log('error.messages :>> ', JSON.stringify(error.messages))
       // Gestion des erreurs de validation
