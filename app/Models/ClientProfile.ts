@@ -50,6 +50,12 @@ export default class ClientProfile extends compose(BaseModel, SoftDeletes) {
   @column()
   public average_rating: number | null
 
+  @column()
+  public description: string | null
+
+  @column()
+  public photo_file: string | null
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

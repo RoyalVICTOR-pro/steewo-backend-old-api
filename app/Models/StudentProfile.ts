@@ -77,6 +77,24 @@ export default class StudentProfile extends compose(BaseModel, SoftDeletes) {
   @column()
   public address_city: string | null
 
+  @column()
+  public gender: number | null
+
+  @column()
+  public study_level: string | null
+
+  @column()
+  public photo_file: string | null
+
+  @column()
+  public banner_file: string | null
+
+  @column()
+  public school_certificate_file: string | null
+
+  @column()
+  public company_exists_proof_file: string | null
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
