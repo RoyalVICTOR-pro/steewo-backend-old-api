@@ -36,6 +36,7 @@ export class StudentProfileService implements StudentProfileServiceInterface {
           .htmlView('emails/student_email_validation', {
             token: user.email_validation_token,
             email: user.email,
+            firstname: data.firstname,
           })
       })
     }

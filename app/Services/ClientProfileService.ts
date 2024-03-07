@@ -36,6 +36,7 @@ export class ClientProfileService implements ClientProfileServiceInterface {
           .htmlView('emails/client_email_validation', {
             token: user.email_validation_token,
             email: user.email,
+            firstname: data.firstname,
           })
       })
     }

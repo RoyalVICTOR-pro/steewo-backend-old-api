@@ -25,8 +25,8 @@ export class StudentProfileRepository implements StudentProfileRepositoryInterfa
     return studentProfile
   }
 
-  public async getStudentProfileById(id: number): Promise<StudentProfile | null> {
-    const studentProfile = await StudentProfile.find(id)
+  public async getStudentProfileByUserId(userId: number): Promise<StudentProfile | null> {
+    const studentProfile = await StudentProfile.findBy('user_id', userId)
     return studentProfile
   }
 }
