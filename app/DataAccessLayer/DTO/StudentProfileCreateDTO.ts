@@ -6,14 +6,14 @@ export interface StudentProfileCreateDTO {
   user_id: number
   role: Role
   status: StudentUserStatus
-  firstname: string | null
-  lastname: string | null
+  firstname: string
+  lastname: string
   date_of_birth: DateTime
   mobile?: string | null
-  last_diploma: string | null
-  last_diploma_school: string | null
-  current_diploma: string | null
-  current_school: string | null
-  privacy_acceptation: DateTime | null
-  cgv_acceptation: DateTime | null
+  last_diploma: string
+  last_diploma_school: string
+  current_diploma: string
+  current_school: string
+  privacy_acceptation: DateTime
+  cgv_acceptation: DateTime
 }

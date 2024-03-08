@@ -11,9 +11,8 @@ import { UserUpdateDTO } from '@DTO/UserUpdateDTO'
 import { UserUpdatePasswordDTO } from '@DTO/UserUpdatePasswordDTO'
 import { DateTime } from 'luxon'
 import User from 'App/Models/User'
-import Env from '@ioc:Adonis/Core/Env'
-import Mail from '@ioc:Adonis/Addons/Mail'
 import ApiToken from 'App/Models/ApiToken'
+import MailService from '@Services/MailService'
 
 @inject()
 export class AuthService implements AuthServiceInterface {
@@ -102,19 +101,8 @@ export class AuthService implements AuthServiceInterface {
       password_reset_token_expiration_datetime: passwordResetTokenExpiration,
     }
 
-    const sendEmail = Env.get('SEND_EMAIL')
-    if (sendEmail === 'true') {
-      await Mail.send((message) => {
-        message
-          .from('no-reply@steewo.io')
-          .to(email)
-          .subject('Steewo - Modifiez votre mot de passe')
-          .htmlView('emails/password_reset', {
-            token: passwordResetToken,
-            email: email,
-          })
-      })
-    }
+    await MailService.sendForgotPasswordMail(email, passwordResetToken)
+
     return this.userRepository.updateUserData(user, userDataToUpdate)
   }
 

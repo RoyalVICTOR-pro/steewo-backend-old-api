@@ -6,8 +6,8 @@ export interface ClientProfileCreateDTO {
   user_id: number
   role: Role
   status: ClientUserStatus
-  firstname: string | null
-  lastname: string | null
+  firstname: string
+  lastname: string
   date_of_birth: DateTime
   phone?: string | null
   address_number?: string | null
@@ -17,6 +17,6 @@ export interface ClientProfileCreateDTO {
   company_name?: string | null
   position?: string | null
   siret_number?: string | null
-  privacy_acceptation: DateTime | null
-  cgv_acceptation: DateTime | null
+  privacy_acceptation: DateTime
+  cgv_acceptation: DateTime
 }
