@@ -10,6 +10,7 @@ import UserResetPasswordValidator from '@Validators/UserResetPasswordValidator'
 import TooManyRequestsException from 'App/Exceptions/TooManyRequestsException'
 import Role from 'App/Enums/Roles'
 import UserStatus from 'App/Enums/UserStatus'
+import Config from '@ioc:Adonis/Core/Config'
 
 const acceptLanguage = require('accept-language-parser')
 
@@ -57,9 +58,9 @@ export default class AuthController {
         return response.status(401).send('Identifiant et/ou mot de passe incorrects.')
       }
 
-      let cookieMaxAge = '1d'
+      let cookieMaxAge = Config.get('custom.DEFAULT_TOKEN_DURATION')
       if (loginData.remember_me) {
-        cookieMaxAge = '15d'
+        cookieMaxAge = Config.get('custom.REMEMBER_ME_TOKEN_DURATION')
       }
       response.cookie('access_token', loginResponse.token, {
         httpOnly: true,

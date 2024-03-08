@@ -58,9 +58,9 @@ export class AuthService implements AuthServiceInterface {
       return false
     }
 
-    let expirationPeriod = '1d'
+    let expirationPeriod = Config.get('custom.DEFAULT_TOKEN_DURATION')
     if (loginData.remember_me) {
-      expirationPeriod = '15d'
+      expirationPeriod = Config.get('custom.REMEMBER_ME_TOKEN_DURATION')
     }
 
     try {
