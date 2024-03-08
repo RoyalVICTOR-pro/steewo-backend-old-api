@@ -16,4 +16,11 @@ export default class StudentProfilesController {
     const studentProfile = await this.studentProfileService.createStudentProfile(data)
     return response.created(studentProfile) // 201 CREATED
   }
+
+  public async getStudentPublicProfile({ params, response }: HttpContextContract) {
+    const studentPublicProfile = await this.studentProfileService.getStudentPublicProfile(
+      Number(params.user_id)
+    )
+    return response.ok(studentPublicProfile) // 200 OK
+  }
 }

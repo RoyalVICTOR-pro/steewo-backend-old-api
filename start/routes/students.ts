@@ -25,4 +25,10 @@ Route.group(() => {
   Route.post('/register-student', 'StudentsController.createStudentProfile').as(
     'createStudentProfile'
   )
+  Route.get('/get-student-public-profile/:user_id', 'StudentsController.getStudentPublicProfile')
+    .as('getStudentPublicProfile')
+    .middleware('auth')
+  Route.get('/get-student-private-profile/:user_id', 'StudentsController.getStudentPrivateProfile')
+    .as('getStudentPrivateProfile')
+    .middleware(['auth', 'isStudentProfileOwner'])
 }).prefix('/v1')
