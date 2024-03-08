@@ -13,6 +13,7 @@ import { DateTime } from 'luxon'
 import User from 'App/Models/User'
 import ApiToken from 'App/Models/ApiToken'
 import MailService from '@Services/MailService'
+import UserStatus from 'App/Enums/UserStatus'
 
 @inject()
 export class AuthService implements AuthServiceInterface {
@@ -26,6 +27,7 @@ export class AuthService implements AuthServiceInterface {
 
     data.email_validation_token = verificationToken
     if (!data.user_language) data.user_language = Config.get('custom.DEFAULT_LANGUAGE')
+    if (!data.status) data.status = UserStatus.EMAIL_REGISTERED
     return this.userRepository.createUser(data)
   }
 

@@ -1,6 +1,5 @@
 import AuthentificationMode from '@Enums/AuthentificationMode'
-import ClientUserStatus from 'App/Enums/ClientUserStatus'
-import StudentUserStatus from 'App/Enums/StudentUserStatus'
+import UserStatus from 'App/Enums/UserStatus'
 
 export interface UserCreateDTO {
   email: string
