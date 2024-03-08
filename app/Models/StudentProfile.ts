@@ -104,6 +104,8 @@ export default class StudentProfile extends compose(BaseModel, SoftDeletes) {
   @column.dateTime()
   public deletedAt: DateTime | null
 
-  @belongsTo(() => User)
+  @belongsTo(() => User, {
+    foreignKey: 'user_id',
+  })
   public user: BelongsTo<typeof User>
 }
