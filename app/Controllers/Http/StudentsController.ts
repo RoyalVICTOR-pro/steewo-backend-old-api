@@ -23,4 +23,11 @@ export default class StudentProfilesController {
     )
     return response.ok(studentPublicProfile) // 200 OK
   }
+
+  public async getStudentPrivateProfile({ params, response }: HttpContextContract) {
+    const studentPrivateProfile = await this.studentProfileService.getStudentPrivateProfile(
+      Number(params.user_id)
+    )
+    return response.ok(studentPrivateProfile) // 200 OK
+  }
 }
