@@ -1,5 +1,6 @@
 import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Config from '@ioc:Adonis/Core/Config'
 
 export default class ServiceCreateValidator {
   constructor(protected ctx: HttpContextContract) {}
@@ -8,12 +9,12 @@ export default class ServiceCreateValidator {
     name: schema.string({}, [rules.unique({ table: 'services', column: 'name' })]),
     short_name: schema.string({}, [rules.unique({ table: 'services', column: 'short_name' })]),
     picto_file: schema.file.optional({
-      size: '2mb',
-      extnames: ['jpg', 'png', 'jpeg'],
+      size: Config.get('custom.MAX_IMAGE_FILE_SIZE'),
+      extnames: Config.get('custom.IMAGE_FILE_TYPES'),
     }),
     image_file: schema.file.optional({
-      size: '2mb',
-      extnames: ['jpg', 'png', 'jpeg'],
+      size: Config.get('custom.MAX_IMAGE_FILE_SIZE'),
+      extnames: Config.get('custom.IMAGE_FILE_TYPES'),
     }),
     is_enabled: schema.boolean.optional(),
   })

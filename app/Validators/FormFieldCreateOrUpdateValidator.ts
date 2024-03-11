@@ -1,6 +1,7 @@
 import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import FormFieldsTypes from '@Enums/FormFieldsTypes'
+import Config from '@ioc:Adonis/Core/Config'
 
 export default class FormFieldCreateOrUpdateValidator {
   constructor(protected ctx: HttpContextContract) {}
@@ -9,8 +10,8 @@ export default class FormFieldCreateOrUpdateValidator {
     type: schema.enum(Object.values(FormFieldsTypes), [rules.required()]),
     label: schema.string({}, [rules.required()]),
     tooltip_image_file: schema.file.optional({
-      size: '2mb',
-      extnames: ['jpg', 'png', 'jpeg'],
+      size: Config.get('custom.MAX_IMAGE_FILE_SIZE'),
+      extnames: Config.get('custom.IMAGE_FILE_TYPES'),
     }),
     description: schema.string.nullableAndOptional(),
     placeholder: schema.string.nullableAndOptional(),

@@ -4,4 +4,10 @@ export default {
   DEFAULT_COUNTRY: 'FR',
   DEFAULT_TOKEN_DURATION: '1d',
   REMEMBER_ME_TOKEN_DURATION: '15d',
+  IMAGE_FILE_TYPES: ['jpg', 'png', 'jpeg'],
+  DOCUMENT_FILE_TYPES: ['pdf'],
+  VIDEO_FILE_TYPES: ['mp4'],
+  MAX_IMAGE_FILE_SIZE: '2mb',
+  MAX_DOCUMENT_FILE_SIZE: '5mb',
+  MAX_VIDEO_FILE_SIZE: '50mb',
 }
