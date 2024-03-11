@@ -27,4 +27,18 @@ export default class ClientProfilesController {
     const clientProfile = await this.clientProfileService.createClientProfile(data)
     return response.created(clientProfile) // 201 CREATED
   }
+
+  public async getClientPublicProfile({ params, response }: HttpContextContract) {
+    const clientPublicProfile = await this.clientProfileService.getClientPublicProfile(
+      Number(params.user_id)
+    )
+    return response.ok(clientPublicProfile) // 200 OK
+  }
+
+  public async getClientPrivateProfile({ params, response }: HttpContextContract) {
+    const clientPrivateProfile = await this.clientProfileService.getClientPrivateProfile(
+      Number(params.user_id)
+    )
+    return response.ok(clientPrivateProfile) // 200 OK
+  }
 }

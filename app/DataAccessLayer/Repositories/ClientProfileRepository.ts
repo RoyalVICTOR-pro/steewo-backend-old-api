@@ -29,7 +29,10 @@ export class ClientProfileRepository implements ClientProfileRepositoryInterface
   }
 
   public async getClientProfileByUserId(userId: number): Promise<ClientProfile | null> {
-    const clientProfile = await ClientProfile.findBy('user_id', userId)
+    const clientProfile = await ClientProfile.query()
+      .where('user_id', userId)
+      .preload('user')
+      .first()
     return clientProfile
   }
 }

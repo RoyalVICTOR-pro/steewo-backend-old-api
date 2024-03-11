@@ -46,4 +46,5 @@ Server.middleware.registerNamed({
   role: 'App/Middleware/RoleMiddleware',
   isValidEmail: 'App/Middleware/IsValidEmail',
   isStudentProfileOwner: 'App/Middleware/IsStudentProfileOwner',
+  isClientProfileOwner: 'App/Middleware/IsClientProfileOwner',
 })
