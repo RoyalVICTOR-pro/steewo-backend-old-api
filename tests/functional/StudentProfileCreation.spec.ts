@@ -223,7 +223,7 @@ test.group('Student Profile Creation Process', (group) => {
         status: StudentUserStatus.ACCOUNT_CREATED,
         firstname: 'Fabien',
         lastname: 'Garp',
-        mobile: '0612345678',
+        mobile: '',
         date_of_birth: '1984-08-24',
         current_diploma: 'Directeur graphique',
         current_school: 'MJM Graphic Design',
