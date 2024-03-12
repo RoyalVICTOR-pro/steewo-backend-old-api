@@ -81,9 +81,6 @@ export default class StudentProfile extends compose(BaseModel, SoftDeletes) {
   public gender: number | null
 
   @column()
-  public study_level: string | null
-
-  @column()
   public photo_file: string | null
 
   @column()

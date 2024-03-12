@@ -1,15 +1,23 @@
-import { StudentProfileRepository } from './../DataAccessLayer/Repositories/StudentProfileRepository'
-import { UserRepository } from 'App/DataAccessLayer/Repositories/UserRepository'
-import { StudentProfileCreateDTO } from '@DTO/StudentProfileCreateDTO'
 import { inject, Exception } from '@adonisjs/core/build/standalone'
-import StudentProfileServiceInterface from '@Services/Interfaces/StudentProfileServiceInterface'
+import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
+import { StudentProfileCreateDTO } from '@DTO/StudentProfileCreateDTO'
+import { StudentProfileMainUpdateDTO } from '@DTO/StudentProfileMainUpdateDTO'
+import { StudentProfilePhotoUpdateDTO } from 'App/DataAccessLayer/DTO/StudentProfilePhotoUpdateDTO'
+import { StudentProfileBannerUpdateDTO } from 'App/DataAccessLayer/DTO/StudentProfileBannerUpdateDTO'
+import { StudentProfileDescriptionUpdateDTO } from 'App/DataAccessLayer/DTO/StudentProfileDescriptionUpdateDTO'
+import { StudentProfileRepository } from '@DALRepositories/StudentProfileRepository'
+import { UserRepository } from '@DALRepositories/UserRepository'
 import MailService from '@Services/MailService'
-import StudentUserStatus from 'App/Enums/StudentUserStatus'
+import StudentProfileServiceInterface from '@Services/Interfaces/StudentProfileServiceInterface'
+import StudentUserStatus from '@Enums/StudentUserStatus'
+import UploadService from '@Services/UploadService'
+import { getDatetimeForFileName } from 'App/Utils/Various'
 
 @inject()
 export class StudentProfileService implements StudentProfileServiceInterface {
   private studentProfileRepository: StudentProfileRepository
   private userRepository: UserRepository
+  private readonly studentProfilePath = 'students/profiles/'
 
   constructor(studentProfileRepository: StudentProfileRepository) {
     this.studentProfileRepository = studentProfileRepository
@@ -66,7 +74,6 @@ export class StudentProfileService implements StudentProfileServiceInterface {
       description: studentProfile.description,
       average_rating: studentProfile.average_rating,
       job_title: studentProfile.job_title,
-      study_level: studentProfile.study_level,
       photo_file: studentProfile.photo_file,
       banner_file: studentProfile.banner_file,
     }
@@ -104,12 +111,118 @@ export class StudentProfileService implements StudentProfileServiceInterface {
       gender: studentProfile.gender,
       average_rating: studentProfile.average_rating,
       job_title: studentProfile.job_title,
-      study_level: studentProfile.study_level,
       photo_file: studentProfile.photo_file,
       banner_file: studentProfile.banner_file,
       school_certificate_file: studentProfile.school_certificate_file,
       company_exists_proof_file: studentProfile.company_exists_proof_file,
     }
     return studentPrivateProfile
+  }
+
+  public async updateStudentProfileMainInfo(
+    user_id: number,
+    data: StudentProfileMainUpdateDTO,
+    school_certificate_file: MultipartFileContract | null = null,
+    company_exists_proof_file: MultipartFileContract | null = null
+  ) {
+    const studentProfile = await this.studentProfileRepository.getStudentProfileByUserId(user_id)
+    if (!studentProfile) {
+      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
+    }
+    if (studentProfile.user.status < StudentUserStatus.ACCOUNT_CREATED) {
+      throw new Exception('User not available', 403, 'E_FORBIDDEN')
+    }
+
+    if (school_certificate_file || company_exists_proof_file) {
+      if (school_certificate_file) {
+        data.school_certificate_file = await UploadService.uploadFileTo(
+          school_certificate_file,
+          this.studentProfilePath + user_id.toString() + '/',
+          'school_certificate_' + getDatetimeForFileName()
+        )
+      }
+      if (company_exists_proof_file) {
+        data.company_exists_proof_file = await UploadService.uploadFileTo(
+          company_exists_proof_file,
+          this.studentProfilePath + user_id.toString() + '/',
+          'company_proof_' + getDatetimeForFileName()
+        )
+      }
+    }
+    return await this.studentProfileRepository.updateStudentProfileMainInfo(user_id, data)
+  }
+
+  public async updateStudentProfilePhoto(
+    user_id: number,
+    photo_file: MultipartFileContract | null = null
+  ) {
+    if (!photo_file) {
+      throw new Exception('You did not provide a photo file.', 400, 'E_BAD_REQUEST')
+    }
+    const studentProfile = await this.studentProfileRepository.getStudentProfileByUserId(user_id)
+    if (!studentProfile) {
+      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
+    }
+    if (studentProfile.user.status < StudentUserStatus.ACCOUNT_CREATED) {
+      throw new Exception('User not available', 403, 'E_FORBIDDEN')
+    }
+
+    const photoFilepath = await UploadService.uploadFileTo(
+      photo_file,
+      this.studentProfilePath + user_id.toString() + '/',
+      'school_certificate_' + getDatetimeForFileName()
+    )
+
+    const updatedPhoto: StudentProfilePhotoUpdateDTO = {
+      photo_file: photoFilepath,
+    }
+
+    return await this.studentProfileRepository.updateStudentProfilePhoto(user_id, updatedPhoto)
+  }
+
+  public async updateStudentProfileBanner(
+    user_id: number,
+    banner_file: MultipartFileContract | null = null
+  ) {
+    if (!banner_file) {
+      throw new Exception('You did not provide a banner file.', 400, 'E_BAD_REQUEST')
+    }
+    const studentProfile = await this.studentProfileRepository.getStudentProfileByUserId(user_id)
+    if (!studentProfile) {
+      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
+    }
+    if (studentProfile.user.status < StudentUserStatus.ACCOUNT_CREATED) {
+      throw new Exception('User not available', 403, 'E_FORBIDDEN')
+    }
+
+    const bannerFilepath = await UploadService.uploadFileTo(
+      banner_file,
+      this.studentProfilePath + user_id.toString() + '/',
+      'banner_' + getDatetimeForFileName()
+    )
+
+    const updatedBanner: StudentProfileBannerUpdateDTO = {
+      banner_file: bannerFilepath,
+    }
+
+    return await this.studentProfileRepository.updateStudentProfileBanner(user_id, updatedBanner)
+  }
+
+  public async updateStudentProfileDescription(user_id: number, description: string) {
+    const studentProfile = await this.studentProfileRepository.getStudentProfileByUserId(user_id)
+    if (!studentProfile) {
+      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
+    }
+    if (studentProfile.user.status < StudentUserStatus.ACCOUNT_CREATED) {
+      throw new Exception('User not available', 403, 'E_FORBIDDEN')
+    }
+    const updatedDescription: StudentProfileDescriptionUpdateDTO = {
+      description: description,
+    }
+
+    return await this.studentProfileRepository.updateStudentProfileDescription(
+      user_id,
+      updatedDescription
+    )
   }
 }
