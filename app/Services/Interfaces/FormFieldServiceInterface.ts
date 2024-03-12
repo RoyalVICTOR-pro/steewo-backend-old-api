@@ -1,7 +1,7 @@
-import { FormFieldUpdateOrderDTO } from '@DTO/FormFieldUpdateOrderDTO'
-import ServicesFormField from '@Models/ServicesFormField'
-import { FormFieldCreateOrUpdateDTO } from '@DTO/FormFieldCreateOrUpdateDTO'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
+import FormFieldCreateOrUpdateDTO from '@DTO/FormFieldCreateOrUpdateDTO'
+import FormFieldUpdateOrderDTO from '@DTO/FormFieldUpdateOrderDTO'
+import ServicesFormField from '@Models/ServicesFormField'
 
 export default interface FormFieldServiceInterface {
   listFormFieldsByService(serviceId: number): Promise<ServicesFormField[]>

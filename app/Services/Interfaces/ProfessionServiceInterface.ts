@@ -1,7 +1,7 @@
-import Profession from '@Models/Profession'
-import { ProfessionCreateOrUpdateDTO } from '@DTO/ProfessionCreateOrUpdateDTO'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
-import { ProfessionStatusUpdateDTO } from '@DTO/ProfessionStatusUpdateDTO'
+import Profession from '@Models/Profession'
+import ProfessionCreateOrUpdateDTO from '@DTO/ProfessionCreateOrUpdateDTO'
+import ProfessionStatusUpdateDTO from '@DTO/ProfessionStatusUpdateDTO'
 
 export default interface ProfessionServiceInterface {
   listProfessions(): Promise<Profession[]>

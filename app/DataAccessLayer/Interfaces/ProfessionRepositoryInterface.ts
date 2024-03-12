@@ -1,6 +1,6 @@
 import Profession from '@Models/Profession'
-import { ProfessionCreateOrUpdateDTO } from '@DTO/ProfessionCreateOrUpdateDTO'
-import { ProfessionStatusUpdateDTO } from '@DTO/ProfessionStatusUpdateDTO'
+import ProfessionCreateOrUpdateDTO from '@DTO/ProfessionCreateOrUpdateDTO'
+import ProfessionStatusUpdateDTO from '@DTO/ProfessionStatusUpdateDTO'
 
 export default interface ProfessionRepositoryInterface {
   listProfessions(): Promise<Profession[]>

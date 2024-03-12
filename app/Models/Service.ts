@@ -1,7 +1,7 @@
-import { compose } from '@ioc:Adonis/Core/Helpers'
-import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
-import { DateTime } from 'luxon'
 import { BaseModel, column, belongsTo, BelongsTo, beforeDelete } from '@ioc:Adonis/Lucid/Orm'
+import { compose } from '@ioc:Adonis/Core/Helpers'
+import { DateTime } from 'luxon'
+import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 import Profession from '@Models/Profession'
 import ServicesFormField from '@Models/ServicesFormField'
 

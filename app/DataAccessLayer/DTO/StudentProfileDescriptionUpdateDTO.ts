@@ -1,3 +1,3 @@
-export interface StudentProfileDescriptionUpdateDTO {
+export default interface StudentProfileDescriptionUpdateDTO {
   description: string | null
 }

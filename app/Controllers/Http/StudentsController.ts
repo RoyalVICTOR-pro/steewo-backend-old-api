@@ -1,13 +1,13 @@
-import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { inject } from '@adonisjs/core/build/standalone'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import StudentProfileBannerUpdateValidator from '@Validators/StudentProfileBannerUpdateValidator'
+import StudentProfileCreateDTO from '@DTO/StudentProfileCreateDTO'
 import StudentProfileCreateValidator from '@Validators/StudentProfileCreateValidator'
+import StudentProfileDescriptionUpdateValidator from '@Validators/StudentProfileDescriptionUpdateValidator'
+import StudentProfileMainUpdateDTO from '@DTO/StudentProfileMainUpdateDTO'
 import StudentProfileMainUpdateValidator from '@Validators/StudentProfileMainUpdateValidator'
 import StudentProfilePhotoUpdateValidator from '@Validators/StudentProfilePhotoUpdateValidator'
-import StudentProfileBannerUpdateValidator from '@Validators/StudentProfileBannerUpdateValidator'
-import StudentProfileDescriptionUpdateValidator from '@Validators/StudentProfileDescriptionUpdateValidator'
-import { StudentProfileCreateDTO } from '@DTO/StudentProfileCreateDTO'
-import { StudentProfileMainUpdateDTO } from '@DTO/StudentProfileMainUpdateDTO'
-import { StudentProfileService } from '@Services/StudentProfileService'
+import StudentProfileService from '@Services/StudentProfileService'
 
 @inject()
 export default class StudentProfilesController {

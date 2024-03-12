@@ -1,6 +1,6 @@
 import User from '@Models/User'
-import { UserCreateDTO } from '@DTO/UserCreateDTO'
-import { UserUpdateDTO } from '@DTO/UserUpdateDTO'
+import UserCreateDTO from '@DTO/UserCreateDTO'
+import UserUpdateDTO from '@DTO/UserUpdateDTO'
 
 export default interface UserRepositoryInterface {
   createUser(data: UserCreateDTO): Promise<User>

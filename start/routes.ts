@@ -1,6 +1,6 @@
 import './routes/auth'
+import './routes/clients'
+import './routes/formfields'
 import './routes/professions'
 import './routes/services'
-import './routes/formfields'
 import './routes/students'
-import './routes/clients'

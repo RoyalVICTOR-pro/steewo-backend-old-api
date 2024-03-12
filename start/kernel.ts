@@ -43,8 +43,8 @@ Server.middleware.register([
 */
 Server.middleware.registerNamed({
   auth: 'App/Middleware/Auth',
-  role: 'App/Middleware/RoleMiddleware',
-  isValidEmail: 'App/Middleware/IsValidEmail',
-  isStudentProfileOwner: 'App/Middleware/IsStudentProfileOwner',
   isClientProfileOwner: 'App/Middleware/IsClientProfileOwner',
+  isStudentProfileOwner: 'App/Middleware/IsStudentProfileOwner',
+  isValidEmail: 'App/Middleware/IsValidEmail',
+  role: 'App/Middleware/RoleMiddleware',
 })

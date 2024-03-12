@@ -1,9 +1,9 @@
 import { inject } from '@adonisjs/core/build/standalone'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { FormFieldCreateOrUpdateDTO } from '@DTO/FormFieldCreateOrUpdateDTO'
-import { FormFieldUpdateOrderDTO } from '@DTO/FormFieldUpdateOrderDTO'
-import { FormFieldService } from '@Services/FormFieldService'
+import FormFieldCreateOrUpdateDTO from '@DTO/FormFieldCreateOrUpdateDTO'
 import FormFieldCreateOrUpdateValidator from '@Validators/FormFieldCreateOrUpdateValidator'
+import FormFieldService from '@Services/FormFieldService'
+import FormFieldUpdateOrderDTO from '@DTO/FormFieldUpdateOrderDTO'
 
 @inject()
 export default class FormFieldController {
@@ -26,14 +26,14 @@ export default class FormFieldController {
     const data = await request.validate(FormFieldCreateOrUpdateValidator)
 
     const newFormField: FormFieldCreateOrUpdateDTO = {
-      service_id: params.id_service,
-      type: data.type,
+      description: data.description,
       label: data.label,
       mandatory: data.mandatory,
-      tooltip_text: data.tooltip_text,
-      description: data.description,
       placeholder: data.placeholder,
       possible_values: data.possible_values,
+      service_id: params.id_service,
+      tooltip_text: data.tooltip_text,
+      type: data.type,
     }
 
     const formField = await this.formFieldService.createFormField(
@@ -46,14 +46,14 @@ export default class FormFieldController {
   public async updateFormField({ request, response, params }: HttpContextContract) {
     const data = await request.validate(FormFieldCreateOrUpdateValidator)
     const updatedFormField = {
-      service_id: params.id_service,
-      type: data.type,
+      description: data.description,
       label: data.label,
       mandatory: data.mandatory,
-      tooltip_text: data.tooltip_text,
-      description: data.description,
       placeholder: data.placeholder,
       possible_values: data.possible_values,
+      service_id: params.id_service,
+      tooltip_text: data.tooltip_text,
+      type: data.type,
     }
 
     const formField = await this.formFieldService.updateFormFieldById(

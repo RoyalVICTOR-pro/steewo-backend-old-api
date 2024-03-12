@@ -1,10 +1,10 @@
 import { inject } from '@adonisjs/core/build/standalone'
 import ClientProfile from '@Models/ClientProfile'
-import { ClientProfileCreateDTO } from '@DTO/ClientProfileCreateDTO'
+import ClientProfileCreateDTO from '@DTO/ClientProfileCreateDTO'
 import ClientProfileRepositoryInterface from '@DALInterfaces/ClientProfileRepositoryInterface'
 
 @inject()
-export class ClientProfileRepository implements ClientProfileRepositoryInterface {
+export default class ClientProfileRepository implements ClientProfileRepositoryInterface {
   public async createClientProfile(data: ClientProfileCreateDTO): Promise<ClientProfile> {
     const clientProfile = new ClientProfile()
     clientProfile.user_id = data.user_id

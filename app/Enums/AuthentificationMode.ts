@@ -1,7 +1,7 @@
 enum AuthentificationMode {
-  INTERNAL = 'internal',
-  GOOGLE = 'google',
   FACEBOOK = 'facebook',
+  GOOGLE = 'google',
+  INTERNAL = 'internal',
 }
 
 export default AuthentificationMode

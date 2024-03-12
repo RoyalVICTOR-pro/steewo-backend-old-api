@@ -1,13 +1,11 @@
-// Générer les méthodes CRUD pour le modèle Service
-
-import ServicesFormField from '@Models/ServicesFormField'
-import { FormFieldCreateOrUpdateDTO } from '@DTO/FormFieldCreateOrUpdateDTO'
-import FormFieldRepositoryInterface from '@DALInterfaces/FormFieldRepositoryInterface'
 import { inject } from '@adonisjs/core/build/standalone'
-import { FormFieldUpdateOrderDTO } from '@DTO/FormFieldUpdateOrderDTO'
+import FormFieldCreateOrUpdateDTO from '@DTO/FormFieldCreateOrUpdateDTO'
+import FormFieldRepositoryInterface from '@DALInterfaces/FormFieldRepositoryInterface'
+import FormFieldUpdateOrderDTO from '@DTO/FormFieldUpdateOrderDTO'
+import ServicesFormField from '@Models/ServicesFormField'
 
 @inject()
-export class FormFieldRepository implements FormFieldRepositoryInterface {
+export default class FormFieldRepository implements FormFieldRepositoryInterface {
   public async listFormFieldsByService(serviceId: number): Promise<ServicesFormField[]> {
     const formFields = await ServicesFormField.query()
       .where('service_id', serviceId)

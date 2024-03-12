@@ -1,13 +1,11 @@
-// Générer les méthodes CRUD pour le modèle Profession
-
-import Profession from '@Models/Profession'
-import { ProfessionCreateOrUpdateDTO } from '@DTO/ProfessionCreateOrUpdateDTO'
-import { ProfessionStatusUpdateDTO } from '@DTO/ProfessionStatusUpdateDTO'
-import ProfessionRepositoryInterface from '@DALInterfaces/ProfessionRepositoryInterface'
 import { inject } from '@adonisjs/core/build/standalone'
+import Profession from '@Models/Profession'
+import ProfessionCreateOrUpdateDTO from '@DTO/ProfessionCreateOrUpdateDTO'
+import ProfessionRepositoryInterface from '@DALInterfaces/ProfessionRepositoryInterface'
+import ProfessionStatusUpdateDTO from '@DTO/ProfessionStatusUpdateDTO'
 
 @inject()
-export class ProfessionRepository implements ProfessionRepositoryInterface {
+export default class ProfessionRepository implements ProfessionRepositoryInterface {
   public async listProfessions(): Promise<Profession[]> {
     // const professions = await Profession.all()
     const professions = await Profession.query().orderBy('name', 'asc')

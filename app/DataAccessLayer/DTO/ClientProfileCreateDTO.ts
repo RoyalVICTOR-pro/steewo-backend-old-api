@@ -1,22 +1,22 @@
-import Role from '@Enums/Roles'
-import ClientUserStatus from '@Enums/ClientUserStatus'
 import { DateTime } from 'luxon'
+import ClientUserStatus from '@Enums/ClientUserStatus'
+import Role from '@Enums/Roles'
 
-export interface ClientProfileCreateDTO {
-  user_id: number
-  role: Role
-  status: ClientUserStatus
+export default interface ClientProfileCreateDTO {
+  address_city?: string | null
+  address_number?: string | null
+  address_postal_code?: string | null
+  address_road?: string | null
+  cgv_acceptation: DateTime
+  company_name?: string | null
+  date_of_birth: DateTime
   firstname: string
   lastname: string
-  date_of_birth: DateTime
   phone?: string | null
-  address_number?: string | null
-  address_road?: string | null
-  address_postal_code?: string | null
-  address_city?: string | null
-  company_name?: string | null
   position?: string | null
-  siret_number?: string | null
   privacy_acceptation: DateTime
-  cgv_acceptation: DateTime
+  role: Role
+  siret_number?: string | null
+  status: ClientUserStatus
+  user_id: number
 }

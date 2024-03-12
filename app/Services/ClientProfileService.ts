@@ -1,12 +1,12 @@
-import { ClientProfileRepository } from '@DALRepositories/ClientProfileRepository'
-import { UserRepository } from '@DALRepositories/UserRepository'
-import { ClientProfileCreateDTO } from '@DTO/ClientProfileCreateDTO'
 import { inject, Exception } from '@adonisjs/core/build/standalone'
+import ClientProfileCreateDTO from '@DTO/ClientProfileCreateDTO'
+import ClientProfileRepository from '@DALRepositories/ClientProfileRepository'
 import ClientProfileServiceInterface from '@Services/Interfaces/ClientProfileServiceInterface'
 import MailService from '@Services/MailService'
+import UserRepository from '@DALRepositories/UserRepository'
 
 @inject()
-export class ClientProfileService implements ClientProfileServiceInterface {
+export default class ClientProfileService implements ClientProfileServiceInterface {
   private clientProfileRepository: ClientProfileRepository
   private userRepository: UserRepository
 

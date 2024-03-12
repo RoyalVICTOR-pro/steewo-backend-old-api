@@ -1,14 +1,14 @@
 import { inject, Exception } from '@adonisjs/core/build/standalone'
 import StudentProfile from '@Models/StudentProfile'
-import { StudentProfileCreateDTO } from '@DTO/StudentProfileCreateDTO'
+import StudentProfileBannerUpdateDTO from '@DTO/StudentProfileBannerUpdateDTO'
+import StudentProfileCreateDTO from '@DTO/StudentProfileCreateDTO'
+import StudentProfileDescriptionUpdateDTO from '@DTO/StudentProfileDescriptionUpdateDTO'
+import StudentProfileMainUpdateDTO from '@DTO/StudentProfileMainUpdateDTO'
+import StudentProfilePhotoUpdateDTO from '@DTO/StudentProfilePhotoUpdateDTO'
 import StudentProfileRepositoryInterface from '@DALInterfaces/StudentProfileRepositoryInterface'
-import { StudentProfileMainUpdateDTO } from '@DTO/StudentProfileMainUpdateDTO'
-import { StudentProfilePhotoUpdateDTO } from '@DTO/StudentProfilePhotoUpdateDTO'
-import { StudentProfileBannerUpdateDTO } from '@DTO/StudentProfileBannerUpdateDTO'
-import { StudentProfileDescriptionUpdateDTO } from '@DTO/StudentProfileDescriptionUpdateDTO'
 
 @inject()
-export class StudentProfileRepository implements StudentProfileRepositoryInterface {
+export default class StudentProfileRepository implements StudentProfileRepositoryInterface {
   public async createStudentProfile(data: StudentProfileCreateDTO): Promise<StudentProfile> {
     const studentProfile = new StudentProfile()
     studentProfile.user_id = data.user_id

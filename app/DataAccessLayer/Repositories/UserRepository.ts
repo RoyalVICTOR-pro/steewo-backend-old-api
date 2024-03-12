@@ -1,12 +1,12 @@
 import { inject } from '@adonisjs/core/build/standalone'
 import User from '@Models/User'
-import { UserCreateDTO } from '@DTO/UserCreateDTO'
+import UserCreateDTO from '@DTO/UserCreateDTO'
 import UserRepositoryInterface from '@DALInterfaces/UserRepositoryInterface'
-import { UserUpdateDTO } from '@DTO/UserUpdateDTO'
-import { UserUpdatePasswordDTO } from '@DTO/UserUpdatePasswordDTO'
+import UserUpdateDTO from '@DTO/UserUpdateDTO'
+import UserUpdatePasswordDTO from '@DTO/UserUpdatePasswordDTO'
 
 @inject()
-export class UserRepository implements UserRepositoryInterface {
+export default class UserRepository implements UserRepositoryInterface {
   public async createUser(data: UserCreateDTO): Promise<User> {
     const user = new User()
     user.email = data.email

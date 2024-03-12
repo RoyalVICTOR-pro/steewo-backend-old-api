@@ -1,9 +1,9 @@
-import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { ClientProfileService } from '@Services/ClientProfileService'
-import ClientProfessionalProfileCreateValidator from '@Validators/ClientProfessionalProfileCreateValidator'
-import ClientIndividualProfileCreateValidator from '@Validators/ClientIndividualProfileCreateValidator'
-import { ClientProfileCreateDTO } from '@DTO/ClientProfileCreateDTO'
 import { inject } from '@adonisjs/core/build/standalone'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import ClientIndividualProfileCreateValidator from '@Validators/ClientIndividualProfileCreateValidator'
+import ClientProfessionalProfileCreateValidator from '@Validators/ClientProfessionalProfileCreateValidator'
+import ClientProfileCreateDTO from '@DTO/ClientProfileCreateDTO'
+import ClientProfileService from '@Services/ClientProfileService'
 
 @inject()
 export default class ClientProfilesController {

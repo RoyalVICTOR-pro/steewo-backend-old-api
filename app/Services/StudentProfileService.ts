@@ -1,20 +1,20 @@
+import { getDatetimeForFileName } from '@Utils/Various'
 import { inject, Exception } from '@adonisjs/core/build/standalone'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
-import { StudentProfileCreateDTO } from '@DTO/StudentProfileCreateDTO'
-import { StudentProfileMainUpdateDTO } from '@DTO/StudentProfileMainUpdateDTO'
-import { StudentProfilePhotoUpdateDTO } from '@DTO/StudentProfilePhotoUpdateDTO'
-import { StudentProfileBannerUpdateDTO } from '@DTO/StudentProfileBannerUpdateDTO'
-import { StudentProfileDescriptionUpdateDTO } from '@DTO/StudentProfileDescriptionUpdateDTO'
-import { StudentProfileRepository } from '@DALRepositories/StudentProfileRepository'
-import { UserRepository } from '@DALRepositories/UserRepository'
 import MailService from '@Services/MailService'
+import StudentProfileBannerUpdateDTO from '@DTO/StudentProfileBannerUpdateDTO'
+import StudentProfileCreateDTO from '@DTO/StudentProfileCreateDTO'
+import StudentProfileDescriptionUpdateDTO from '@DTO/StudentProfileDescriptionUpdateDTO'
+import StudentProfileMainUpdateDTO from '@DTO/StudentProfileMainUpdateDTO'
+import StudentProfilePhotoUpdateDTO from '@DTO/StudentProfilePhotoUpdateDTO'
+import StudentProfileRepository from '@DALRepositories/StudentProfileRepository'
 import StudentProfileServiceInterface from '@Services/Interfaces/StudentProfileServiceInterface'
 import StudentUserStatus from '@Enums/StudentUserStatus'
 import UploadService from '@Services/UploadService'
-import { getDatetimeForFileName } from '@Utils/Various'
+import UserRepository from '@DALRepositories/UserRepository'
 
 @inject()
-export class StudentProfileService implements StudentProfileServiceInterface {
+export default class StudentProfileService implements StudentProfileServiceInterface {
   private studentProfileRepository: StudentProfileRepository
   private userRepository: UserRepository
   private readonly studentProfilePath = 'students/profiles/'

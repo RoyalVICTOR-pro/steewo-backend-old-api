@@ -1,22 +1,22 @@
-import { FailedLoginAttemptRepository } from '@DALRepositories/FailedLoginAttemptRepository'
-import { inject, Exception } from '@adonisjs/core/build/standalone'
-import { UserCreateDTO } from '@DTO/UserCreateDTO'
-import Config from '@ioc:Adonis/Core/Config'
-import AuthServiceInterface from '@Services/Interfaces/AuthServiceInterface'
-import { UserRepository } from '@DALRepositories/UserRepository'
 import { AuthContract } from '@ioc:Adonis/Addons/Auth'
-import TooManyRequestsException from '@Exceptions/TooManyRequestsException'
-import { v4 as uuidv4 } from 'uuid'
-import { UserUpdateDTO } from '@DTO/UserUpdateDTO'
-import { UserUpdatePasswordDTO } from '@DTO/UserUpdatePasswordDTO'
 import { DateTime } from 'luxon'
-import User from '@Models/User'
+import { inject, Exception } from '@adonisjs/core/build/standalone'
+import { v4 as uuidv4 } from 'uuid'
 import ApiToken from '@Models/ApiToken'
+import AuthServiceInterface from '@Services/Interfaces/AuthServiceInterface'
+import Config from '@ioc:Adonis/Core/Config'
+import FailedLoginAttemptRepository from '@DALRepositories/FailedLoginAttemptRepository'
 import MailService from '@Services/MailService'
+import TooManyRequestsException from '@Exceptions/TooManyRequestsException'
+import User from '@Models/User'
+import UserCreateDTO from '@DTO/UserCreateDTO'
+import UserRepository from '@DALRepositories/UserRepository'
 import UserStatus from '@Enums/UserStatus'
+import UserUpdateDTO from '@DTO/UserUpdateDTO'
+import UserUpdatePasswordDTO from '@DTO/UserUpdatePasswordDTO'
 
 @inject()
-export class AuthService implements AuthServiceInterface {
+export default class AuthService implements AuthServiceInterface {
   private userRepository: UserRepository
   constructor(userRepository: UserRepository) {
     this.userRepository = userRepository

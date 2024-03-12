@@ -1,5 +1,5 @@
-import Mail from '@ioc:Adonis/Addons/Mail'
 import Env from '@ioc:Adonis/Core/Env'
+import Mail from '@ioc:Adonis/Addons/Mail'
 
 export default class MailService {
   private static shouldSendEmail: boolean = Env.get('SEND_EMAIL')

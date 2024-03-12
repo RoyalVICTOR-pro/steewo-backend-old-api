@@ -1,6 +1,6 @@
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
-import slugify from 'slugify'
 import Drive from '@ioc:Adonis/Core/Drive'
+import slugify from 'slugify'
 
 export default class UploadService {
   public static async uploadFileTo(

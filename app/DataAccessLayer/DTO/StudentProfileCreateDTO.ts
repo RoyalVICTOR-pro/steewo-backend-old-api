@@ -1,19 +1,19 @@
+import { DateTime } from 'luxon'
 import Role from '@Enums/Roles'
 import StudentUserStatus from '@Enums/StudentUserStatus'
-import { DateTime } from 'luxon'
 
-export interface StudentProfileCreateDTO {
-  user_id: number
-  role: Role
-  status: StudentUserStatus
-  firstname: string
-  lastname: string
-  date_of_birth: DateTime
-  mobile?: string | null
-  last_diploma: string
-  last_diploma_school: string
+export default interface StudentProfileCreateDTO {
+  cgv_acceptation: DateTime
   current_diploma: string
   current_school: string
+  date_of_birth: DateTime
+  firstname: string
+  last_diploma_school: string
+  last_diploma: string
+  lastname: string
+  mobile?: string | null
   privacy_acceptation: DateTime
-  cgv_acceptation: DateTime
+  role: Role
+  status: StudentUserStatus
+  user_id: number
 }

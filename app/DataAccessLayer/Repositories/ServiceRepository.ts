@@ -1,13 +1,11 @@
-// Générer les méthodes CRUD pour le modèle Service
-
-import Service from '@Models/Service'
-import { ServiceCreateOrUpdateDTO } from '@DTO/ServiceCreateOrUpdateDTO'
-import { ServiceStatusUpdateDTO } from '@DTO/ServiceStatusUpdateDTO'
-import ServiceRepositoryInterface from '@DALInterfaces/ServiceRepositoryInterface'
 import { inject } from '@adonisjs/core/build/standalone'
+import Service from '@Models/Service'
+import ServiceCreateOrUpdateDTO from '@DTO/ServiceCreateOrUpdateDTO'
+import ServiceRepositoryInterface from '@DALInterfaces/ServiceRepositoryInterface'
+import ServiceStatusUpdateDTO from '@DTO/ServiceStatusUpdateDTO'
 
 @inject()
-export class ServiceRepository implements ServiceRepositoryInterface {
+export default class ServiceRepository implements ServiceRepositoryInterface {
   public async listServicesByProfession(professionId: number): Promise<Service[]> {
     const services = await Service.query().where('profession_id', professionId).orderBy('name')
     return services

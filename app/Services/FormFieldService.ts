@@ -1,13 +1,13 @@
-import { FormFieldCreateOrUpdateDTO } from '@DTO/FormFieldCreateOrUpdateDTO'
 import { inject } from '@adonisjs/core/build/standalone'
-import FormFieldServiceInterface from '@Services/Interfaces/FormFieldServiceInterface'
-import { FormFieldRepository } from '@DALRepositories/FormFieldRepository'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
+import FormFieldCreateOrUpdateDTO from '@DTO/FormFieldCreateOrUpdateDTO'
+import FormFieldRepository from '@DALRepositories/FormFieldRepository'
+import FormFieldServiceInterface from '@Services/Interfaces/FormFieldServiceInterface'
+import FormFieldUpdateOrderDTO from '@DTO/FormFieldUpdateOrderDTO'
 import UploadService from '@Services/UploadService'
-import { FormFieldUpdateOrderDTO } from '@DTO/FormFieldUpdateOrderDTO'
 
 @inject()
-export class FormFieldService implements FormFieldServiceInterface {
+export default class FormFieldService implements FormFieldServiceInterface {
   private formFieldRepository: FormFieldRepository
   private readonly tooltipImagePath = 'form-fields/tooltip-images/'
 

@@ -1,7 +1,7 @@
 import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Role from '@Enums/Roles'
 import ClientUserStatus from '@Enums/ClientUserStatus'
+import Role from '@Enums/Roles'
 
 export default class ClientIndividualProfileCreateValidator {
   constructor(protected ctx: HttpContextContract) {}

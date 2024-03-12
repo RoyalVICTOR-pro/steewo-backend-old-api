@@ -1,5 +1,5 @@
 import StudentProfile from '@Models/StudentProfile'
-import { StudentProfileCreateDTO } from '@DTO/StudentProfileCreateDTO'
+import StudentProfileCreateDTO from '@DTO/StudentProfileCreateDTO'
 
 export default interface StudentProfileRepositoryInterface {
   createStudentProfile(data: StudentProfileCreateDTO): Promise<StudentProfile>

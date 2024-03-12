@@ -1,12 +1,12 @@
-import { ProfessionCreateOrUpdateDTO } from '@DTO/ProfessionCreateOrUpdateDTO'
-import { ProfessionStatusUpdateDTO } from '@DTO/ProfessionStatusUpdateDTO'
 import { inject } from '@adonisjs/core/build/standalone'
-import ProfessionServiceInterface from '@Services/Interfaces/ProfessionServiceInterface'
-import { ProfessionRepository } from '@DALRepositories/ProfessionRepository'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
+import ProfessionCreateOrUpdateDTO from '@DTO/ProfessionCreateOrUpdateDTO'
+import ProfessionRepository from '@DALRepositories/ProfessionRepository'
+import ProfessionServiceInterface from '@Services/Interfaces/ProfessionServiceInterface'
+import ProfessionStatusUpdateDTO from '@DTO/ProfessionStatusUpdateDTO'
 import UploadService from '@Services/UploadService'
 @inject()
-export class ProfessionService implements ProfessionServiceInterface {
+export default class ProfessionService implements ProfessionServiceInterface {
   private professionRepository: ProfessionRepository
   private readonly pictoPath = 'professions/pictos/'
   private readonly imagePath = 'professions/images/'

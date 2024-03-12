@@ -1,3 +1,3 @@
-export interface ProfessionStatusUpdateDTO {
+export default interface ProfessionStatusUpdateDTO {
   is_enabled: boolean
 }
