@@ -33,12 +33,7 @@ export default class ServiceRepository implements ServiceRepositoryInterface {
     data: ServiceCreateOrUpdateDTO
   ): Promise<Service> {
     const service = await Service.findOrFail(idToUpdate)
-    service.name = data.name
-    service.short_name = data.short_name
-    service.profession_id = data.profession_id
-    if (data.is_enabled !== undefined) service.is_enabled = data.is_enabled
-    if (data.picto_file) service.picto_file = data.picto_file
-    if (data.image_file) service.image_file = data.image_file
+    service.merge(data)
     await service.save()
     return service
   }

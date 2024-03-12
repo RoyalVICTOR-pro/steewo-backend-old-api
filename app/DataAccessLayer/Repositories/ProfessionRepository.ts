@@ -19,10 +19,7 @@ export default class ProfessionRepository implements ProfessionRepositoryInterfa
 
   public async createProfession(data: ProfessionCreateOrUpdateDTO): Promise<Profession> {
     const profession = new Profession()
-    profession.name = data.name
-    if (data.picto_file) profession.picto_file = data.picto_file
-    if (data.image_file) profession.image_file = data.image_file
-    if (data.is_enabled !== undefined) profession.is_enabled = data.is_enabled
+    profession.merge(data)
     await profession.save()
     return profession
   }
@@ -32,10 +29,7 @@ export default class ProfessionRepository implements ProfessionRepositoryInterfa
     data: ProfessionCreateOrUpdateDTO
   ): Promise<Profession> {
     const profession = await Profession.findOrFail(idToUpdate)
-    profession.name = data.name
-    if (data.picto_file) profession.picto_file = data.picto_file
-    if (data.image_file) profession.image_file = data.image_file
-    if (data.is_enabled !== undefined) profession.is_enabled = data.is_enabled
+    profession.merge(data)
     await profession.save()
     return profession
   }

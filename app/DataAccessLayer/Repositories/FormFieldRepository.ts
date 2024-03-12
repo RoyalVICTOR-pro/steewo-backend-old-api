@@ -53,11 +53,11 @@ export default class FormFieldRepository implements FormFieldRepositoryInterface
     data: FormFieldCreateOrUpdateDTO
   ): Promise<ServicesFormField> {
     const formField = await ServicesFormField.findOrFail(idToUpdate)
+    // Pendant les tests, je me suis rendu compte que la mise à jour ne fonctionnait pas si on envoyait une chaîne de caractères vide
+    // car Adonis la considère comme undefined.J'ai donc ajouté ces conditions pour éviter ce problème.
     formField.type = data.type
     formField.label = data.label
     formField.mandatory = data.mandatory
-    // Pendant les tests, je me suis rendu compte que la mise à jour ne fonctionnait pas si on envoyait une chaîne de caractères vide
-    // car Adonis la considère comme undefined.J'ai donc ajouté ces conditions pour éviter ce problème.
     if (data.tooltip_image_file !== undefined)
       formField.tooltip_image_file = data.tooltip_image_file
     if (data.tooltip_text !== undefined) formField.tooltip_text = data.tooltip_text
