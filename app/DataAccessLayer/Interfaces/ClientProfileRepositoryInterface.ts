@@ -1,4 +1,4 @@
-import ClientProfile from 'App/Models/ClientProfile'
+import ClientProfile from '@Models/ClientProfile'
 import { ClientProfileCreateDTO } from '@DTO/ClientProfileCreateDTO'
 
 export default interface ClientProfileRepositoryInterface {

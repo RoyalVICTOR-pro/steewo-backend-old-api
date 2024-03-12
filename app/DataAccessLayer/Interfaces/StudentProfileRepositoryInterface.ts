@@ -1,4 +1,4 @@
-import StudentProfile from 'App/Models/StudentProfile'
+import StudentProfile from '@Models/StudentProfile'
 import { StudentProfileCreateDTO } from '@DTO/StudentProfileCreateDTO'
 
 export default interface StudentProfileRepositoryInterface {

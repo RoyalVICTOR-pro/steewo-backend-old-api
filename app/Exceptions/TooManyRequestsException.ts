@@ -1,5 +1,3 @@
-// app/Exceptions/TooManyRequestsException.ts
-
 import { Exception } from '@adonisjs/core/build/standalone'
 
 export default class TooManyRequestsException extends Exception {

@@ -20,7 +20,10 @@
     "@DALInterfaces": "app/DataAccessLayer/Interfaces",
     "@DALRepositories": "app/DataAccessLayer/Repositories",
     "@Enums": "app/Enums",
-    "@Validators": "app/Validators"
+    "@Validators": "app/Validators",
+    "@Exceptions": "app/Exceptions",
+    "@Middleware": "app/Middleware",
+    "@Utils": "app/Utils"
   },
   "preloads": ["./start/routes", "./start/kernel"],
   "providers": [

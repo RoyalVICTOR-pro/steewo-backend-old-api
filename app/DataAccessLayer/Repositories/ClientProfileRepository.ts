@@ -1,5 +1,5 @@
 import { inject } from '@adonisjs/core/build/standalone'
-import ClientProfile from 'App/Models/ClientProfile'
+import ClientProfile from '@Models/ClientProfile'
 import { ClientProfileCreateDTO } from '@DTO/ClientProfileCreateDTO'
 import ClientProfileRepositoryInterface from '@DALInterfaces/ClientProfileRepositoryInterface'
 

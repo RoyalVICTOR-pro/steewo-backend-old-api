@@ -1,5 +1,5 @@
-import Role from 'App/Enums/Roles'
-import ClientUserStatus from 'App/Enums/ClientUserStatus'
+import Role from '@Enums/Roles'
+import ClientUserStatus from '@Enums/ClientUserStatus'
 import { DateTime } from 'luxon'
 
 export interface ClientProfileCreateDTO {

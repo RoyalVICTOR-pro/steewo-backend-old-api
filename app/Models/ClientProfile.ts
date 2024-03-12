@@ -2,7 +2,7 @@ import { compose } from '@ioc:Adonis/Core/Helpers'
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 import { DateTime } from 'luxon'
 import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
-import User from './User'
+import User from '@Models/User'
 
 export default class ClientProfile extends compose(BaseModel, SoftDeletes) {
   @column({ isPrimary: true })

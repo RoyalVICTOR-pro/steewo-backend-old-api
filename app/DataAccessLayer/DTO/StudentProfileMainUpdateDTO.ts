@@ -1,4 +1,4 @@
-import Gender from 'App/Enums/Gender'
+import Gender from '@Enums/Gender'
 import { DateTime } from 'luxon'
 
 export interface StudentProfileMainUpdateDTO {

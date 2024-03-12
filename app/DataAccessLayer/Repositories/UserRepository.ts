@@ -2,8 +2,8 @@ import { inject } from '@adonisjs/core/build/standalone'
 import User from '@Models/User'
 import { UserCreateDTO } from '@DTO/UserCreateDTO'
 import UserRepositoryInterface from '@DALInterfaces/UserRepositoryInterface'
-import { UserUpdateDTO } from '../DTO/UserUpdateDTO'
-import { UserUpdatePasswordDTO } from '../DTO/UserUpdatePasswordDTO'
+import { UserUpdateDTO } from '@DTO/UserUpdateDTO'
+import { UserUpdatePasswordDTO } from '@DTO/UserUpdatePasswordDTO'
 
 @inject()
 export class UserRepository implements UserRepositoryInterface {

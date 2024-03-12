@@ -1,6 +1,6 @@
-import ClientUserStatus from 'App/Enums/ClientUserStatus'
-import Role from 'App/Enums/Roles'
-import StudentUserStatus from 'App/Enums/StudentUserStatus'
+import ClientUserStatus from '@Enums/ClientUserStatus'
+import Role from '@Enums/Roles'
+import StudentUserStatus from '@Enums/StudentUserStatus'
 import { DateTime } from 'luxon'
 
 export interface UserUpdateDTO {

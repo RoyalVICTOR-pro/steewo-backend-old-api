@@ -7,6 +7,7 @@ import Country from '@Models/Country'
 import Role from '@Enums/Roles'
 import StudentUserStatus from '@Enums/StudentUserStatus'
 import ClientUserStatus from '@Enums/ClientUserStatus'
+import UserStatus from '@Enums/UserStatus'
 import AuthentificationMode from '@Enums/AuthentificationMode'
 
 export default class User extends compose(BaseModel, SoftDeletes) {
@@ -29,7 +30,7 @@ export default class User extends compose(BaseModel, SoftDeletes) {
   public role: Role
 
   @column()
-  public status: StudentUserStatus | ClientUserStatus
+  public status: UserStatus | StudentUserStatus | ClientUserStatus
 
   @column()
   public user_language: string

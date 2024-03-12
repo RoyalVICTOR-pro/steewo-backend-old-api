@@ -4,7 +4,7 @@ import ServicesFormField from '@Models/ServicesFormField'
 import { FormFieldCreateOrUpdateDTO } from '@DTO/FormFieldCreateOrUpdateDTO'
 import FormFieldRepositoryInterface from '@DALInterfaces/FormFieldRepositoryInterface'
 import { inject } from '@adonisjs/core/build/standalone'
-import { FormFieldUpdateOrderDTO } from '../DTO/FormFieldUpdateOrderDTO'
+import { FormFieldUpdateOrderDTO } from '@DTO/FormFieldUpdateOrderDTO'
 
 @inject()
 export class FormFieldRepository implements FormFieldRepositoryInterface {

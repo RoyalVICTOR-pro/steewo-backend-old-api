@@ -1,5 +1,5 @@
 import { inject, Exception } from '@adonisjs/core/build/standalone'
-import StudentProfile from 'App/Models/StudentProfile'
+import StudentProfile from '@Models/StudentProfile'
 import { StudentProfileCreateDTO } from '@DTO/StudentProfileCreateDTO'
 import StudentProfileRepositoryInterface from '@DALInterfaces/StudentProfileRepositoryInterface'
 import { StudentProfileMainUpdateDTO } from '@DTO/StudentProfileMainUpdateDTO'

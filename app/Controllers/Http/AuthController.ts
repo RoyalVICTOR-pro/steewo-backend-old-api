@@ -7,9 +7,9 @@ import UserCreateValidator from '@Validators/UserCreateValidator'
 import UserLoginValidator from '@Validators/UserLoginValidator'
 import UserForgotPasswordValidator from '@Validators/UserForgotPasswordValidator'
 import UserResetPasswordValidator from '@Validators/UserResetPasswordValidator'
-import TooManyRequestsException from 'App/Exceptions/TooManyRequestsException'
-import Role from 'App/Enums/Roles'
-import UserStatus from 'App/Enums/UserStatus'
+import TooManyRequestsException from '@Exceptions/TooManyRequestsException'
+import Role from '@Enums/Roles'
+import UserStatus from '@Enums/UserStatus'
 import Config from '@ioc:Adonis/Core/Config'
 
 const acceptLanguage = require('accept-language-parser')

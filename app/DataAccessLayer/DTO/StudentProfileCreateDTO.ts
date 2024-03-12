@@ -1,5 +1,5 @@
-import Role from 'App/Enums/Roles'
-import StudentUserStatus from 'App/Enums/StudentUserStatus'
+import Role from '@Enums/Roles'
+import StudentUserStatus from '@Enums/StudentUserStatus'
 import { DateTime } from 'luxon'
 
 export interface StudentProfileCreateDTO {

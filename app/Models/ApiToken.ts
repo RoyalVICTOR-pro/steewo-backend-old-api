@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
-import User from './User'
+import User from '@Models/User'
 
 export default class ApiToken extends BaseModel {
   @column({ isPrimary: true })

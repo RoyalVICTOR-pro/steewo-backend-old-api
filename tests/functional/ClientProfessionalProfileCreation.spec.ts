@@ -1,8 +1,8 @@
 import { test } from '@japa/runner'
 import supertest from 'supertest'
 import { FakeClientForTest } from './helpers/Client.helper'
-import Role from 'App/Enums/Roles'
-import ClientUserStatus from 'App/Enums/ClientUserStatus'
+import Role from '@Enums/Roles'
+import ClientUserStatus from '@Enums/ClientUserStatus'
 
 const BASE_URL = `${process.env.TEST_API_URL}`
 

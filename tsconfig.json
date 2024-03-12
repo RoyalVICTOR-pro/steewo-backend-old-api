@@ -1,54 +1,28 @@
 {
   "strict": true,
   "extends": "adonis-preset-ts/tsconfig.json",
-  "include": [
-    "**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "build"
-  ],
+  "include": ["**/*"],
+  "exclude": ["node_modules", "build"],
   "compilerOptions": {
     "outDir": "build",
     "rootDir": "./",
     "sourceMap": true,
     "paths": {
-      "App/*": [
-        "./app/*"
-      ],
-      "Config/*": [
-        "./config/*"
-      ],
-      "Contracts/*": [
-        "./contracts/*"
-      ],
-      "Database/*": [
-        "./database/*"
-      ],
-      "@Models/*": [
-        "./app/Models/*"
-      ],
-      "@Controllers/*": [
-        "./app/Controllers/Http/*"
-      ],
-      "@Services/*": [
-        "./app/Services/*"
-      ],
-      "@DTO/*": [
-        "./app/DataAccessLayer/DTO/*"
-      ],
-      "@DALInterfaces/*": [
-        "./app/DataAccessLayer/Interfaces/*"
-      ],
-      "@DALRepositories/*": [
-        "./app/DataAccessLayer/Repositories/*"
-      ],
-      "@Enums/*": [
-        "./app/Enums/*"
-      ],
-      "@Validators/*": [
-        "./app/Validators/*"
-      ]
+      "App/*": ["./app/*"],
+      "Config/*": ["./config/*"],
+      "Contracts/*": ["./contracts/*"],
+      "Database/*": ["./database/*"],
+      "@Models/*": ["./app/Models/*"],
+      "@Controllers/*": ["./app/Controllers/Http/*"],
+      "@Services/*": ["./app/Services/*"],
+      "@DTO/*": ["./app/DataAccessLayer/DTO/*"],
+      "@DALInterfaces/*": ["./app/DataAccessLayer/Interfaces/*"],
+      "@DALRepositories/*": ["./app/DataAccessLayer/Repositories/*"],
+      "@Enums/*": ["./app/Enums/*"],
+      "@Validators/*": ["./app/Validators/*"],
+      "@Exceptions/*": ["./app/Exceptions/*"],
+      "@Middleware/*": ["./app/Middleware/*"],
+      "@Utils/*": ["./app/Utils/*"]
     },
     "types": [
       "@adonisjs/core",

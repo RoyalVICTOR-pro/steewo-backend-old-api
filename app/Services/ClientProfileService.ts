@@ -1,5 +1,5 @@
-import { ClientProfileRepository } from './../DataAccessLayer/Repositories/ClientProfileRepository'
-import { UserRepository } from 'App/DataAccessLayer/Repositories/UserRepository'
+import { ClientProfileRepository } from '@DALRepositories/ClientProfileRepository'
+import { UserRepository } from '@DALRepositories/UserRepository'
 import { ClientProfileCreateDTO } from '@DTO/ClientProfileCreateDTO'
 import { inject, Exception } from '@adonisjs/core/build/standalone'
 import ClientProfileServiceInterface from '@Services/Interfaces/ClientProfileServiceInterface'

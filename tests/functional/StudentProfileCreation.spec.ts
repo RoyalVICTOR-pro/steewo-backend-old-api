@@ -1,8 +1,8 @@
 import { test } from '@japa/runner'
 import supertest from 'supertest'
 import { FakeStudentForTest } from './helpers/Student.helper'
-import Role from 'App/Enums/Roles'
-import StudentUserStatus from 'App/Enums/StudentUserStatus'
+import Role from '@Enums/Roles'
+import StudentUserStatus from '@Enums/StudentUserStatus'
 
 const BASE_URL = `${process.env.TEST_API_URL}`
 
