@@ -225,4 +225,18 @@ export default class StudentProfileService implements StudentProfileServiceInter
       updatedDescription
     )
   }
+
+  public async acceptStudentCharter(user_id: number) {
+    const user = await this.userRepository.getUserById(user_id)
+    if (!user) {
+      throw new Exception('User not found', 404, 'E_NOT_FOUND')
+    }
+    if (user.status < StudentUserStatus.ACCOUNT_CREATED) {
+      throw new Exception('User not available', 403, 'E_FORBIDDEN')
+    }
+    const updatedCharterAcceptation = {
+      has_accepted_steewo_charter: true,
+    }
+    return await this.userRepository.updateUserData(user, updatedCharterAcceptation)
+  }
 }

@@ -35,4 +35,7 @@ Route.group(() => {
   )
     .as('updateStudentProfileDescription')
     .middleware(['auth', 'isStudentProfileOwner'])
+  Route.patch('/accept-student-charter/:user_id', 'StudentsController.acceptStudentCharter')
+    .as('acceptStudentCharter')
+    .middleware(['auth', 'isStudentProfileOwner'])
 }).prefix('/v1')

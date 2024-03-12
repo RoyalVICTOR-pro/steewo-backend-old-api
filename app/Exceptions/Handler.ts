@@ -27,26 +27,26 @@ export default class ExceptionHandler extends HttpExceptionHandler {
     // console.log('error status :>> ', error.status)
     // console.log('error complète :>> ', error)
 
+    if (error.status === 400) {
+      // Gestion des erreurs 400 (Bad Request)
+      return ctx.response.status(error.status).send('Requête incorrecte')
+    }
+
     if (error.status === 401) {
       return ctx.response.status(error.status).send("Vous n'avez pas accès à cette ressource")
-      // return ctx.response.status(error.status).json({
-      //   message: "Vous n'avez pas accès à cette ressource",
-      // })
     }
 
     if (error.status === 404) {
-      // Gestion des erreurs 404 (Not Found)
       return ctx.response.status(error.status).send('Ressource introuvable')
     }
 
     if (error.status === 409) {
-      // Gestion des erreurs 404 (Not Found)
       return ctx.response.status(error.status).send('Ressource déjà existante')
     }
 
     if (error.status === 422) {
-      // console.log('error.messages :>> ', JSON.stringify(error.messages))
       // Gestion des erreurs de validation
+      // console.log('error.messages :>> ', JSON.stringify(error.messages))
       return ctx.response.status(error.status).send(error.messages)
     }
 

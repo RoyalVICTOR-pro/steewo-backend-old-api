@@ -1,4 +1,4 @@
-import { inject } from '@adonisjs/core/build/standalone'
+import { inject, Exception } from '@adonisjs/core/build/standalone'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import StudentProfileBannerUpdateValidator from '@Validators/StudentProfileBannerUpdateValidator'
 import StudentProfileCreateDTO from '@DTO/StudentProfileCreateDTO'
@@ -8,6 +8,7 @@ import StudentProfileMainUpdateDTO from '@DTO/StudentProfileMainUpdateDTO'
 import StudentProfileMainUpdateValidator from '@Validators/StudentProfileMainUpdateValidator'
 import StudentProfilePhotoUpdateValidator from '@Validators/StudentProfilePhotoUpdateValidator'
 import StudentProfileService from '@Services/StudentProfileService'
+import UserCharterAcceptationValidator from '@Validators/UserCharterAcceptationValidator'
 
 @inject()
 export default class StudentProfilesController {
@@ -97,5 +98,16 @@ export default class StudentProfilesController {
       data.description
     )
     return response.ok(studentProfile) // 200 OK
+  }
+
+  public async acceptStudentCharter({ request, params, response }: HttpContextContract) {
+    const data = await request.validate(UserCharterAcceptationValidator)
+    if (data.has_accepted_steewo_charter !== true) {
+      throw new Exception('Charter not accepted', 400, 'E_BAD_REQUEST')
+    }
+    const updatedUser = await this.studentProfileService.acceptStudentCharter(
+      Number(params.user_id)
+    )
+    return response.status(200).send(updatedUser)
   }
 }
