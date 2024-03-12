@@ -51,6 +51,9 @@ export default class ClientProfile extends compose(BaseModel, SoftDeletes) {
   public average_rating: number | null
 
   @column()
+  public gender: number | null
+
+  @column()
   public description: string | null
 
   @column()

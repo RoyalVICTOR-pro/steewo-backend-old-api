@@ -1,14 +1,22 @@
+import { getDatetimeForFileName } from '@Utils/Various'
 import { inject, Exception } from '@adonisjs/core/build/standalone'
+import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
 import ClientProfileCreateDTO from '@DTO/ClientProfileCreateDTO'
+import ClientProfileDescriptionUpdateDTO from '@DTO/ClientProfileDescriptionUpdateDTO'
+import ClientProfileMainUpdateDTO from '@DTO/ClientProfileMainUpdateDTO'
+import ClientProfilePhotoUpdateDTO from '@DTO/ClientProfilePhotoUpdateDTO'
 import ClientProfileRepository from '@DALRepositories/ClientProfileRepository'
 import ClientProfileServiceInterface from '@Services/Interfaces/ClientProfileServiceInterface'
+import ClientUserStatus from '@Enums/ClientUserStatus'
 import MailService from '@Services/MailService'
+import UploadService from '@Services/UploadService'
 import UserRepository from '@DALRepositories/UserRepository'
 
 @inject()
 export default class ClientProfileService implements ClientProfileServiceInterface {
   private clientProfileRepository: ClientProfileRepository
   private userRepository: UserRepository
+  private readonly clientProfilePath = 'client/profiles/'
 
   constructor(clientProfileRepository: ClientProfileRepository) {
     this.clientProfileRepository = clientProfileRepository
@@ -87,5 +95,77 @@ export default class ClientProfileService implements ClientProfileServiceInterfa
       average_rating: clientProfile.average_rating,
     }
     return clientPrivateProfile
+  }
+
+  public async updateClientProfileMainInfo(user_id: number, data: ClientProfileMainUpdateDTO) {
+    const clientProfile = await this.clientProfileRepository.getClientProfileByUserId(user_id)
+    if (!clientProfile) {
+      throw new Exception('Client profile not found', 404, 'E_NOT_FOUND')
+    }
+    if (clientProfile.user.status < ClientUserStatus.ACCOUNT_CREATED) {
+      throw new Exception('User not available', 403, 'E_FORBIDDEN')
+    }
+
+    return await this.clientProfileRepository.updateClientProfileMainInfo(user_id, data)
+  }
+
+  public async updateClientProfilePhoto(
+    user_id: number,
+    photo_file: MultipartFileContract | null = null
+  ) {
+    if (!photo_file) {
+      throw new Exception('You did not provide a photo file.', 400, 'E_BAD_REQUEST')
+    }
+    const clientProfile = await this.clientProfileRepository.getClientProfileByUserId(user_id)
+    if (!clientProfile) {
+      throw new Exception('Client profile not found', 404, 'E_NOT_FOUND')
+    }
+    if (clientProfile.user.status < ClientUserStatus.ACCOUNT_CREATED) {
+      throw new Exception('User not available', 403, 'E_FORBIDDEN')
+    }
+
+    const photoFilepath = await UploadService.uploadFileTo(
+      photo_file,
+      this.clientProfilePath + user_id.toString() + '/',
+      'school_certificate_' + getDatetimeForFileName()
+    )
+
+    const updatedPhoto: ClientProfilePhotoUpdateDTO = {
+      photo_file: photoFilepath,
+    }
+
+    return await this.clientProfileRepository.updateClientProfilePhoto(user_id, updatedPhoto)
+  }
+
+  public async updateClientProfileDescription(user_id: number, description: string) {
+    const clientProfile = await this.clientProfileRepository.getClientProfileByUserId(user_id)
+    if (!clientProfile) {
+      throw new Exception('Client profile not found', 404, 'E_NOT_FOUND')
+    }
+    if (clientProfile.user.status < ClientUserStatus.ACCOUNT_CREATED) {
+      throw new Exception('User not available', 403, 'E_FORBIDDEN')
+    }
+    const updatedDescription: ClientProfileDescriptionUpdateDTO = {
+      description: description,
+    }
+
+    return await this.clientProfileRepository.updateClientProfileDescription(
+      user_id,
+      updatedDescription
+    )
+  }
+
+  public async acceptClientCharter(user_id: number) {
+    const user = await this.userRepository.getUserById(user_id)
+    if (!user) {
+      throw new Exception('User not found', 404, 'E_NOT_FOUND')
+    }
+    if (user.status < ClientUserStatus.ACCOUNT_CREATED) {
+      throw new Exception('User not available', 403, 'E_FORBIDDEN')
+    }
+    const updatedCharterAcceptation = {
+      has_accepted_steewo_charter: true,
+    }
+    return await this.userRepository.updateUserData(user, updatedCharterAcceptation)
   }
 }

@@ -1,6 +1,9 @@
-import { inject } from '@adonisjs/core/build/standalone'
+import { inject, Exception } from '@adonisjs/core/build/standalone'
 import ClientProfile from '@Models/ClientProfile'
 import ClientProfileCreateDTO from '@DTO/ClientProfileCreateDTO'
+import ClientProfileDescriptionUpdateDTO from '@DTO/ClientProfileDescriptionUpdateDTO'
+import ClientProfileMainUpdateDTO from '@DTO/ClientProfileMainUpdateDTO'
+import ClientProfilePhotoUpdateDTO from '@DTO/ClientProfilePhotoUpdateDTO'
 import ClientProfileRepositoryInterface from '@DALInterfaces/ClientProfileRepositoryInterface'
 
 @inject()
@@ -33,6 +36,45 @@ export default class ClientProfileRepository implements ClientProfileRepositoryI
       .where('user_id', userId)
       .preload('user')
       .first()
+    return clientProfile
+  }
+
+  public async updateClientProfileMainInfo(
+    userId: number,
+    data: ClientProfileMainUpdateDTO
+  ): Promise<ClientProfile> {
+    const clientProfile = await ClientProfile.findBy('user_id', userId)
+    if (!clientProfile) {
+      throw new Exception('Client profile not found', 404, 'E_NOT_FOUND')
+    }
+    clientProfile.merge(data)
+    await clientProfile.save()
+    return clientProfile
+  }
+
+  public async updateClientProfilePhoto(
+    userId: number,
+    data: ClientProfilePhotoUpdateDTO
+  ): Promise<ClientProfile> {
+    const clientProfile = await ClientProfile.findBy('user_id', userId)
+    if (!clientProfile) {
+      throw new Exception('Client profile not found', 404, 'E_NOT_FOUND')
+    }
+    clientProfile.photo_file = data.photo_file
+    await clientProfile.save()
+    return clientProfile
+  }
+
+  public async updateClientProfileDescription(
+    userId: number,
+    data: ClientProfileDescriptionUpdateDTO
+  ): Promise<ClientProfile> {
+    const clientProfile = await ClientProfile.findBy('user_id', userId)
+    if (!clientProfile) {
+      throw new Exception('Client profile not found', 404, 'E_NOT_FOUND')
+    }
+    clientProfile.description = data.description
+    await clientProfile.save()
     return clientProfile
   }
 }

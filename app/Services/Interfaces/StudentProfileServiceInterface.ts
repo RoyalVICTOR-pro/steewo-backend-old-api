@@ -2,6 +2,7 @@ import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
 import StudentProfile from '@Models/StudentProfile'
 import StudentProfileCreateDTO from '@DTO/StudentProfileCreateDTO'
 import StudentProfileMainUpdateDTO from '@DTO/StudentProfileMainUpdateDTO'
+import User from '@Models/User'
 
 export default interface StudentProfileServiceInterface {
   createStudentProfile(data: StudentProfileCreateDTO): Promise<StudentProfile>
@@ -20,4 +21,5 @@ export default interface StudentProfileServiceInterface {
     userId: number,
     banner_file: MultipartFileContract | null
   ): Promise<StudentProfile>
+  acceptStudentCharter(userId: number): Promise<User>
 }

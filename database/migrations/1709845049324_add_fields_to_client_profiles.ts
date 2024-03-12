@@ -5,6 +5,7 @@ export default class extends BaseSchema {
 
   public async up() {
     this.schema.alterTable(this.tableName, (table) => {
+      table.integer('gender').nullable()
       table.string('photo_file', 255).nullable()
       table.text('description').nullable()
     })
@@ -12,6 +13,7 @@ export default class extends BaseSchema {
 
   public async down() {
     this.schema.alterTable(this.tableName, (table) => {
+      table.dropColumn('gender')
       table.dropColumn('photo_file')
       table.dropColumn('description')
     })
