@@ -65,6 +65,6 @@ Route.group(() => {
     '/is-student-profile-isBookmarked/:student_profile_id/from/:client_profile_id',
     'StudentsController.isStudentProfileBookmarked'
   )
-    .as('bookmarkStudentProfile')
+    .as('isStudentProfileBookmarked')
     .middleware('auth')
 }).prefix('/v1')
