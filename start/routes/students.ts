@@ -5,12 +5,14 @@ Route.group(() => {
   Route.post('/register-student', 'StudentsController.createStudentProfile').as(
     'createStudentProfile'
   )
+
   Route.get('/get-student-public-profile/:user_id', 'StudentsController.getStudentPublicProfile')
     .as('getStudentPublicProfile')
     .middleware('auth')
   Route.get('/get-student-private-profile/:user_id', 'StudentsController.getStudentPrivateProfile')
     .as('getStudentPrivateProfile')
     .middleware(['auth', 'isStudentProfileOwner'])
+
   Route.patch(
     '/update-student-profile/:user_id/main',
     'StudentsController.updateStudentProfileMainInfo'
@@ -35,7 +37,34 @@ Route.group(() => {
   )
     .as('updateStudentProfileDescription')
     .middleware(['auth', 'isStudentProfileOwner'])
+
   Route.patch('/accept-student-charter/:user_id', 'StudentsController.acceptStudentCharter')
     .as('acceptStudentCharter')
     .middleware(['auth', 'isStudentProfileOwner'])
+
+  Route.get('/get-student-views-count/', 'StudentsController.getStudentViewsCount')
+    .as('getStudentViewsCount')
+    .middleware(['auth', 'isStudentProfileOwner'])
+  Route.get(
+    '/add-view-to-student-profile/:student_profile_id/from/:client_profile_id',
+    'StudentsController.addViewToStudentProfile'
+  )
+    .as('addViewToStudentProfile')
+    .middleware('auth')
+
+  Route.get('/get-student-bookmarks-count/', 'StudentsController.getStudentBookmarksCount')
+    .as('getStudentBookmarksCount')
+    .middleware(['auth', 'isStudentProfileOwner'])
+  Route.get(
+    '/toogle-student-profile-bookmark/:student_profile_id/from/:client_profile_id',
+    'StudentsController.toggleStudentProfileBookmark'
+  )
+    .as('bookmarkStudentProfile')
+    .middleware('auth')
+  Route.get(
+    '/is-student-profile-isBookmarked/:student_profile_id/from/:client_profile_id',
+    'StudentsController.isStudentProfileBookmarked'
+  )
+    .as('bookmarkStudentProfile')
+    .middleware('auth')
 }).prefix('/v1')

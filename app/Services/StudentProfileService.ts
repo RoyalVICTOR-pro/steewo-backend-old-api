@@ -9,9 +9,11 @@ import StudentProfileMainUpdateDTO from '@DTO/StudentProfileMainUpdateDTO'
 import StudentProfilePhotoUpdateDTO from '@DTO/StudentProfilePhotoUpdateDTO'
 import StudentProfileRepository from '@DALRepositories/StudentProfileRepository'
 import StudentProfileServiceInterface from '@Services/Interfaces/StudentProfileServiceInterface'
+import StudentProfileViewsService from '@Services/StudentProfileViewsService'
 import StudentUserStatus from '@Enums/StudentUserStatus'
 import UploadService from '@Services/UploadService'
 import UserRepository from '@DALRepositories/UserRepository'
+import StudentBookmarksService from './StudentBookmarksService'
 
 @inject()
 export default class StudentProfileService implements StudentProfileServiceInterface {
@@ -65,6 +67,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
     // TODO : Add professions, services, achievments to the public profile
     const studentPublicProfile = {
       user_id: studentProfile.user_id,
+      student_id: studentProfile.id,
       firstname: studentProfile.firstname,
       lastname: studentProfile.lastname,
       last_diploma: studentProfile.last_diploma,
@@ -92,6 +95,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
     // TODO : Add professions, services, achievments to the private profile
     const studentPrivateProfile = {
       user_id: studentProfile.user_id,
+      student_id: studentProfile.id,
       firstname: studentProfile.firstname,
       lastname: studentProfile.lastname,
       date_of_birth: studentProfile.date_of_birth,
@@ -238,5 +242,36 @@ export default class StudentProfileService implements StudentProfileServiceInter
       has_accepted_steewo_charter: true,
     }
     return await this.userRepository.updateUserData(user, updatedCharterAcceptation)
+  }
+
+  public async getStudentViewsCount(user_id: number) {
+    const studentProfile = await this.studentProfileRepository.getStudentProfileByUserId(user_id)
+    if (!studentProfile) {
+      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
+    }
+    return await StudentProfileViewsService.countViews(studentProfile.id)
+  }
+
+  public async addViewToStudentProfile(studentProfileId: number, clientProfileId: number) {
+    return await StudentProfileViewsService.addView(
+      Number(studentProfileId),
+      Number(clientProfileId)
+    )
+  }
+
+  public async getStudentBookmarksCount(user_id: number) {
+    const studentProfile = await this.studentProfileRepository.getStudentProfileByUserId(user_id)
+    if (!studentProfile) {
+      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
+    }
+    return await StudentBookmarksService.countBookmarks(studentProfile.id)
+  }
+
+  public async toggleStudentProfileBookmark(studentProfileId: number, clientProfileId: number) {
+    return await StudentBookmarksService.toggleBookmark(studentProfileId, clientProfileId)
+  }
+
+  public async isStudentProfileBookmarked(studentProfileId: number, clientProfileId: number) {
+    return await StudentBookmarksService.isBookmarked(studentProfileId, clientProfileId)
   }
 }

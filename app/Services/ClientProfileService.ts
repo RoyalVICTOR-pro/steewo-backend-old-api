@@ -59,6 +59,7 @@ export default class ClientProfileService implements ClientProfileServiceInterfa
     // TODO : Add professions, services, achievments to the public profile
     const clientPublicProfile = {
       user_id: clientProfile.user_id,
+      client_id: clientProfile.id,
       firstname: clientProfile.firstname,
       lastname: clientProfile.lastname,
       phone: clientProfile.phone,
@@ -78,6 +79,7 @@ export default class ClientProfileService implements ClientProfileServiceInterfa
     }
     const clientPrivateProfile = {
       user_id: clientProfile.user_id,
+      client_id: clientProfile.id,
       firstname: clientProfile.firstname,
       lastname: clientProfile.lastname,
       date_of_birth: clientProfile.date_of_birth,

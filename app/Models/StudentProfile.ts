@@ -1,7 +1,9 @@
-import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, belongsTo, BelongsTo, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import { compose } from '@ioc:Adonis/Core/Helpers'
 import { DateTime } from 'luxon'
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
+import Bookmark from '@Models/Bookmark'
+import StudentProfileView from '@Models/StudentProfileView'
 import User from '@Models/User'
 
 export default class StudentProfile extends compose(BaseModel, SoftDeletes) {
@@ -105,4 +107,10 @@ export default class StudentProfile extends compose(BaseModel, SoftDeletes) {
     foreignKey: 'user_id',
   })
   public user: BelongsTo<typeof User>
+
+  @hasMany(() => Bookmark)
+  public bookmarks: HasMany<typeof Bookmark>
+
+  @hasMany(() => StudentProfileView)
+  public studentProfileViews: HasMany<typeof StudentProfileView>
 }

@@ -6,6 +6,7 @@ import StudentProfileDescriptionUpdateDTO from '@DTO/StudentProfileDescriptionUp
 import StudentProfileMainUpdateDTO from '@DTO/StudentProfileMainUpdateDTO'
 import StudentProfilePhotoUpdateDTO from '@DTO/StudentProfilePhotoUpdateDTO'
 import StudentProfileRepositoryInterface from '@DALInterfaces/StudentProfileRepositoryInterface'
+import Database from '@ioc:Adonis/Lucid/Database'
 
 @inject()
 export default class StudentProfileRepository implements StudentProfileRepositoryInterface {
@@ -87,5 +88,19 @@ export default class StudentProfileRepository implements StudentProfileRepositor
     studentProfile.description = data.description
     await studentProfile.save()
     return studentProfile
+  }
+
+  public async getStudentViewsCount(studentId: number): Promise<number> {
+    const viewsCount = await Database.from('bookmarks')
+      .where('student_profile_id', studentId)
+      .count('* as total')
+    return viewsCount[0].total
+  }
+
+  public async getStudentBookmarksCount(studentId: number): Promise<number> {
+    const bookmarksCount = await Database.from('bookmarks')
+      .where('student_profile_id', studentId)
+      .count('* as total')
+    return bookmarksCount[0].total
   }
 }
