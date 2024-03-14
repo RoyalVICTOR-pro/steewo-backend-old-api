@@ -248,11 +248,6 @@ test.group('Student Profile Creation Process', (group) => {
   test('Check Student User Data', async ({ assert }) => {
     const studentUserInfos = await User.find(fakeStudent.userId)
     if (studentUserInfos) {
-      console.log('studentUserInfos.privacy_acceptation :>> ', studentUserInfos.privacy_acceptation)
-      console.log(
-        "DateTime.fromSQL('2024-08-24 11:48:12') :>> ",
-        DateTime.fromSQL('2024-08-24 11:48:12')
-      )
       assert.deepEqual(
         studentUserInfos.privacy_acceptation,
         DateTime.fromSQL('2024-08-24 11:48:12')
