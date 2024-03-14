@@ -64,6 +64,15 @@ export default class StudentProfileRepository implements StudentProfileRepositor
     return studentProfile
   }
 
+  public async deleteStudentProfilePhoto(studentId: number): Promise<void> {
+    const studentProfile = await StudentProfile.findBy('id', studentId)
+    if (!studentProfile) {
+      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
+    }
+    studentProfile.photo_file = null
+    await studentProfile.save()
+  }
+
   public async updateStudentProfileBanner(
     userId: number,
     data: StudentProfileBannerUpdateDTO
@@ -75,6 +84,15 @@ export default class StudentProfileRepository implements StudentProfileRepositor
     studentProfile.banner_file = data.banner_file
     await studentProfile.save()
     return studentProfile
+  }
+
+  public async deleteStudentProfileBanner(studentId: number): Promise<void> {
+    const studentProfile = await StudentProfile.findBy('id', studentId)
+    if (!studentProfile) {
+      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
+    }
+    studentProfile.banner_file = null
+    await studentProfile.save()
   }
 
   public async updateStudentProfileDescription(

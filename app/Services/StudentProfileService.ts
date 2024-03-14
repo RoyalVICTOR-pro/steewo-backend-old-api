@@ -214,6 +214,14 @@ export default class StudentProfileService implements StudentProfileServiceInter
     return await this.studentProfileRepository.updateStudentProfileBanner(user_id, updatedBanner)
   }
 
+  public async deleteStudentProfilePhoto(studentProfileId: number) {
+    return await this.studentProfileRepository.deleteStudentProfilePhoto(studentProfileId)
+  }
+
+  public async deleteStudentProfileBanner(studentProfileId: number) {
+    return await this.studentProfileRepository.deleteStudentProfileBanner(studentProfileId)
+  }
+
   public async updateStudentProfileDescription(user_id: number, description: string) {
     const studentProfile = await this.studentProfileRepository.getStudentProfileByUserId(user_id)
     if (!studentProfile) {

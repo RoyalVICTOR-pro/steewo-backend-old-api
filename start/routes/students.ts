@@ -31,6 +31,18 @@ Route.group(() => {
   )
     .as('updateStudentProfileBanner')
     .middleware(['auth', 'isStudentProfileOwner'])
+  Route.delete(
+    '/delete-student-profile-photo/:student_profile_id',
+    'StudentsController.deleteStudentProfilePhoto'
+  )
+    .as('deleteStudentProfilePhoto')
+    .middleware(['auth', 'isStudentProfileOwner'])
+  Route.delete(
+    '/delete-student-profile-banner/:student_profile_id',
+    'StudentsController.deleteStudentProfileBanner'
+  )
+    .as('deleteStudentProfileBanner')
+    .middleware(['auth', 'isStudentProfileOwner'])
   Route.patch(
     '/update-student-profile/:user_id/description',
     'StudentsController.updateStudentProfileDescription'

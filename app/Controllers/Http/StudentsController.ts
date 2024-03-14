@@ -88,6 +88,16 @@ export default class StudentProfilesController {
     return response.ok(studentProfile) // 200 OK
   }
 
+  public async deleteStudentProfilePhoto({ params, response }: HttpContextContract) {
+    await this.studentProfileService.deleteStudentProfilePhoto(Number(params.student_profile_id))
+    return response.noContent() // 204 NO CONTENT
+  }
+
+  public async deleteStudentProfileBanner({ params, response }: HttpContextContract) {
+    await this.studentProfileService.deleteStudentProfileBanner(Number(params.student_profile_id))
+    return response.noContent() // 204 NO CONTENT
+  }
+
   public async updateStudentProfileDescription({ request, params, response }: HttpContextContract) {
     const data = await request.validate(StudentProfileDescriptionUpdateValidator)
 
