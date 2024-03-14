@@ -50,6 +50,7 @@ export default class StudentProfilesController {
       current_school: data.current_school,
       date_of_birth: data.date_of_birth,
       firstname: data.firstname,
+      job_title: data.job_title,
       gender: data.gender,
       last_diploma: data.last_diploma,
       last_diploma_school: data.last_diploma_school,
