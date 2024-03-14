@@ -1,6 +1,6 @@
+import ClientProfile from '@Models/ClientProfile'
 import supertest from 'supertest'
 import User from '@Models/User'
-import ClientProfile from '@Models/ClientProfile'
 
 export class FakeClientForTest {
   public email: string = 'theo.long@tests.com'
@@ -10,6 +10,7 @@ export class FakeClientForTest {
   public userId: number
   public createdUser: User
   public tokenCookie: string
+  public clientProfileId: number
 
   public async registerFakeClient() {
     let { body: createdUser } = await supertest(this.BASE_URL)

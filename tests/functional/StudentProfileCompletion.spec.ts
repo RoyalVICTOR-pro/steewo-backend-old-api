@@ -28,6 +28,8 @@ const student1SchoolCertificateWrongFileTypePath = testPath + 'student_wrong_cer
 
 let registeredSchoolCertificateFilePath: string
 let registeredCompanyExistsProofFilePath: string
+let registeredPhotoFilePath: string
+let registeredBannerFilePath: string
 
 test.group('Student Profile Completion Process', (group) => {
   let fakeStudent = new FakeStudentForTest()
@@ -507,4 +509,280 @@ test.group('Student Profile Completion Process', (group) => {
       })
     response.assertStatus(422)
   })
+
+  test('Update Student Profile Photo by a client', async ({ client }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/photo')
+      .header('Cookie', fakeClient.tokenCookie)
+      .file('photo_file', student1PhotoGoodFilePath)
+    response.assertStatus(401)
+  })
+  test('Update Student Profile Photo by an other student', async ({ client }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .header('Cookie', secondFakeStudent.tokenCookie)
+      .file('photo_file', student1PhotoGoodFilePath)
+    response.assertStatus(401)
+  })
+
+  test('Update Student Profile Photo by the student himself with wrong photo file type', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/photo')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('photo_file', student1PhotoWrongFileTypePath)
+    response.assertStatus(422)
+  })
+
+  test('Update Student Profile Photo by the student himself with too big photo file', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/photo')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('photo_file', student1PhotoTooBigFilePath)
+    response.assertStatus(422)
+  })
+
+  test('Update Student Profile Photo by the student himself with good photo', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/photo')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('photo_file', student1PhotoGoodFilePath)
+    response.assertStatus(200)
+    registeredPhotoFilePath = response.body().photo_file
+  })
+
+  test('Check Student Profile after update', async ({ client }) => {
+    const response = await client
+      .get('/get-student-private-profile/' + fakeStudent.userId)
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(200)
+    response.assertBodyContains({
+      photo_file: registeredPhotoFilePath,
+    })
+  })
+
+  test('Update Student Profile Banner by a client', async ({ client }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/banner')
+      .header('Cookie', fakeClient.tokenCookie)
+      .file('banner_file', student1BannerGoodFilePath)
+    response.assertStatus(401)
+  })
+
+  test('Update Student Profile Banner by an other student', async ({ client }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/banner')
+      .header('Cookie', secondFakeStudent.tokenCookie)
+      .file('banner_file', student1BannerGoodFilePath)
+    response.assertStatus(401)
+  })
+
+  test('Update Student Profile Banner by the student himself with wrong banner file type', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/banner')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('banner_file', student1BannerWrongFileTypePath)
+    response.assertStatus(422)
+  })
+
+  test('Update Student Profile Banner by the student himself with too big banner file', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/banner')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('banner_file', student1BannerTooBigFilePath)
+    response.assertStatus(422)
+  })
+
+  test('Update Student Profile Banner by the student himself with good banner', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/banner')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('banner_file', student1BannerGoodFilePath)
+    response.assertStatus(200)
+    registeredBannerFilePath = response.body().banner_file
+  })
+
+  test('Check Student Profile after update', async ({ client }) => {
+    const response = await client
+      .get('/get-student-private-profile/' + fakeStudent.userId)
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(200)
+    response.assertBodyContains({
+      banner_file: registeredBannerFilePath,
+    })
+  })
+
+  test('Delete Student Profile Photo by a client', async ({ client }) => {
+    const response = await client
+      .delete('/delete-student-profile-photo/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeClient.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Delete Student Profile Photo by an other student', async ({ client }) => {
+    const response = await client
+      .delete('/delete-student-profile-photo/' + fakeStudent.studentProfileId)
+      .header('Cookie', secondFakeStudent.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Delete Student Profile Photo by the student himself', async ({ client }) => {
+    const response = await client
+      .delete('/delete-student-profile-photo/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(204)
+  })
+
+  test('Check Student Profile after update', async ({ client }) => {
+    const response = await client
+      .get('/get-student-private-profile/' + fakeStudent.userId)
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(200)
+    response.assertBodyContains({
+      photo_file: null,
+    })
+  })
+
+  test('Delete Student Profile Banner by a client', async ({ client }) => {
+    const response = await client
+      .delete('/delete-student-profile-banner/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeClient.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Delete Student Profile Banner by an other student', async ({ client }) => {
+    const response = await client
+      .delete('/delete-student-profile-banner/' + fakeStudent.studentProfileId)
+      .header('Cookie', secondFakeStudent.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Delete Student Profile Banner by the student himself', async ({ client }) => {
+    const response = await client
+      .delete('/delete-student-profile-banner/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(204)
+  })
+
+  test('Check Student Profile after update', async ({ client }) => {
+    const response = await client
+      .get('/get-student-private-profile/' + fakeStudent.userId)
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(200)
+    response.assertBodyContains({
+      banner_file: null,
+    })
+  })
+
+  test('Update Student Profile Description by a client', async ({ client }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/description')
+      .header('Cookie', fakeClient.tokenCookie)
+      .fields({
+        description: 'I am a student',
+      })
+    response.assertStatus(401)
+  })
+
+  test('Update Student Profile Description by an other student', async ({ client }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/description')
+      .header('Cookie', secondFakeStudent.tokenCookie)
+      .fields({
+        description: 'I am a student',
+      })
+    response.assertStatus(401)
+  })
+
+  test('Update Student Profile Description by the student himself', async ({ client }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/description')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .fields({
+        description: 'I am a student',
+      })
+    response.assertStatus(200)
+  })
+
+  test('Check Student Profile after update', async ({ client }) => {
+    const response = await client
+      .get('/get-student-private-profile/' + fakeStudent.userId)
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(200)
+    response.assertBodyContains({
+      description: 'I am a student',
+    })
+  })
+  /* 
+  test('Get Student Views Count by a client', async ({ client }) => {
+    const response = await client
+      .get('/get-student-views-count/')
+      .header('Cookie', fakeClient.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Get Student Views Count by an other student', async ({ client }) => {
+    const response = await client
+      .get('/get-student-views-count/')
+      .header('Cookie', secondFakeStudent.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Get Student Views Count by the student himself', async ({ client }) => {
+    const response = await client
+      .get('/get-student-views-count/')
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(200)
+    response.assertBodyContains({
+      total: 0,
+    })
+  })
+
+  test('Add View to Student Profile by a client', async ({ client }) => {
+    const response = await client
+      .get(
+        '/add-view-to-student-profile/' +
+          fakeStudent.studentProfileId +
+          '/from/' +
+          fakeClient.clientProfileId
+      )
+      .header('Cookie', fakeClient.tokenCookie)
+    response.assertStatus(200)
+  })
+
+  test('Add View to Student Profile by an other student', async ({ client }) => {
+    const response = await client
+      .get(
+        '/add-view-to-student-profile/' +
+          fakeStudent.studentProfileId +
+          '/from/' +
+          secondFakeStudent.studentProfileId
+      )
+      .header('Cookie', secondFakeStudent.tokenCookie)
+    response.assertStatus(400)
+  })
+
+  test('Add View to Student Profile by the student himself', async ({ client }) => {
+    const response = await client
+      .get(
+        '/add-view-to-student-profile/' +
+          fakeStudent.studentProfileId +
+          '/from/' +
+          fakeStudent.studentProfileId
+      )
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(400)
+  }) 
+  */
 })
