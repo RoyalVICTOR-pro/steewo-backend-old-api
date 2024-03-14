@@ -46,10 +46,8 @@ export default class StudentProfileRepository implements StudentProfileRepositor
     if (!studentProfile) {
       throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
     }
-    console.log('data.gender :>> ', data.gender)
     studentProfile.merge(data)
     await studentProfile.save()
-    console.log('studentProfile.gender :>> ', studentProfile.gender)
     return studentProfile
   }
 
