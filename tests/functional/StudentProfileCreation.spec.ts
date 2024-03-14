@@ -1,8 +1,10 @@
-import { test } from '@japa/runner'
-import supertest from 'supertest'
+import { DateTime } from 'luxon'
 import { FakeStudentForTest } from './helpers/Student.helper'
+import { test } from '@japa/runner'
 import Role from '@Enums/Roles'
 import StudentUserStatus from '@Enums/StudentUserStatus'
+import supertest from 'supertest'
+import User from 'App/Models/User'
 
 const BASE_URL = `${process.env.TEST_API_URL}`
 
@@ -235,6 +237,33 @@ test.group('Student Profile Creation Process', (group) => {
       .expect(201)
 
     assert.exists(body)
+  })
+  test('Check Student User Data', async ({ assert }) => {
+    const studentUserInfos = await User.find(fakeStudent.userId)
+    if (studentUserInfos) {
+      assert.equal(studentUserInfos.role, Role.STUDENT)
+      assert.equal(studentUserInfos.status, StudentUserStatus.ACCOUNT_CREATED)
+    }
+  })
+  test('Check Student User Data', async ({ assert }) => {
+    const studentUserInfos = await User.find(fakeStudent.userId)
+    if (studentUserInfos) {
+      console.log('studentUserInfos.privacy_acceptation :>> ', studentUserInfos.privacy_acceptation)
+      console.log(
+        "DateTime.fromSQL('2024-08-24 11:48:12') :>> ",
+        DateTime.fromSQL('2024-08-24 11:48:12')
+      )
+      assert.deepEqual(
+        studentUserInfos.privacy_acceptation,
+        DateTime.fromSQL('2024-08-24 11:48:12')
+      )
+    }
+  })
+  test('Check Student User Data', async ({ assert }) => {
+    const studentUserInfos = await User.find(fakeStudent.userId)
+    if (studentUserInfos) {
+      assert.deepEqual(studentUserInfos.cgv_acceptation, DateTime.fromSQL('2024-08-24 11:48:12'))
+    }
   })
   test('Get all professions with logged simple user role with is_valid_email = 0', async ({
     client,
