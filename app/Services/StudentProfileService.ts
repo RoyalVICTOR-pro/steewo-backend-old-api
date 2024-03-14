@@ -176,7 +176,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
     const photoFilepath = await UploadService.uploadFileTo(
       photo_file,
       this.studentProfilePath + user_id.toString() + '/',
-      'school_certificate_' + getDatetimeForFileName()
+      'profile_photo_' + getDatetimeForFileName()
     )
 
     const updatedPhoto: StudentProfilePhotoUpdateDTO = {
