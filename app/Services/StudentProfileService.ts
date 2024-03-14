@@ -2,6 +2,7 @@ import { getDatetimeForFileName } from '@Utils/Various'
 import { inject, Exception } from '@adonisjs/core/build/standalone'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
 import MailService from '@Services/MailService'
+import StudentBookmarksService from './StudentBookmarksService'
 import StudentProfileBannerUpdateDTO from '@DTO/StudentProfileBannerUpdateDTO'
 import StudentProfileCreateDTO from '@DTO/StudentProfileCreateDTO'
 import StudentProfileDescriptionUpdateDTO from '@DTO/StudentProfileDescriptionUpdateDTO'
@@ -13,7 +14,6 @@ import StudentProfileViewsService from '@Services/StudentProfileViewsService'
 import StudentUserStatus from '@Enums/StudentUserStatus'
 import UploadService from '@Services/UploadService'
 import UserRepository from '@DALRepositories/UserRepository'
-import StudentBookmarksService from './StudentBookmarksService'
 
 @inject()
 export default class StudentProfileService implements StudentProfileServiceInterface {
