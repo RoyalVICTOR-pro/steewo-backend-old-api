@@ -28,6 +28,8 @@ export default class StudentProfileService implements StudentProfileServiceInter
 
   public async createStudentProfile(data: StudentProfileCreateDTO) {
     const fieldsOfUserToUpdate = {
+      status: data.status,
+      role: data.role,
       privacy_acceptation: data.privacy_acceptation,
       cgv_acceptation: data.cgv_acceptation,
     }
