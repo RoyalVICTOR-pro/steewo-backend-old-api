@@ -26,7 +26,7 @@ export default class StudentProfileMainUpdateValidator {
     }),
     firstname: schema.string({}, [rules.required()]),
     job_title: schema.string.optional(),
-    gender: schema.enum([Gender.FEMALE, Gender.MALE, Gender.NON_BINARY]),
+    gender: schema.enum(Object.values(Gender).map((value) => String(value))),
     last_diploma: schema.string({}, [rules.required()]),
     last_diploma_school: schema.string({}, [rules.required()]),
     lastname: schema.string({}, [rules.required()]),
