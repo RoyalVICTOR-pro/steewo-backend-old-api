@@ -2,11 +2,32 @@ import { DateTime } from 'luxon'
 import { FakeClientForTest } from './helpers/Client.helper'
 import { FakeStudentForTest } from './helpers/Student.helper'
 import { test } from '@japa/runner'
+import Gender from '@Enums/Gender'
 import Role from '@Enums/Roles'
 import StudentUserStatus from '@Enums/StudentUserStatus'
 import supertest from 'supertest'
 
 const BASE_URL = `${process.env.TEST_API_URL}`
+const testPath = './tests/functional/files_for_tests/'
+
+const student1BannerGoodFilePath = testPath + 'student_good_banner.jpg'
+const student1BannerTooBigFilePath = testPath + 'student_big_banner.jpg'
+const student1BannerWrongFileTypePath = testPath + 'student_wrong_banner.pptx'
+
+const student1CompanyProofGoodFilePath = testPath + 'student_good_proof.pdf'
+const student1CompanyProofTooBigFilePath = testPath + 'student_big_proof.pdf'
+const student1CompanyProofWrongFileTypePath = testPath + 'student_wrong_proof.docx'
+
+const student1PhotoGoodFilePath = testPath + 'student_good_photo.png'
+const student1PhotoTooBigFilePath = testPath + 'student_big_photo.jpg'
+const student1PhotoWrongFileTypePath = testPath + 'student_wrong_photo.gif'
+
+const student1SchoolCertificateGoodFilePath = testPath + 'student_good_certificate.pdf'
+const student1SchoolCertificateTooBigFilePath = testPath + 'student_big_certificate.pdf'
+const student1SchoolCertificateWrongFileTypePath = testPath + 'student_wrong_certificate.xlsx'
+
+let registeredSchoolCertificateFilePath: string
+let registeredCompanyExistsProofFilePath: string
 
 test.group('Student Profile Completion Process', (group) => {
   let fakeStudent = new FakeStudentForTest()
@@ -122,5 +143,368 @@ test.group('Student Profile Completion Process', (group) => {
       last_diploma_school: 'Lycée Condorcet',
       date_of_birth: DateTime.fromISO('1984-08-24').toISO(),
     })
+  })
+
+  test('Update Student Profile Main Info by a client', async ({ client }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .header('Cookie', fakeClient.tokenCookie)
+      .fields({
+        firstname: 'John',
+        lastname: 'Snow',
+        date_of_birth: '1984-08-24',
+        current_diploma: 'Directeur graphique',
+        current_school: 'MJM Graphic Design',
+        last_diploma: 'Bac Scientifique',
+        last_diploma_school: 'Lycée Condorcet',
+      })
+    response.assertStatus(401)
+  })
+  test('Update Student Profile Main Info by an other student', async ({ client }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .header('Cookie', secondFakeStudent.tokenCookie)
+      .fields({
+        firstname: 'John',
+        lastname: 'Snow',
+        date_of_birth: '1984-08-24',
+        current_diploma: 'Directeur graphique',
+        current_school: 'MJM Graphic Design',
+        last_diploma: 'Bac Scientifique',
+        last_diploma_school: 'Lycée Condorcet',
+      })
+    response.assertStatus(401)
+  })
+
+  test('Update Student Profile Main Info by the student himself with full data but invalid gender', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .fields({
+        address_city: 'Paris',
+        address_number: '5',
+        address_postal_code: '75000',
+        address_road: 'Rue de Rivoli',
+        bank_iban: 'FR14 2004 1010 0505 0001 3M02 606',
+        current_diploma: 'Directeur graphique',
+        current_school: 'MJM Graphic Design',
+        date_of_birth: '1984-08-24',
+        firstname: 'John',
+        gender: 'Male',
+        last_diploma: 'Bac Scientifique',
+        last_diploma_school: 'Lycée Condorcet',
+        lastname: 'Snow',
+        mobile: '0601020304',
+        place_of_birth: 'Winterfell',
+        siret_number: '12345678901234',
+      })
+    response.assertStatus(422)
+  })
+
+  test('Update Student Profile Main Info by the student himself with missing current_diploma', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .fields({
+        current_diploma: '',
+        current_school: 'MJM Graphic Design',
+        firstname: 'Ramsey',
+        gender: Gender.MALE,
+        last_diploma: 'Bac Scientifique',
+        last_diploma_school: 'Lycée Condorcet',
+        lastname: 'Bolton',
+      })
+    response.assertStatus(422)
+  })
+  test('Update Student Profile Main Info by the student himself with missing current_school', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .fields({
+        current_diploma: 'Directeur graphique',
+        current_school: '',
+        firstname: 'Ramsey',
+        gender: Gender.MALE,
+        last_diploma: 'Bac Scientifique',
+        last_diploma_school: 'Lycée Condorcet',
+        lastname: 'Bolton',
+      })
+    response.assertStatus(422)
+  })
+  test('Update Student Profile Main Info by the student himself with missing firstname', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .fields({
+        current_diploma: 'Directeur graphique',
+        current_school: 'MJM Graphic Design',
+        firstname: '',
+        gender: Gender.MALE,
+        last_diploma: 'Bac Scientifique',
+        last_diploma_school: 'Lycée Condorcet',
+        lastname: 'Bolton',
+      })
+    response.assertStatus(422)
+  })
+  test('Update Student Profile Main Info by the student himself with missing gender', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .fields({
+        current_diploma: 'Directeur graphique',
+        current_school: 'MJM Graphic Design',
+        firstname: 'Ramsey',
+        last_diploma: 'Bac Scientifique',
+        last_diploma_school: 'Lycée Condorcet',
+        lastname: 'Bolton',
+      })
+    response.assertStatus(422)
+  })
+  test('Update Student Profile Main Info by the student himself with missing last_diploma', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .fields({
+        current_diploma: 'Directeur graphique',
+        current_school: 'MJM Graphic Design',
+        firstname: 'Ramsey',
+        gender: Gender.MALE,
+        last_diploma: '',
+        last_diploma_school: 'Lycée Condorcet',
+        lastname: 'Bolton',
+      })
+    response.assertStatus(422)
+  })
+  test('Update Student Profile Main Info by the student himself with missing last_diploma_school', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .fields({
+        current_diploma: 'Directeur graphique',
+        current_school: 'MJM Graphic Design',
+        firstname: 'Ramsey',
+        gender: Gender.MALE,
+        last_diploma: 'Bac Scientifique',
+        last_diploma_school: '',
+        lastname: 'Bolton',
+      })
+    response.assertStatus(422)
+  })
+  test('Update Student Profile Main Info by the student himself with a space in last_diploma_school', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .fields({
+        current_diploma: 'Directeur graphique',
+        current_school: 'MJM Graphic Design',
+        firstname: 'Ramsey',
+        gender: Gender.MALE,
+        last_diploma: 'Bac Scientifique',
+        last_diploma_school: ' ',
+        lastname: 'Bolton',
+      })
+    response.assertStatus(422)
+  })
+  test('Update Student Profile Main Info by the student himself with missing lastname', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .fields({
+        current_diploma: 'Directeur graphique',
+        current_school: 'MJM Graphic Design',
+        firstname: 'Ramsey',
+        gender: Gender.MALE,
+        last_diploma: 'Bac Scientifique',
+        last_diploma_school: 'Lycée Condorcet',
+        lastname: '',
+      })
+    response.assertStatus(422)
+  })
+
+  test('Update Student Profile Main Info by the student himself with only required fields', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .fields({
+        current_diploma: 'Directeur graphique',
+        current_school: 'MJM Graphic Design',
+        date_of_birth: '1984-08-24',
+        firstname: 'Ramsey',
+        gender: Gender.MALE,
+        last_diploma: 'Bac Scientifique',
+        last_diploma_school: 'Lycée Condorcet',
+        lastname: 'Bolton',
+      })
+    response.assertStatus(200)
+  })
+
+  test('Check Student Profile after update', async ({ client }) => {
+    const response = await client
+      .get('/get-student-private-profile/' + fakeStudent.userId)
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(200)
+    response.assertBodyContains({
+      current_diploma: 'Directeur graphique',
+      current_school: 'MJM Graphic Design',
+      date_of_birth: DateTime.fromISO('1984-08-24').toISO(),
+      firstname: 'Ramsey',
+      gender: Gender.MALE,
+      last_diploma: 'Bac Scientifique',
+      last_diploma_school: 'Lycée Condorcet',
+      lastname: 'Bolton',
+    })
+  })
+
+  test('Update Student Profile Main Info by the student himself with full valid data', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('school_certificate_file', student1SchoolCertificateGoodFilePath)
+      .file('company_exists_proof_file', student1CompanyProofGoodFilePath)
+      .fields({
+        address_city: 'Paris',
+        address_number: '5',
+        address_postal_code: '75000',
+        address_road: 'Rue de Rivoli',
+        bank_iban: 'FR14 2004 1010 0505 0001 3M02 606',
+        current_diploma: 'Directeur graphique',
+        current_school: 'MJM Graphic Design',
+        date_of_birth: '1984-08-24',
+        firstname: 'John',
+        gender: Gender.MALE,
+        job_title: 'Directeur Artistique',
+        last_diploma: 'Bac Scientifique',
+        last_diploma_school: 'Lycée Condorcet',
+        lastname: 'Snow',
+        mobile: '0601020304',
+        place_of_birth: 'Winterfell',
+        siret_number: '12345678901234',
+      })
+    response.assertStatus(200)
+    registeredSchoolCertificateFilePath = response.body().school_certificate_file
+    registeredCompanyExistsProofFilePath = response.body().company_exists_proof_file
+  })
+
+  test('Check Student Profile after update', async ({ client }) => {
+    const response = await client
+      .get('/get-student-private-profile/' + fakeStudent.userId)
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(200)
+    response.assertBodyContains({
+      address_city: 'Paris',
+      address_number: '5',
+      address_postal_code: '75000',
+      address_road: 'Rue de Rivoli',
+      bank_iban: 'FR14 2004 1010 0505 0001 3M02 606',
+      current_diploma: 'Directeur graphique',
+      current_school: 'MJM Graphic Design',
+      date_of_birth: DateTime.fromISO('1984-08-24').toISO(),
+      firstname: 'John',
+      gender: Gender.MALE,
+      job_title: 'Directeur Artistique',
+      last_diploma: 'Bac Scientifique',
+      last_diploma_school: 'Lycée Condorcet',
+      lastname: 'Snow',
+      mobile: '0601020304',
+      place_of_birth: 'Winterfell',
+      siret_number: '12345678901234',
+      school_certificate_file: registeredSchoolCertificateFilePath,
+      company_exists_proof_file: registeredCompanyExistsProofFilePath,
+    })
+  })
+
+  test('Update Student Profile Main Info by the student himself with wrong certificate file type', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('school_certificate_file', student1SchoolCertificateWrongFileTypePath)
+      .fields({
+        current_diploma: 'Directeur graphique',
+        current_school: 'MJM Graphic Design',
+        firstname: 'Ramsey',
+        gender: Gender.MALE,
+        last_diploma: 'Bac Scientifique',
+        last_diploma_school: 'Lycée Condorcet',
+        lastname: 'Bolton',
+      })
+    response.assertStatus(422)
+  })
+  test('Update Student Profile Main Info by the student himself with wrong company proof file type', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('school_certificate_file', student1CompanyProofWrongFileTypePath)
+      .fields({
+        current_diploma: 'Directeur graphique',
+        current_school: 'MJM Graphic Design',
+        firstname: 'Ramsey',
+        gender: Gender.MALE,
+        last_diploma: 'Bac Scientifique',
+        last_diploma_school: 'Lycée Condorcet',
+        lastname: 'Bolton',
+      })
+    response.assertStatus(422)
+  })
+  test('Update Student Profile Main Info by the student himself with too big certificate file', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('school_certificate_file', student1SchoolCertificateTooBigFilePath)
+      .fields({
+        current_diploma: 'Directeur graphique',
+        current_school: 'MJM Graphic Design',
+        firstname: 'Ramsey',
+        gender: Gender.MALE,
+        last_diploma: 'Bac Scientifique',
+        last_diploma_school: 'Lycée Condorcet',
+        lastname: 'Bolton',
+      })
+    response.assertStatus(422)
+  })
+  test('Update Student Profile Main Info by the student himself with too big company proof file', async ({
+    client,
+  }) => {
+    const response = await client
+      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('school_certificate_file', student1CompanyProofTooBigFilePath)
+      .fields({
+        current_diploma: 'Directeur graphique',
+        current_school: 'MJM Graphic Design',
+        firstname: 'Ramsey',
+        gender: Gender.MALE,
+        last_diploma: 'Bac Scientifique',
+        last_diploma_school: 'Lycée Condorcet',
+        lastname: 'Bolton',
+      })
+    response.assertStatus(422)
   })
 })
