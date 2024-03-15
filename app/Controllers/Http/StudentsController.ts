@@ -10,7 +10,6 @@ import StudentProfilePhotoUpdateValidator from '@Validators/StudentProfilePhotoU
 import StudentProfileService from '@Services/StudentProfileService'
 import UserCharterAcceptationValidator from '@Validators/UserCharterAcceptationValidator'
 import Role from 'App/Enums/Roles'
-import User from 'App/Models/User'
 import AuthService from 'App/Services/AuthService'
 
 @inject()
