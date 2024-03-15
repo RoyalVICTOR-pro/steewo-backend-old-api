@@ -82,8 +82,6 @@ test.group('Student Profile Completion Process', (group) => {
       .expect(201)
 
     assert.exists(body)
-    console.log('Student Profile created:', body)
-    console.log('Student Profile ID:', body.id)
     fakeStudent.studentProfileId = body.id
   })
 
