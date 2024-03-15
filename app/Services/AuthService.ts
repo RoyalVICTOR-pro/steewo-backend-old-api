@@ -14,6 +14,7 @@ import UserRepository from '@DALRepositories/UserRepository'
 import UserStatus from '@Enums/UserStatus'
 import UserUpdateDTO from '@DTO/UserUpdateDTO'
 import UserUpdatePasswordDTO from '@DTO/UserUpdatePasswordDTO'
+import Role from '@Enums/Roles'
 
 @inject()
 export default class AuthService implements AuthServiceInterface {
@@ -137,5 +138,13 @@ export default class AuthService implements AuthServiceInterface {
 
   public async logoutUser(auth: AuthContract) {
     await auth.logout()
+  }
+
+  public static async getRoleByAuth(auth: AuthContract): Promise<Role> {
+    if (auth.user!.role) {
+      return auth.user!.role
+    }
+    const user = await User.query().where('id', auth.user!.id).firstOrFail()
+    return user.role
   }
 }

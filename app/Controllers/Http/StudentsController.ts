@@ -11,6 +11,7 @@ import StudentProfileService from '@Services/StudentProfileService'
 import UserCharterAcceptationValidator from '@Validators/UserCharterAcceptationValidator'
 import Role from 'App/Enums/Roles'
 import User from 'App/Models/User'
+import AuthService from 'App/Services/AuthService'
 
 @inject()
 export default class StudentProfilesController {
@@ -137,13 +138,7 @@ export default class StudentProfilesController {
   }
 
   public async addViewToStudentProfile({ auth, params, response }: HttpContextContract) {
-    let userRole: number
-    if (auth.user!.role) {
-      userRole = auth.user!.role
-    } else {
-      const authenticatedUser = await User.query().where('id', auth.user!.id).firstOrFail()
-      userRole = authenticatedUser.role
-    }
+    let userRole: number = await AuthService.getRoleByAuth(auth)
     if (userRole !== Role.CLIENT_INDIVIDUAL && userRole !== Role.CLIENT_PROFESSIONAL) {
       throw new Exception('You cannot add a view to a student profile', 400, 'E_BAD_REQUEST')
     }
@@ -159,13 +154,7 @@ export default class StudentProfilesController {
   }
 
   public async toggleStudentProfileBookmark({ auth, params, response }: HttpContextContract) {
-    let userRole: number
-    if (auth.user!.role) {
-      userRole = auth.user!.role
-    } else {
-      const authenticatedUser = await User.query().where('id', auth.user!.id).firstOrFail()
-      userRole = authenticatedUser.role
-    }
+    let userRole: number = await AuthService.getRoleByAuth(auth)
     if (userRole !== Role.CLIENT_INDIVIDUAL && userRole !== Role.CLIENT_PROFESSIONAL) {
       throw new Exception('You cannot add a view to a student profile', 400, 'E_BAD_REQUEST')
     }
@@ -179,13 +168,7 @@ export default class StudentProfilesController {
   }
 
   public async isStudentProfileBookmarked({ auth, params, response }: HttpContextContract) {
-    let userRole: number
-    if (auth.user!.role) {
-      userRole = auth.user!.role
-    } else {
-      const authenticatedUser = await User.query().where('id', auth.user!.id).firstOrFail()
-      userRole = authenticatedUser.role
-    }
+    let userRole: number = await AuthService.getRoleByAuth(auth)
     if (userRole !== Role.CLIENT_INDIVIDUAL && userRole !== Role.CLIENT_PROFESSIONAL) {
       throw new Exception('You cannot add a view to a student profile', 400, 'E_BAD_REQUEST')
     }
