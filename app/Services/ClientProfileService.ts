@@ -129,7 +129,7 @@ export default class ClientProfileService implements ClientProfileServiceInterfa
     const photoFilepath = await UploadService.uploadFileTo(
       photo_file,
       this.clientProfilePath + user_id.toString() + '/',
-      'school_certificate_' + getDatetimeForFileName()
+      'profile-photo-' + getDatetimeForFileName()
     )
 
     const updatedPhoto: ClientProfilePhotoUpdateDTO = {

@@ -144,14 +144,14 @@ export default class StudentProfileService implements StudentProfileServiceInter
         data.school_certificate_file = await UploadService.uploadFileTo(
           school_certificate_file,
           this.studentProfilePath + user_id.toString() + '/',
-          'school_certificate_' + getDatetimeForFileName()
+          'school-certificate-' + getDatetimeForFileName()
         )
       }
       if (company_exists_proof_file) {
         data.company_exists_proof_file = await UploadService.uploadFileTo(
           company_exists_proof_file,
           this.studentProfilePath + user_id.toString() + '/',
-          'company_proof_' + getDatetimeForFileName()
+          'company-proof-' + getDatetimeForFileName()
         )
       }
     }
@@ -176,7 +176,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
     const photoFilepath = await UploadService.uploadFileTo(
       photo_file,
       this.studentProfilePath + user_id.toString() + '/',
-      'profile_photo_' + getDatetimeForFileName()
+      'profile-photo-' + getDatetimeForFileName()
     )
 
     const updatedPhoto: StudentProfilePhotoUpdateDTO = {
@@ -204,7 +204,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
     const bannerFilepath = await UploadService.uploadFileTo(
       banner_file,
       this.studentProfilePath + user_id.toString() + '/',
-      'banner_' + getDatetimeForFileName()
+      'banner-' + getDatetimeForFileName()
     )
 
     const updatedBanner: StudentProfileBannerUpdateDTO = {
