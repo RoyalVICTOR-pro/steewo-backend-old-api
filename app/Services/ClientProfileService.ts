@@ -25,6 +25,8 @@ export default class ClientProfileService implements ClientProfileServiceInterfa
 
   public async createClientProfile(data: ClientProfileCreateDTO) {
     const fieldsOfUserToUpdate = {
+      status: data.status,
+      role: data.role,
       privacy_acceptation: data.privacy_acceptation,
       cgv_acceptation: data.cgv_acceptation,
     }
@@ -56,7 +58,7 @@ export default class ClientProfileService implements ClientProfileServiceInterfa
     if (!clientProfile) {
       throw new Exception('Client profile not found', 404, 'E_NOT_FOUND')
     }
-    // TODO : Add professions, services, achievments to the public profile
+
     const clientPublicProfile = {
       user_id: clientProfile.user_id,
       client_id: clientProfile.id,

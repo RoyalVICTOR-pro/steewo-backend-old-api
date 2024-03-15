@@ -2,6 +2,8 @@ import supertest from 'supertest'
 import User from '@Models/User'
 import StudentProfile from '@Models/StudentProfile'
 import StudentUserStatus from 'App/Enums/StudentUserStatus'
+import StudentProfileView from 'App/Models/StudentProfileView'
+import Bookmark from 'App/Models/Bookmark'
 
 export class FakeStudentForTest {
   public email: string = 'fabien.garp@tests.com'
@@ -59,5 +61,13 @@ export class FakeStudentForTest {
   public async deleteFakeStudent() {
     await StudentProfile.query().where('user_id', this.userId).delete()
     await User.query().where('id', this.userId).delete()
+  }
+
+  public async deleteRegisteredViews() {
+    await StudentProfileView.query().where('student_profile_id', this.studentProfileId).delete()
+  }
+
+  public async deleteRegisteredBookmarks() {
+    await Bookmark.query().where('student_profile_id', this.studentProfileId).delete()
   }
 }

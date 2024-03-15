@@ -257,7 +257,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
   public async getStudentViewsCount(user_id: number) {
     const studentProfile = await this.studentProfileRepository.getStudentProfileByUserId(user_id)
     if (!studentProfile) {
-      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
+      throw new Exception('You are not a student', 401, 'E_UNAUTHORIZED')
     }
     return await StudentProfileViewsService.countViews(studentProfile.id)
   }
@@ -272,7 +272,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
   public async getStudentBookmarksCount(user_id: number) {
     const studentProfile = await this.studentProfileRepository.getStudentProfileByUserId(user_id)
     if (!studentProfile) {
-      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
+      throw new Exception('You are not a student', 401, 'E_UNAUTHORIZED')
     }
     return await StudentBookmarksService.countBookmarks(studentProfile.id)
   }

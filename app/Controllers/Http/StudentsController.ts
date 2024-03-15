@@ -10,6 +10,7 @@ import StudentProfilePhotoUpdateValidator from '@Validators/StudentProfilePhotoU
 import StudentProfileService from '@Services/StudentProfileService'
 import UserCharterAcceptationValidator from '@Validators/UserCharterAcceptationValidator'
 import Role from 'App/Enums/Roles'
+import User from 'App/Models/User'
 
 @inject()
 export default class StudentProfilesController {
@@ -125,21 +126,25 @@ export default class StudentProfilesController {
 
   public async getStudentViewsCount({ auth, response }: HttpContextContract) {
     const studentViewsCount = await this.studentProfileService.getStudentViewsCount(auth.user!.id)
-    return response.ok(studentViewsCount) // 200 OK
+    return response.ok({ nb_views: studentViewsCount }) // 200 OK
   }
 
   public async getStudentBookmarksCount({ auth, response }: HttpContextContract) {
     const studentBookmarksCount = await this.studentProfileService.getStudentBookmarksCount(
       auth.user!.id
     )
-    return response.ok(studentBookmarksCount) // 200 OK
+    return response.ok({ nb_bookmarks: studentBookmarksCount }) // 200 OK
   }
 
   public async addViewToStudentProfile({ auth, params, response }: HttpContextContract) {
-    if (
-      auth.user!.role !== Role.CLIENT_INDIVIDUAL &&
-      auth.user!.role !== Role.CLIENT_PROFESSIONAL
-    ) {
+    let userRole: number
+    if (auth.user!.role) {
+      userRole = auth.user!.role
+    } else {
+      const authenticatedUser = await User.query().where('id', auth.user!.id).firstOrFail()
+      userRole = authenticatedUser.role
+    }
+    if (userRole !== Role.CLIENT_INDIVIDUAL && userRole !== Role.CLIENT_PROFESSIONAL) {
       throw new Exception('You cannot add a view to a student profile', 400, 'E_BAD_REQUEST')
     }
     if (
@@ -154,11 +159,15 @@ export default class StudentProfilesController {
   }
 
   public async toggleStudentProfileBookmark({ auth, params, response }: HttpContextContract) {
-    if (
-      auth.user!.role !== Role.CLIENT_INDIVIDUAL &&
-      auth.user!.role !== Role.CLIENT_PROFESSIONAL
-    ) {
-      throw new Exception('You cannot bookmark a student profile', 400, 'E_BAD_REQUEST')
+    let userRole: number
+    if (auth.user!.role) {
+      userRole = auth.user!.role
+    } else {
+      const authenticatedUser = await User.query().where('id', auth.user!.id).firstOrFail()
+      userRole = authenticatedUser.role
+    }
+    if (userRole !== Role.CLIENT_INDIVIDUAL && userRole !== Role.CLIENT_PROFESSIONAL) {
+      throw new Exception('You cannot add a view to a student profile', 400, 'E_BAD_REQUEST')
     }
 
     await this.studentProfileService.toggleStudentProfileBookmark(
@@ -170,15 +179,15 @@ export default class StudentProfilesController {
   }
 
   public async isStudentProfileBookmarked({ auth, params, response }: HttpContextContract) {
-    if (
-      auth.user!.role !== Role.CLIENT_INDIVIDUAL &&
-      auth.user!.role !== Role.CLIENT_PROFESSIONAL
-    ) {
-      throw new Exception(
-        'You cannot check if a student profile is bookmarked',
-        400,
-        'E_BAD_REQUEST'
-      )
+    let userRole: number
+    if (auth.user!.role) {
+      userRole = auth.user!.role
+    } else {
+      const authenticatedUser = await User.query().where('id', auth.user!.id).firstOrFail()
+      userRole = authenticatedUser.role
+    }
+    if (userRole !== Role.CLIENT_INDIVIDUAL && userRole !== Role.CLIENT_PROFESSIONAL) {
+      throw new Exception('You cannot add a view to a student profile', 400, 'E_BAD_REQUEST')
     }
 
     const isBookmarked = await this.studentProfileService.isStudentProfileBookmarked(
