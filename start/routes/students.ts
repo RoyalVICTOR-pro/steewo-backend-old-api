@@ -68,13 +68,13 @@ Route.group(() => {
     .as('getStudentBookmarksCount')
     .middleware(['auth', 'isStudentProfileOwner'])
   Route.get(
-    '/toogle-student-profile-bookmark/:student_profile_id/from/:client_profile_id',
+    '/toggle-student-profile-bookmark/:student_profile_id/from/:client_profile_id',
     'StudentsController.toggleStudentProfileBookmark'
   )
     .as('bookmarkStudentProfile')
     .middleware('auth')
   Route.get(
-    '/is-student-profile-isBookmarked/:student_profile_id/from/:client_profile_id',
+    '/is-student-profile-bookmarked/:student_profile_id/from/:client_profile_id',
     'StudentsController.isStudentProfileBookmarked'
   )
     .as('isStudentProfileBookmarked')

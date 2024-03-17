@@ -163,4 +163,122 @@ test.group('Student Profile Bookmarks and views', (group) => {
       nb_views: 1,
     })
   })
+
+  test('Get Student Bookmarks Count by the student himself', async ({ client }) => {
+    const response = await client
+      .get('/get-student-bookmarks-count/')
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(200)
+    response.assertBodyContains({
+      nb_bookmarks: 0,
+    })
+  })
+
+  test('Toggle Student Profile Bookmark by a client', async ({ client }) => {
+    const response = await client
+      .get(
+        '/toggle-student-profile-bookmark/' +
+          fakeStudent.studentProfileId +
+          '/from/' +
+          fakeClient.clientProfileId
+      )
+      .header('Cookie', fakeClient.tokenCookie)
+    response.assertStatus(200)
+  })
+
+  test('Toggle Student Profile Bookmark by an other student', async ({ client }) => {
+    const response = await client
+      .get(
+        '/toggle-student-profile-bookmark/' +
+          fakeStudent.studentProfileId +
+          '/from/' +
+          secondFakeStudent.studentProfileId
+      )
+      .header('Cookie', secondFakeStudent.tokenCookie)
+    response.assertStatus(400)
+  })
+
+  test('Toggle Student Profile Bookmark by the student himself', async ({ client }) => {
+    const response = await client
+      .get(
+        '/toggle-student-profile-bookmark/' +
+          fakeStudent.studentProfileId +
+          '/from/' +
+          fakeStudent.studentProfileId
+      )
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(400)
+  })
+
+  test('Get Student Bookmarks Count by a client', async ({ client }) => {
+    const response = await client
+      .get('/get-student-bookmarks-count/')
+      .header('Cookie', fakeClient.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Get Student Bookmarks Count by an other student', async ({ client }) => {
+    const response = await client
+      .get('/get-student-bookmarks-count/')
+      .header('Cookie', secondFakeStudent.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Get Student Bookmarks Count by the student himself', async ({ client }) => {
+    const response = await client
+      .get('/get-student-bookmarks-count/')
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(200)
+    response.assertBodyContains({
+      nb_bookmarks: 1,
+    })
+  })
+
+  test('Check if Student Profile is bookmarked by a client', async ({ client, assert }) => {
+    const response = await client
+      .get(
+        '/is-student-profile-bookmarked/' +
+          fakeStudent.studentProfileId +
+          '/from/' +
+          fakeClient.clientProfileId
+      )
+      .header('Cookie', fakeClient.tokenCookie)
+    response.assertStatus(200)
+    assert.equal(response.body().answer, true)
+  })
+
+  test('Toggle Student Profile Bookmark by a client', async ({ client }) => {
+    const response = await client
+      .get(
+        '/toggle-student-profile-bookmark/' +
+          fakeStudent.studentProfileId +
+          '/from/' +
+          fakeClient.clientProfileId
+      )
+      .header('Cookie', fakeClient.tokenCookie)
+    response.assertStatus(200)
+  })
+
+  test('Check if Student Profile is bookmarked by a client', async ({ client, assert }) => {
+    const response = await client
+      .get(
+        '/is-student-profile-bookmarked/' +
+          fakeStudent.studentProfileId +
+          '/from/' +
+          fakeClient.clientProfileId
+      )
+      .header('Cookie', fakeClient.tokenCookie)
+    response.assertStatus(200)
+    assert.equal(response.body().answer, false)
+  })
+
+  test('Get Student Bookmarks Count by the student himself', async ({ client }) => {
+    const response = await client
+      .get('/get-student-bookmarks-count/')
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(200)
+    response.assertBodyContains({
+      nb_bookmarks: 0,
+    })
+  })
 })

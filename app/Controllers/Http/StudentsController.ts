@@ -176,7 +176,6 @@ export default class StudentProfilesController {
       Number(params.student_profile_id),
       Number(params.client_profile_id)
     )
-
-    return response.ok(isBookmarked) // 200 OK
+    return response.ok({ answer: isBookmarked }) // 200 OK
   }
 }
