@@ -1,8 +1,8 @@
 import Env from '@ioc:Adonis/Core/Env'
-import Mail from '@ioc:Adonis/Addons/Mail'
+import { MailGunSender as Mail } from 'App/Utils/MailGunSender'
 
 export default class MailService {
-  private static shouldSendEmail: boolean = Env.get('SEND_EMAIL')
+  private static shouldSendEmail: boolean = Env.get('SEND_EMAIL') === 'true' ? true : false
   private static emailSender: string = 'no-reply@steewo.io'
 
   public static async sendStudentEmailVerificationMail(
@@ -11,16 +11,16 @@ export default class MailService {
     firstname: string
   ) {
     if (this.shouldSendEmail === true) {
-      await Mail.send((message) => {
-        message
-          .from(this.emailSender)
-          .to(email)
-          .subject('Steewo - Merci de vérifier ton email')
-          .htmlView('emails/student_email_validation', {
-            token: token,
-            email: email,
-            firstname: firstname,
-          })
+      await Mail.send({
+        from: this.emailSender,
+        to: email,
+        subject: 'Steewo - Merci de vérifier ton email',
+        html_view: 'emails/student_email_validation',
+        variables_for_view: {
+          token: token,
+          email: email,
+          firstname: firstname,
+        },
       })
     }
   }
@@ -31,31 +31,31 @@ export default class MailService {
     firstname: string
   ) {
     if (this.shouldSendEmail === true) {
-      await Mail.send((message) => {
-        message
-          .from(this.emailSender)
-          .to(email)
-          .subject('Steewo - Merci de vérifier votre email')
-          .htmlView('emails/client_email_validation', {
-            token: token,
-            email: email,
-            firstname: firstname,
-          })
+      await Mail.send({
+        from: this.emailSender,
+        to: email,
+        subject: 'Steewo - Merci de vérifier votre email',
+        html_view: 'emails/client_email_validation',
+        variables_for_view: {
+          token: token,
+          email: email,
+          firstname: firstname,
+        },
       })
     }
   }
 
   public static async sendForgotPasswordMail(email: string, token: string) {
     if (this.shouldSendEmail === true) {
-      await Mail.send((message) => {
-        message
-          .from(this.emailSender)
-          .to(email)
-          .subject('Steewo - Modifiez votre mot de passe')
-          .htmlView('emails/password_reset', {
-            token: token,
-            email: email,
-          })
+      await Mail.send({
+        from: this.emailSender,
+        to: email,
+        subject: 'Steewo - Modifiez votre mot de passe',
+        html_view: 'emails/password_reset',
+        variables_for_view: {
+          token: token,
+          email: email,
+        },
       })
     }
   }
