@@ -14,7 +14,10 @@ export default class StudentProfilesAndProfessionsRelation extends BaseModel {
   public profession_id: number
 
   @column()
-  public has_been_accepted: boolean
+  public profession_has_been_accepted: boolean
+
+  @column()
+  public waiting_validation: boolean
 
   // Define relationships (optional)
   @belongsTo(() => StudentProfile, {

@@ -9,7 +9,8 @@ export default class extends BaseSchema {
       table.integer('student_profile_id').unsigned().references('student_profiles.id')
       table.integer('profession_id').unsigned().references('professions.id')
       table.index(['student_profile_id', 'profession_id'], 'student_profession_relation')
-      table.tinyint('has_been_accepted').defaultTo(0)
+      table.tinyint('profession_has_been_accepted').defaultTo(0)
+      table.tinyint('waiting_validation').defaultTo(0)
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

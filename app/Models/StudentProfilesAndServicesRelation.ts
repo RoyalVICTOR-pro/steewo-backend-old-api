@@ -14,7 +14,7 @@ export default class StudentProfilesAndServicesRelation extends BaseModel {
   public service_id: number
 
   @column()
-  public has_been_accepted: boolean
+  public service_has_been_accepted: boolean
 
   // Define relationships (optional)
   @belongsTo(() => StudentProfile, {
