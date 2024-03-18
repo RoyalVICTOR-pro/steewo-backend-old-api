@@ -8,7 +8,7 @@ export default class extends BaseSchema {
       table.increments('id').primary()
       table.integer('student_profile_id').unsigned().references('student_profiles.id')
       table.integer('client_profile_id').unsigned().references('client_profiles.id')
-      table.index(['student_profile_id', 'client_profile_id'], 'bookmark_unique')
+      table.index(['student_profile_id', 'client_profile_id'], 'student_profile_view')
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
