@@ -1,9 +1,18 @@
-import { BaseModel, column, belongsTo, BelongsTo, beforeDelete } from '@ioc:Adonis/Lucid/Orm'
+import {
+  BaseModel,
+  column,
+  belongsTo,
+  BelongsTo,
+  beforeDelete,
+  hasMany,
+  HasMany,
+} from '@ioc:Adonis/Lucid/Orm'
 import { compose } from '@ioc:Adonis/Core/Helpers'
 import { DateTime } from 'luxon'
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 import Profession from '@Models/Profession'
 import ServicesFormField from '@Models/ServicesFormField'
+import StudentProfilesAndServicesRelation from '@Models/StudentProfilesAndServicesRelation'
 
 export default class Service extends compose(BaseModel, SoftDeletes) {
   @column({ isPrimary: true })
@@ -38,6 +47,9 @@ export default class Service extends compose(BaseModel, SoftDeletes) {
 
   @belongsTo(() => Profession)
   public profession: BelongsTo<typeof Profession>
+
+  @hasMany(() => StudentProfilesAndServicesRelation)
+  public studentProfilesAndServicesRelations: HasMany<typeof StudentProfilesAndServicesRelation>
 
   @beforeDelete()
   public static async deleteFormFields(service: Service) {
