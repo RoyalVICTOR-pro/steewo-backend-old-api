@@ -348,4 +348,10 @@ export default class StudentProfileService implements StudentProfileServiceInter
     }
     return
   }
+
+  public async getStudentPublicProfessions(studentProfileId: number) {
+    return await this.studentProfileAndProfessionRelationRepository.getStudentPublicProfessions(
+      studentProfileId
+    )
+  }
 }

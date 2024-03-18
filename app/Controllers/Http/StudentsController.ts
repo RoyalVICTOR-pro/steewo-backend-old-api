@@ -198,4 +198,12 @@ export default class StudentProfilesController {
     )
     return response.status(200).send('Services added') // 200 OK
   }
+
+  public async getStudentPublicProfessions({ params, response }: HttpContextContract) {
+    const studentPublicProfessions = await this.studentProfileService.getStudentPublicProfessions(
+      Number(params.student_profile_id)
+    )
+    console.log('studentPublicProfessions :>> ', studentPublicProfessions)
+    return response.ok(studentPublicProfessions) // 200 OK
+  }
 }

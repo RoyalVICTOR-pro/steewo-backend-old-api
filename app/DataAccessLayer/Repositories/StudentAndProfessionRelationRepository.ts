@@ -1,6 +1,7 @@
 import { inject } from '@adonisjs/core/build/standalone'
 import StudentProfilesHasProfessions from '@Models/StudentProfilesHasProfessions'
 import StudentProfileAndProfessionRelationRepositoryInterface from '@DALInterfaces/StudentProfileAndProfessionRelationRepositoryInterface'
+import Profession from '@Models/Profession'
 
 @inject()
 export default class StudentProfileAndProfessionRelationRepository
@@ -26,5 +27,13 @@ export default class StudentProfileAndProfessionRelationRepository
       .where('profession_id', professionId)
       .first()
     return studentAndProfessionRelation ? true : false
+  }
+
+  public async getStudentPublicProfessions(studentId: number): Promise<Profession[]> {
+    const professions = await StudentProfilesHasProfessions.query()
+      .where('student_profile_id', studentId)
+      .where('profession_has_been_accepted', true)
+      .preload('profession')
+    return professions.map((studentProfession) => studentProfession.profession)
   }
 }
