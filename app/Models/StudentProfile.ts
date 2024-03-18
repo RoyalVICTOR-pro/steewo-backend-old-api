@@ -3,8 +3,8 @@ import { compose } from '@ioc:Adonis/Core/Helpers'
 import { DateTime } from 'luxon'
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 import Bookmark from '@Models/Bookmark'
-import StudentProfilesAndProfessionsRelation from '@Models/StudentProfilesAndProfessionsRelation'
-import StudentProfilesAndServicesRelation from '@Models/StudentProfilesAndServicesRelation'
+import StudentProfilesHasProfessions from '@Models/StudentProfilesHasProfessions'
+import StudentProfilesHasServices from 'App/Models/StudentProfilesHasServices'
 import StudentProfileView from '@Models/StudentProfileView'
 import User from '@Models/User'
 
@@ -116,11 +116,9 @@ export default class StudentProfile extends compose(BaseModel, SoftDeletes) {
   @hasMany(() => StudentProfileView)
   public studentProfileViews: HasMany<typeof StudentProfileView>
 
-  @hasMany(() => StudentProfilesAndProfessionsRelation)
-  public studentProfilesAndProfessionsRelations: HasMany<
-    typeof StudentProfilesAndProfessionsRelation
-  >
+  @hasMany(() => StudentProfilesHasProfessions)
+  public StudentProfilesHasProfessionss: HasMany<typeof StudentProfilesHasProfessions>
 
-  @hasMany(() => StudentProfilesAndServicesRelation)
-  public studentProfilesAndServicesRelations: HasMany<typeof StudentProfilesAndServicesRelation>
+  @hasMany(() => StudentProfilesHasServices)
+  public studentProfilesHasServices: HasMany<typeof StudentProfilesHasServices>
 }

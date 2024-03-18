@@ -12,7 +12,7 @@ import { DateTime } from 'luxon'
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 import Profession from '@Models/Profession'
 import ServicesFormField from '@Models/ServicesFormField'
-import StudentProfilesAndServicesRelation from '@Models/StudentProfilesAndServicesRelation'
+import StudentProfilesHasServices from '@Models/StudentProfilesHasServices'
 
 export default class Service extends compose(BaseModel, SoftDeletes) {
   @column({ isPrimary: true })
@@ -48,8 +48,8 @@ export default class Service extends compose(BaseModel, SoftDeletes) {
   @belongsTo(() => Profession)
   public profession: BelongsTo<typeof Profession>
 
-  @hasMany(() => StudentProfilesAndServicesRelation)
-  public studentProfilesAndServicesRelations: HasMany<typeof StudentProfilesAndServicesRelation>
+  @hasMany(() => StudentProfilesHasServices)
+  public studentProfilesHasServices: HasMany<typeof StudentProfilesHasServices>
 
   @beforeDelete()
   public static async deleteFormFields(service: Service) {

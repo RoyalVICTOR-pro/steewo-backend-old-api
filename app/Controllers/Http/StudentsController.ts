@@ -1,5 +1,7 @@
 import { inject, Exception } from '@adonisjs/core/build/standalone'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import AuthService from 'App/Services/AuthService'
+import Role from 'App/Enums/Roles'
 import StudentProfileBannerUpdateValidator from '@Validators/StudentProfileBannerUpdateValidator'
 import StudentProfileCreateDTO from '@DTO/StudentProfileCreateDTO'
 import StudentProfileCreateValidator from '@Validators/StudentProfileCreateValidator'
@@ -8,9 +10,8 @@ import StudentProfileMainUpdateDTO from '@DTO/StudentProfileMainUpdateDTO'
 import StudentProfileMainUpdateValidator from '@Validators/StudentProfileMainUpdateValidator'
 import StudentProfilePhotoUpdateValidator from '@Validators/StudentProfilePhotoUpdateValidator'
 import StudentProfileService from '@Services/StudentProfileService'
+import StudentProfilesProfessionsAddValidator from '@Validators/StudentProfilesProfessionsAddValidator'
 import UserCharterAcceptationValidator from '@Validators/UserCharterAcceptationValidator'
-import Role from 'App/Enums/Roles'
-import AuthService from 'App/Services/AuthService'
 
 @inject()
 export default class StudentProfilesController {
@@ -177,5 +178,14 @@ export default class StudentProfilesController {
       Number(params.client_profile_id)
     )
     return response.ok({ answer: isBookmarked }) // 200 OK
+  }
+
+  public async addProfessionsToStudentProfile({ request, params, response }: HttpContextContract) {
+    const data = await request.validate(StudentProfilesProfessionsAddValidator)
+    await this.studentProfileService.addProfessionsToStudentProfile(
+      Number(params.student_profile_id),
+      data.choosen_professions
+    )
+    return response.status(200).send('Professions added') // 200 OK
   }
 }

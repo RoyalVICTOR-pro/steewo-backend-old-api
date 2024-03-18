@@ -14,16 +14,21 @@ import StudentProfileViewsService from '@Services/StudentProfileViewsService'
 import StudentUserStatus from '@Enums/StudentUserStatus'
 import UploadService from '@Services/UploadService'
 import UserRepository from '@DALRepositories/UserRepository'
+import Profession from 'App/Models/Profession'
+import StudentProfileAndProfessionRelationRepository from 'App/DataAccessLayer/Repositories/StudentAndProfessionRelationRepository'
 
 @inject()
 export default class StudentProfileService implements StudentProfileServiceInterface {
   private studentProfileRepository: StudentProfileRepository
+  private studentProfileAndProfessionRelationRepository: StudentProfileAndProfessionRelationRepository
   private userRepository: UserRepository
   private readonly studentProfilePath = 'students/profiles/'
 
   constructor(studentProfileRepository: StudentProfileRepository) {
     this.studentProfileRepository = studentProfileRepository
     this.userRepository = new UserRepository()
+    this.studentProfileAndProfessionRelationRepository =
+      new StudentProfileAndProfessionRelationRepository()
   }
 
   public async createStudentProfile(data: StudentProfileCreateDTO) {
@@ -283,5 +288,32 @@ export default class StudentProfileService implements StudentProfileServiceInter
 
   public async isStudentProfileBookmarked(studentProfileId: number, clientProfileId: number) {
     return await StudentBookmarksService.isBookmarked(studentProfileId, clientProfileId)
+  }
+
+  public async addProfessionsToStudentProfile(studentProfileId: number, professions: number[]) {
+    for (let i = 0; i < professions.length; i++) {
+      // Check if profession exists
+      const profession = await Profession.find(professions[i])
+
+      if (profession) {
+        // Check if profession is enabled
+        if (profession.is_enabled) {
+          // Check if profession is not already added by the student
+          if (
+            !(await this.studentProfileAndProfessionRelationRepository.isStudentHasAlreadyThisProfession(
+              studentProfileId,
+              professions[i]
+            ))
+          ) {
+            // Add profession to student profile
+            await this.studentProfileAndProfessionRelationRepository.addProfessionToStudentProfile(
+              studentProfileId,
+              professions[i]
+            )
+          }
+        }
+      }
+    }
+    return
   }
 }

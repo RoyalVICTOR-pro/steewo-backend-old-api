@@ -1,9 +1,9 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
-import Profession from '@Models/Profession'
+import Service from '@Models/Service'
 import StudentProfile from '@Models/StudentProfile'
 
-export default class StudentProfilesAndProfessionsRelation extends BaseModel {
+export default class StudentProfilesHasServices extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
@@ -11,13 +11,10 @@ export default class StudentProfilesAndProfessionsRelation extends BaseModel {
   public student_profile_id: number
 
   @column()
-  public profession_id: number
+  public service_id: number
 
   @column()
-  public profession_has_been_accepted: boolean
-
-  @column()
-  public waiting_validation: boolean
+  public service_has_been_accepted: boolean
 
   // Define relationships (optional)
   @belongsTo(() => StudentProfile, {
@@ -25,10 +22,10 @@ export default class StudentProfilesAndProfessionsRelation extends BaseModel {
   })
   public studentProfile: BelongsTo<typeof StudentProfile>
 
-  @belongsTo(() => Profession, {
-    foreignKey: 'profession_id',
+  @belongsTo(() => Service, {
+    foreignKey: 'service_id',
   })
-  public profession: BelongsTo<typeof Profession>
+  public service: BelongsTo<typeof Service>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
