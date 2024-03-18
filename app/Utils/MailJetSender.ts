@@ -10,6 +10,7 @@ export class MailJetSender {
     html_view: string
     variables_for_view: object
   }) {
+    data.variables_for_view['api_url'] = Env.get('API_URL')
     const html = await View.render(data.html_view, data.variables_for_view)
 
     const mailjet = Mailjet.apiConnect(
