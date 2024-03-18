@@ -1,5 +1,6 @@
 import Env from '@ioc:Adonis/Core/Env'
-import { MailGunSender as Mail } from 'App/Utils/MailGunSender'
+// import { MailGunSender as Mail } from 'App/Utils/MailGunSender'
+import { MailJetSender as Mail } from 'App/Utils/MailJetSender'
 
 export default class MailService {
   private static shouldSendEmail: boolean = Env.get('SEND_EMAIL') === 'true' ? true : false

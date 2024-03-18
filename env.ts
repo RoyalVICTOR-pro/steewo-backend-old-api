@@ -34,4 +34,6 @@ export default Env.rules({
   S3_ENDPOINT: Env.schema.string.optional(),
   MAILGUN_API_KEY: Env.schema.string(),
   MAILGUN_DOMAIN: Env.schema.string(),
+  MAILJET_APIKEY_PUBLIC: Env.schema.string(),
+  MAILJET_APIKEY_PRIVATE: Env.schema.string(),
 })
