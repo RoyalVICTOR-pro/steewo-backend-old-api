@@ -2,7 +2,11 @@ import { getDatetimeForFileName } from '@Utils/Various'
 import { inject, Exception } from '@adonisjs/core/build/standalone'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
 import MailService from '@Services/MailService'
+import Profession from 'App/Models/Profession'
+import Service from 'App/Models/Service'
 import StudentBookmarksService from './StudentBookmarksService'
+import StudentProfileAndProfessionRelationRepository from 'App/DataAccessLayer/Repositories/StudentAndProfessionRelationRepository'
+import StudentProfileAndServiceRelationRepository from 'App/DataAccessLayer/Repositories/StudentAndServiceRelationRepository'
 import StudentProfileBannerUpdateDTO from '@DTO/StudentProfileBannerUpdateDTO'
 import StudentProfileCreateDTO from '@DTO/StudentProfileCreateDTO'
 import StudentProfileDescriptionUpdateDTO from '@DTO/StudentProfileDescriptionUpdateDTO'
@@ -14,13 +18,12 @@ import StudentProfileViewsService from '@Services/StudentProfileViewsService'
 import StudentUserStatus from '@Enums/StudentUserStatus'
 import UploadService from '@Services/UploadService'
 import UserRepository from '@DALRepositories/UserRepository'
-import Profession from 'App/Models/Profession'
-import StudentProfileAndProfessionRelationRepository from 'App/DataAccessLayer/Repositories/StudentAndProfessionRelationRepository'
 
 @inject()
 export default class StudentProfileService implements StudentProfileServiceInterface {
   private studentProfileRepository: StudentProfileRepository
   private studentProfileAndProfessionRelationRepository: StudentProfileAndProfessionRelationRepository
+  private studentProfileAndServiceRelationRepository: StudentProfileAndServiceRelationRepository
   private userRepository: UserRepository
   private readonly studentProfilePath = 'students/profiles/'
 
@@ -29,6 +32,8 @@ export default class StudentProfileService implements StudentProfileServiceInter
     this.userRepository = new UserRepository()
     this.studentProfileAndProfessionRelationRepository =
       new StudentProfileAndProfessionRelationRepository()
+    this.studentProfileAndServiceRelationRepository =
+      new StudentProfileAndServiceRelationRepository()
   }
 
   public async createStudentProfile(data: StudentProfileCreateDTO) {
@@ -309,6 +314,33 @@ export default class StudentProfileService implements StudentProfileServiceInter
             await this.studentProfileAndProfessionRelationRepository.addProfessionToStudentProfile(
               studentProfileId,
               professions[i]
+            )
+          }
+        }
+      }
+    }
+    return
+  }
+
+  public async addServicesToStudentProfile(studentProfileId: number, services: number[]) {
+    for (let i = 0; i < services.length; i++) {
+      // Check if service exists
+      const service = await Service.find(services[i])
+
+      if (service) {
+        // Check if service is enabled
+        if (service.is_enabled) {
+          // Check if service is not already added by the student
+          if (
+            !(await this.studentProfileAndServiceRelationRepository.isStudentHasAlreadyThisService(
+              studentProfileId,
+              services[i]
+            ))
+          ) {
+            // Add service to student profile
+            await this.studentProfileAndServiceRelationRepository.addServiceToStudentProfile(
+              studentProfileId,
+              services[i]
             )
           }
         }

@@ -11,6 +11,7 @@ import StudentProfileMainUpdateValidator from '@Validators/StudentProfileMainUpd
 import StudentProfilePhotoUpdateValidator from '@Validators/StudentProfilePhotoUpdateValidator'
 import StudentProfileService from '@Services/StudentProfileService'
 import StudentProfilesProfessionsAddValidator from '@Validators/StudentProfilesProfessionsAddValidator'
+import StudentProfilesServicesAddValidator from '@Validators/StudentProfilesServicesAddValidator'
 import UserCharterAcceptationValidator from '@Validators/UserCharterAcceptationValidator'
 
 @inject()
@@ -187,5 +188,14 @@ export default class StudentProfilesController {
       data.choosen_professions
     )
     return response.status(200).send('Professions added') // 200 OK
+  }
+
+  public async addServicesToStudentProfile({ request, params, response }: HttpContextContract) {
+    const data = await request.validate(StudentProfilesServicesAddValidator)
+    await this.studentProfileService.addServicesToStudentProfile(
+      Number(params.student_profile_id),
+      data.choosen_services
+    )
+    return response.status(200).send('Services added') // 200 OK
   }
 }
