@@ -109,7 +109,7 @@ export default class StudentProfileRepository implements StudentProfileRepositor
   }
 
   public async getStudentViewsCount(studentId: number): Promise<number> {
-    const viewsCount = await Database.from('bookmarks')
+    const viewsCount = await Database.from('student_profile_views')
       .where('student_profile_id', studentId)
       .count('* as total')
     return viewsCount[0].total
