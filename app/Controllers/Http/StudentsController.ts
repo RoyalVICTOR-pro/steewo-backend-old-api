@@ -203,7 +203,6 @@ export default class StudentProfilesController {
     const studentPublicProfessions = await this.studentProfileService.getStudentPublicProfessions(
       Number(params.student_profile_id)
     )
-    console.log('studentPublicProfessions :>> ', studentPublicProfessions)
     return response.ok(studentPublicProfessions) // 200 OK
   }
 

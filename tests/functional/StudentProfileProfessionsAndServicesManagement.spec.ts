@@ -219,12 +219,35 @@ test.group('Student Profile Completion Process', (group) => {
       .get('/get-student-public-professions/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(200)
-    console.log('response.body() :>> ', response.body())
     response.assertBodyContains([])
   })
 
+  test('Get Student Private Professions by a client', async ({ client }) => {
+    const response = await client
+      .get('/get-student-private-professions/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeClient.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Get Student Private Professions by an other student', async ({ client }) => {
+    const response = await client
+      .get('/get-student-private-professions/' + fakeStudent.studentProfileId)
+      .header('Cookie', secondFakeStudent.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Get Student Private Professions by the student himself', async ({ client }) => {
+    const response = await client
+      .get('/get-student-private-professions/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(200)
+    response.assertBodyContains([{ name: 'Graphiste' }, { name: 'Développeur' }])
+  })
+
   // Ajouter ici l'acceptation d'un métier par l'admin pour que le test suivant fonctionne
-  /* 
+  // Ajouter des tests pour vérifier que si certains métiers sont validés et pas d'autres qu'ils ne ressortent pas.
+
+  /*
   test('Get Student Public Professions', async ({ client }) => {
     const response = await client
       .get('/get-student-public-professions/' + fakeStudent.studentProfileId)
