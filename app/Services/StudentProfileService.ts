@@ -354,4 +354,16 @@ export default class StudentProfileService implements StudentProfileServiceInter
       studentProfileId
     )
   }
+
+  public async getStudentPrivateProfessions(studentProfileId: number) {
+    return await this.studentProfileAndProfessionRelationRepository.getStudentPrivateProfessions(
+      studentProfileId
+    )
+  }
+
+  public async getStudentServices(studentProfileId: number) {
+    return await this.studentProfileAndServiceRelationRepository.getStudentServices(
+      studentProfileId
+    )
+  }
 }

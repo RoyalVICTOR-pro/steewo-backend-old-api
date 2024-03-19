@@ -27,4 +27,11 @@ export default class StudentProfileAndServiceRelationRepository
       .first()
     return studentAndServiceRelation ? true : false
   }
+
+  public async getStudentServices(studentId: number): Promise<StudentProfilesHasServices[]> {
+    const services = await StudentProfilesHasServices.query()
+      .where('student_profile_id', studentId)
+      .preload('service')
+    return services
+  }
 }

@@ -36,4 +36,11 @@ export default class StudentProfileAndProfessionRelationRepository
       .preload('profession')
     return professions.map((studentProfession) => studentProfession.profession)
   }
+
+  public async getStudentPrivateProfessions(studentId: number): Promise<Profession[]> {
+    const professions = await StudentProfilesHasProfessions.query()
+      .where('student_profile_id', studentId)
+      .preload('profession')
+    return professions.map((studentProfession) => studentProfession.profession)
+  }
 }
