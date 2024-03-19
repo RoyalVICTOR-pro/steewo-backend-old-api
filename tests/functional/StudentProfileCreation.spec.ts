@@ -12,7 +12,7 @@ test.group('Student Profile Creation Process', (group) => {
   let fakeStudent = new FakeStudentForTest()
 
   group.setup(async () => {
-    await fakeStudent.registerFakeStudent()
+    await fakeStudent.createFakeStudentUserAccount()
   })
 
   group.teardown(async () => {

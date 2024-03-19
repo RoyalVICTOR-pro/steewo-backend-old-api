@@ -1,9 +1,11 @@
+import Bookmark from 'App/Models/Bookmark'
+import StudentProfile from '@Models/StudentProfile'
+import StudentProfilesHasProfessions from 'App/Models/StudentProfilesHasProfessions'
+import StudentProfilesHasServices from 'App/Models/StudentProfilesHasServices'
+import StudentProfileView from 'App/Models/StudentProfileView'
+import StudentUserStatus from 'App/Enums/StudentUserStatus'
 import supertest from 'supertest'
 import User from '@Models/User'
-import StudentProfile from '@Models/StudentProfile'
-import StudentUserStatus from 'App/Enums/StudentUserStatus'
-import StudentProfileView from 'App/Models/StudentProfileView'
-import Bookmark from 'App/Models/Bookmark'
 
 export class FakeStudentForTest {
   public email: string = 'fabien.garp@tests.com'
@@ -21,7 +23,7 @@ export class FakeStudentForTest {
     }
   }
 
-  public async registerFakeStudent() {
+  public async createFakeStudentUserAccount() {
     let { body: createdUser } = await supertest(this.BASE_URL)
       .post('/register')
       .send({
@@ -69,5 +71,13 @@ export class FakeStudentForTest {
 
   public async deleteRegisteredBookmarks() {
     await Bookmark.query().where('student_profile_id', this.studentProfileId).delete()
+  }
+
+  public async deleteLinksWithProfessions() {
+    await StudentProfilesHasProfessions.query().where('student_profile_id', this.userId).delete()
+  }
+
+  public async deleteLinksWithServices() {
+    await StudentProfilesHasServices.query().where('student_profile_id', this.userId).delete()
   }
 }
