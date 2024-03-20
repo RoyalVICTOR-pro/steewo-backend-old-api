@@ -4,6 +4,7 @@ import FormFieldCreateOrUpdateDTO from '@DTO/FormFieldCreateOrUpdateDTO'
 import FormFieldCreateOrUpdateValidator from '@Validators/FormFieldCreateOrUpdateValidator'
 import FormFieldService from '@Services/FormFieldService'
 import FormFieldUpdateOrderDTO from '@DTO/FormFieldUpdateOrderDTO'
+import FormFieldUpdateOrderValidator from '@Validators/FormFieldUpdateOrderValidator'
 
 @inject()
 export default class FormFieldController {
@@ -65,9 +66,8 @@ export default class FormFieldController {
   }
 
   public async updateFormFieldOrder({ request, response }: HttpContextContract) {
-    await this.formFieldService.updateFormFieldOrder(
-      request.body().formFields as FormFieldUpdateOrderDTO[]
-    )
+    const data = await request.validate(FormFieldUpdateOrderValidator)
+    await this.formFieldService.updateFormFieldOrder(data.formFields as FormFieldUpdateOrderDTO[])
     return response.noContent()
   }
 
