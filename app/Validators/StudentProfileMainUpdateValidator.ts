@@ -13,7 +13,7 @@ export default class StudentProfileMainUpdateValidator {
     address_road: schema.string.optional(),
     bank_iban: schema.string.optional(),
     company_exists_proof_file: schema.file.optional({
-      size: Config.get('custom.MAX_IMAGE_FILE_SIZE'),
+      size: Config.get('custom.MAX_DOCUMENT_FILE_SIZE'),
       extnames: [
         ...Config.get('custom.IMAGE_FILE_TYPES'),
         ...Config.get('custom.DOCUMENT_FILE_TYPES'),
@@ -33,7 +33,7 @@ export default class StudentProfileMainUpdateValidator {
     mobile: schema.string.optional(),
     place_of_birth: schema.string.optional(),
     school_certificate_file: schema.file.optional({
-      size: Config.get('custom.MAX_IMAGE_FILE_SIZE'),
+      size: Config.get('custom.MAX_DOCUMENT_FILE_SIZE'),
       extnames: [
         ...Config.get('custom.IMAGE_FILE_TYPES'),
         ...Config.get('custom.DOCUMENT_FILE_TYPES'),
