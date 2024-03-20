@@ -18,7 +18,7 @@ export default class Achievement extends BaseModel {
   public date: Date | null
 
   @column()
-  public name: string | null
+  public title: string | null
 
   @column()
   public context: string | null
@@ -31,6 +31,9 @@ export default class Achievement extends BaseModel {
 
   @column()
   public isFavorite: boolean
+
+  @column()
+  public achievementOrder: number | null
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

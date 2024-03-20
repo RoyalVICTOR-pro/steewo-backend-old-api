@@ -16,6 +16,7 @@ export default class extends BaseSchema {
       table.text('value').nullable()
       table.string('name', 70).nullable()
       table.string('caption', 255).nullable()
+      table.integer('detail_order').nullable()
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
