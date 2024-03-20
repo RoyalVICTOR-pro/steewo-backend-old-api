@@ -1,6 +1,8 @@
-import { getDatetimeForFileName } from '@Utils/Various'
+import { getDatetimeForFileName, getExtension, getFileTypeFromExtension } from '@Utils/Various'
 import { inject, Exception } from '@adonisjs/core/build/standalone'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
+import AchievementCreateDTO from '@DTO/AchievementCreateDTO'
+import AchievementDetailCreateOrUpdateDTO from '@DTO/AchievementDetailCreateOrUpdateDTO'
 import MailService from '@Services/MailService'
 import Profession from 'App/Models/Profession'
 import Service from 'App/Models/Service'
@@ -18,12 +20,14 @@ import StudentProfileViewsService from '@Services/StudentProfileViewsService'
 import StudentUserStatus from '@Enums/StudentUserStatus'
 import UploadService from '@Services/UploadService'
 import UserRepository from '@DALRepositories/UserRepository'
+import AchievementsRepository from '@DALRepositories/AchievementsRepository'
 
 @inject()
 export default class StudentProfileService implements StudentProfileServiceInterface {
   private studentProfileRepository: StudentProfileRepository
   private studentProfileAndProfessionRelationRepository: StudentProfileAndProfessionRelationRepository
   private studentProfileAndServiceRelationRepository: StudentProfileAndServiceRelationRepository
+  private achievementRepository: AchievementsRepository
   private userRepository: UserRepository
   private readonly studentProfilePath = 'students/profiles/'
 
@@ -365,5 +369,43 @@ export default class StudentProfileService implements StudentProfileServiceInter
     return await this.studentProfileAndServiceRelationRepository.getStudentServices(
       studentProfileId
     )
+  }
+
+  public async addAchievementsToStudentProfile(
+    studentProfileId: number,
+    achievement: AchievementCreateDTO,
+    main_image_file: MultipartFileContract | null = null,
+    achievement_details: MultipartFileContract[] | [] | null = null
+  ) {
+    if (main_image_file) {
+      achievement.main_image_file = await UploadService.uploadFileTo(
+        main_image_file,
+        this.studentProfilePath + studentProfileId.toString() + '/',
+        'achievement-main-image-' + getDatetimeForFileName()
+      )
+    }
+
+    const createdAchievement = await this.achievementRepository.addAchievementToStudentProfile(
+      studentProfileId,
+      achievement
+    )
+
+    if (achievement_details) {
+      for (let i = 0; i < achievement_details.length; i++) {
+        const achievementDetailFilepath = await UploadService.uploadFileTo(
+          achievement_details[i],
+          this.studentProfilePath + studentProfileId.toString() + '/',
+          'achievement-detail-' + getDatetimeForFileName()
+        )
+
+        const newAchievementDetail: AchievementDetailCreateOrUpdateDTO = {
+          achievement_id: createdAchievement.id,
+          type: getFileTypeFromExtension(getExtension(achievementDetailFilepath)),
+          file: achievementDetailFilepath,
+        }
+
+        await this.achievementRepository.addAchievementDetailToAchievement(newAchievementDetail)
+      }
+    }
   }
 }

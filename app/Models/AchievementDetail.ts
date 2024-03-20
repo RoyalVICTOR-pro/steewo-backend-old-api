@@ -5,8 +5,9 @@ import Achievement from '@Models/Achievement'
 export default class AchievementDetail extends BaseModel {
   @column({ isPrimary: true })
   public id: number
+
   @column()
-  public achievementId: number
+  public achievement_id: number
 
   @column()
   public type: string | null
@@ -33,7 +34,7 @@ export default class AchievementDetail extends BaseModel {
   public updatedAt: DateTime
 
   @belongsTo(() => Achievement, {
-    foreignKey: 'achievementId',
+    foreignKey: 'achievement_id',
   })
   public achievement: BelongsTo<typeof Achievement>
 }

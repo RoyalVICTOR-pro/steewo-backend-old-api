@@ -9,13 +9,13 @@ export default class Achievement extends BaseModel {
   public id: number
 
   @column()
-  public studentProfileId: number
+  public student_profile_id: number
 
   @column()
-  public serviceId: number
+  public service_id: number
 
-  @column()
-  public date: Date | null
+  @column.date()
+  public date: DateTime | null
 
   @column()
   public title: string | null
@@ -42,12 +42,12 @@ export default class Achievement extends BaseModel {
   public updatedAt: DateTime
 
   @belongsTo(() => Service, {
-    foreignKey: 'serviceId',
+    foreignKey: 'service_id',
   })
   public service: BelongsTo<typeof Service>
 
   @belongsTo(() => StudentProfile, {
-    foreignKey: 'studentProfileId',
+    foreignKey: 'student_profile_id',
   })
   public studentProfile: BelongsTo<typeof StudentProfile>
 

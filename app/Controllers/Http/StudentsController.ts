@@ -1,5 +1,11 @@
 import { inject, Exception } from '@adonisjs/core/build/standalone'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
+
+import AchievementAddOrUpdateValidator from 'App/Validators/AchievementAddValidator'
+// import AchievementDetailsAddOrUpdateValidator from 'App/Validators/AchievementDetailsAddOrUpdateValidator'
+// import AchievementDetailsUpdateOrderValidator from '@Validators/AchievementDetailsUpdateOrderValidator'
+// import AchievementUpdateOrderValidator from '@Validators/AchievementUpdateOrderValidator'
 import AuthService from 'App/Services/AuthService'
 import Role from 'App/Enums/Roles'
 import StudentProfileBannerUpdateValidator from '@Validators/StudentProfileBannerUpdateValidator'
@@ -13,6 +19,7 @@ import StudentProfileService from '@Services/StudentProfileService'
 import StudentProfilesProfessionsAddValidator from '@Validators/StudentProfilesProfessionsAddValidator'
 import StudentProfilesServicesAddValidator from '@Validators/StudentProfilesServicesAddValidator'
 import UserCharterAcceptationValidator from '@Validators/UserCharterAcceptationValidator'
+import AchievementCreateDTO from 'App/DataAccessLayer/DTO/AchievementCreateDTO'
 
 @inject()
 export default class StudentProfilesController {
@@ -219,4 +226,84 @@ export default class StudentProfilesController {
     )
     return response.ok(studentServices) // 200 OK
   }
+
+  public async addAchievementsToStudentProfile({ request, params, response }: HttpContextContract) {
+    const data = await request.validate(AchievementAddOrUpdateValidator)
+
+    const newAchievement: AchievementCreateDTO = {
+      service_id: data.service_id,
+      title: data.title,
+      description: data.description,
+      context: data.context,
+      date: data.date,
+      isFavorite: data.isFavorite,
+    }
+
+    await this.studentProfileService.addAchievementsToStudentProfile(
+      Number(params.student_profile_id),
+      newAchievement,
+      data.main_image_file,
+      data.achievement_details
+    )
+
+    return response.status(200).send('Achievements added') // 200 OK
+  }
+
+  /* 
+  public async addAchievementDetailsToAchievement({
+    request,
+    params,
+    response,
+  }: HttpContextContract) {
+    const data = await request.validate(AchievementDetailsAddOrUpdateValidator)
+    await this.studentProfileService.addAchievementDetailsToAchievement(
+      Number(params.achievement_id),
+      data
+    )
+    return response.status(200).send('Achievement details added') // 200 OK
+  }
+
+  public async updateAchievement({ request, params, response }: HttpContextContract) {
+    const data = await request.validate(AchievementAddOrUpdateValidator)
+    await this.studentProfileService.updateAchievement(Number(params.achievement_id), data)
+    return response.status(200).send('Achievement updated') // 200 OK
+  }
+
+  public async updateAchievementDetail({ request, params, response }: HttpContextContract) {
+    const data = await request.validate(AchievementDetailsAddOrUpdateValidator)
+    await this.studentProfileService.updateAchievementDetail(
+      Number(params.achievement_detail_id),
+      data
+    )
+    return response.status(200).send('Achievement detail updated') // 200 OK
+  }
+
+  public async deleteAchievement({ params, response }: HttpContextContract) {
+    await this.studentProfileService.deleteAchievement(Number(params.achievement_id))
+    return response.status(200).send('Achievement deleted') // 200 OK
+  }
+
+  public async deleteAchievementDetail({ params, response }: HttpContextContract) {
+    await this.studentProfileService.deleteAchievementDetail(Number(params.achievement_detail_id))
+    return response.status(200).send('Achievement detail deleted') // 200 OK
+  }
+
+  public async updateAchievementsOrder({ request, params, response }: HttpContextContract) {
+    const data = await request.validate(AchievementUpdateOrderValidator)
+    await this.studentProfileService.updateAchievementsOrder(
+      Number(params.student_profile_id),
+      data.achievements_order
+    )
+    return response.status(200).send('Achievements order updated') // 200 OK
+  }
+
+  public async updateAchievementDetailsOrder({ request, params, response }: HttpContextContract) {
+    const data = await request.validate(AchievementDetailsUpdateOrderValidator)
+    await this.studentProfileService.updateAchievementDetailsOrder(
+      Number(params.achievement_id),
+      data.achievement_details_order
+    )
+    return response.status(200).send('Achievement details order updated') // 200 OK
+  } 
+  */
 }
