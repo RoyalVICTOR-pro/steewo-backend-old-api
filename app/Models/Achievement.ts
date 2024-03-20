@@ -27,7 +27,7 @@ export default class Achievement extends BaseModel {
   public description: string | null
 
   @column()
-  public mainImagePath: string | null
+  public mainImageFile: string | null
 
   @column()
   public isFavorite: boolean

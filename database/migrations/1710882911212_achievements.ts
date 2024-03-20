@@ -23,7 +23,7 @@ export default class extends BaseSchema {
       table.string('title', 60).nullable()
       table.string('context', 45).nullable()
       table.text('description').nullable()
-      table.string('main_image_path', 255).nullable()
+      table.string('main_image_file', 255).nullable()
       table.boolean('is_favorite').defaultTo(false)
       table.integer('achievement_order').nullable()
       table.timestamp('created_at', { useTz: true })
