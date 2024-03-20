@@ -14,6 +14,7 @@ export default class extends BaseSchema {
         .onUpdate('NO ACTION')
       table.string('type', 15).nullable()
       table.text('value').nullable()
+      table.string('file', 255).nullable()
       table.string('name', 70).nullable()
       table.string('caption', 255).nullable()
       table.integer('detail_order').nullable()

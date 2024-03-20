@@ -15,6 +15,9 @@ export default class AchievementDetail extends BaseModel {
   public value: string | null
 
   @column()
+  public file: string | null
+
+  @column()
   public name: string | null
 
   @column()
