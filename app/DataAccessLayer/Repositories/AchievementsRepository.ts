@@ -29,11 +29,10 @@ export default class AchievementsRepository implements AchievementRepositoryInte
     const achievementDetail = new AchievementDetail()
     achievementDetail.achievement_id = data.achievement_id
     achievementDetail.type = data.type
-
-    if (data.description) achievementDetail.description = data.description
-    if (data.context) achievementDetail.context = data.context
-    if (data.date) achievementDetail.date = data.date
-    if (data.isFavorite) achievementDetail.isFavorite = data.isFavorite
+    if (data.value) achievementDetail.value = data.value
+    if (data.file) achievementDetail.file = data.file
+    if (data.name) achievementDetail.name = data.name
+    if (data.caption) achievementDetail.caption = data.caption
 
     await achievementDetail.save()
     return achievementDetail

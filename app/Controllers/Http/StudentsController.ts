@@ -1,6 +1,5 @@
 import { inject, Exception } from '@adonisjs/core/build/standalone'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
 
 import AchievementAddOrUpdateValidator from 'App/Validators/AchievementAddValidator'
 // import AchievementDetailsAddOrUpdateValidator from 'App/Validators/AchievementDetailsAddOrUpdateValidator'
