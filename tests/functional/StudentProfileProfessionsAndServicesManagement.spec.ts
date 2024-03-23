@@ -246,6 +246,13 @@ test.group('Student Profile Completion Process', (group) => {
 
   // Ajouter ici l'acceptation d'un métier par l'admin pour que le test suivant fonctionne
   // Ajouter des tests pour vérifier que si certains métiers sont validés et pas d'autres qu'ils ne ressortent pas.
+  // Ajouter l'ajout de services à un profil étudiant
+  // Ajouter des tests pour vérifier que les services dont les métiers ne sont pas validés ne ressortent pas.
+  // Ajouter des tests pour vérifier que les services dont les métiers sont validés ressortent.
+  // Supprimer les liens entre les métiers et les étudiants
+  // Supprimer les liens entre les services et les étudiants
+  // Supprimer les métiers
+  // Supprimer les services
 
   /*
   test('Get Student Public Professions', async ({ client }) => {

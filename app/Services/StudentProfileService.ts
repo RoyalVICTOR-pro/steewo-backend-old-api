@@ -6,7 +6,6 @@ import AchievementDetailCreateOrUpdateDTO from '@DTO/AchievementDetailCreateOrUp
 import MailService from '@Services/MailService'
 import Profession from 'App/Models/Profession'
 import Service from 'App/Models/Service'
-import StudentBookmarksService from './StudentBookmarksService'
 import StudentProfileAndProfessionRelationRepository from 'App/DataAccessLayer/Repositories/StudentAndProfessionRelationRepository'
 import StudentProfileAndServiceRelationRepository from 'App/DataAccessLayer/Repositories/StudentAndServiceRelationRepository'
 import StudentProfileBannerUpdateDTO from '@DTO/StudentProfileBannerUpdateDTO'
@@ -16,7 +15,8 @@ import StudentProfileMainUpdateDTO from '@DTO/StudentProfileMainUpdateDTO'
 import StudentProfilePhotoUpdateDTO from '@DTO/StudentProfilePhotoUpdateDTO'
 import StudentProfileRepository from '@DALRepositories/StudentProfileRepository'
 import StudentProfileServiceInterface from '@Services/Interfaces/StudentProfileServiceInterface'
-import StudentProfileViewsService from '@Services/StudentProfileViewsService'
+import StudentProfileViewRepository from '@DALRepositories/StudentProfileViewRepository'
+import StudentBookmarksRepository from 'App/DataAccessLayer/Repositories/BookmarkRepository'
 import StudentUserStatus from '@Enums/StudentUserStatus'
 import UploadService from '@Services/UploadService'
 import UserRepository from '@DALRepositories/UserRepository'
@@ -273,11 +273,12 @@ export default class StudentProfileService implements StudentProfileServiceInter
     if (!studentProfile) {
       throw new Exception('You are not a student', 401, 'E_UNAUTHORIZED')
     }
-    return await StudentProfileViewsService.countViews(studentProfile.id)
+    const studentProfileViews = await StudentProfileViewRepository.countViews(studentProfile.id)
+    return studentProfileViews
   }
 
   public async addViewToStudentProfile(studentProfileId: number, clientProfileId: number) {
-    return await StudentProfileViewsService.addView(
+    return await StudentProfileViewRepository.addView(
       Number(studentProfileId),
       Number(clientProfileId)
     )
@@ -288,15 +289,15 @@ export default class StudentProfileService implements StudentProfileServiceInter
     if (!studentProfile) {
       throw new Exception('You are not a student', 401, 'E_UNAUTHORIZED')
     }
-    return await StudentBookmarksService.countBookmarks(studentProfile.id)
+    return await StudentBookmarksRepository.countBookmarks(studentProfile.id)
   }
 
   public async toggleStudentProfileBookmark(studentProfileId: number, clientProfileId: number) {
-    return await StudentBookmarksService.toggleBookmark(studentProfileId, clientProfileId)
+    return await StudentBookmarksRepository.toggleBookmark(studentProfileId, clientProfileId)
   }
 
   public async isStudentProfileBookmarked(studentProfileId: number, clientProfileId: number) {
-    return await StudentBookmarksService.isBookmarked(studentProfileId, clientProfileId)
+    return await StudentBookmarksRepository.isBookmarked(studentProfileId, clientProfileId)
   }
 
   public async addProfessionsToStudentProfile(studentProfileId: number, professions: number[]) {
