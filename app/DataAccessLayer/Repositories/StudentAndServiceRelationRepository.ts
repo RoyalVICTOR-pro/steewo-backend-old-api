@@ -29,9 +29,18 @@ export default class StudentProfileAndServiceRelationRepository
   }
 
   public async getStudentServices(studentId: number): Promise<StudentProfilesHasServices[]> {
-    const services = await StudentProfilesHasServices.query()
-      .where('student_profile_id', studentId)
+    const studentServices = await StudentProfilesHasServices.query()
+      .select('*')
+      .join('services', 'student_profiles_has_services.service_id', 'services.id')
+      .join(
+        'student_profiles_has_professions',
+        'student_profiles_has_professions.profession_id',
+        'services.profession_id'
+      )
       .preload('service')
-    return services
+      .where('student_profiles_has_services.student_profile_id', studentId)
+      .where('student_profiles_has_professions.profession_has_been_accepted', 1)
+
+    return studentServices
   }
 }

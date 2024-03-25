@@ -43,8 +43,6 @@ test.group('Student Profile Professions and Services Management', (group) => {
     await fakeStudent.deleteLinksWithProfessions()
     await fakeStudent.deleteLinksWithServices()
     await secondFakeStudent.deleteFakeStudent()
-    await secondFakeStudent.deleteLinksWithProfessions()
-    await secondFakeStudent.deleteLinksWithServices()
     await fakeClient.deleteFakeClient()
     await fakeUser.deleteFakeUser()
     await hardDeleteProfession(firstProfessionId)
@@ -243,37 +241,157 @@ test.group('Student Profile Professions and Services Management', (group) => {
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains([{ name: 'Graphiste' }, { name: 'Développeur' }])
+  })
 
+  test('Add Services to Student Profile by a client', async ({ client }) => {
+    const response = await client
+      .post('/add-services-to-student-profile/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeClient.tokenCookie)
+      .fields({
+        choosen_services: [
+          firstServiceOfFirstProfessionId,
+          secondServiceOfFirstProfessionId,
+          firstServiceOfSecondProfessionId,
+        ],
+      })
+    response.assertStatus(401)
+  })
+
+  test('Add Services to Student Profile by an other student', async ({ client }) => {
+    const response = await client
+      .post('/add-services-to-student-profile/' + fakeStudent.studentProfileId)
+      .header('Cookie', secondFakeStudent.tokenCookie)
+      .fields({
+        choosen_services: [
+          firstServiceOfFirstProfessionId,
+          secondServiceOfFirstProfessionId,
+          firstServiceOfSecondProfessionId,
+        ],
+      })
+    response.assertStatus(401)
+  })
+
+  test('Add Services to Student Profile by the student himself', async ({ client }) => {
+    const response = await client
+      .post('/add-services-to-student-profile/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+      .fields({
+        choosen_services: [
+          firstServiceOfFirstProfessionId,
+          secondServiceOfFirstProfessionId,
+          firstServiceOfSecondProfessionId,
+        ],
+      })
+    response.assertStatus(200)
+  })
+
+  test('Get Student Public Professions after acceptation of the 1st profession and not the 2nd', async ({
+    client,
+    assert,
+  }) => {
     await StudentProfilesHasProfessions.query()
       .where('student_profile_id', fakeStudent.studentProfileId)
       .where('profession_id', firstProfessionId)
       .update({ profession_has_been_accepted: true })
-  })
 
-  // Ajouter ici l'acceptation d'un métier par l'admin pour que le test suivant
-  test('Get Student Public Professions', async ({ client }) => {
     const response = await client
       .get('/get-student-public-professions/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(200)
-    console.log('response.body() :>> ', response.body())
     response.assertBodyContains([{ name: 'Graphiste' }])
+    assert.notInclude(response.body(), { name: 'Développeur' })
+  })
 
+  test('Get Student Services by the client', async ({ client }) => {
+    const response = await client
+      .get('/get-student-services/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeClient.tokenCookie)
+    response.assertStatus(200)
+  })
+
+  test('Get Student Services by an other student', async ({ client }) => {
+    const response = await client
+      .get('/get-student-services/' + fakeStudent.studentProfileId)
+      .header('Cookie', secondFakeStudent.tokenCookie)
+    response.assertStatus(200)
+  })
+
+  test('Get Student Services by the student himself', async ({ client, assert }) => {
+    const response = await client
+      .get('/get-student-services/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(200)
+    let found = false
+    for (const item of response.body()) {
+      if (item.service.name === 'Création de logo') {
+        found = true
+        break
+      }
+    }
+    assert.equal(found, true)
+
+    found = false
+    for (const item of response.body()) {
+      if (item.service.name === 'Création graphique de site internet') {
+        found = true
+        break
+      }
+    }
+    assert.equal(found, true)
+    found = false
+    for (const item of response.body()) {
+      if (item.service.name === 'Développement de site web') {
+        found = true
+        break
+      }
+    }
+    assert.equal(found, false)
+  })
+
+  test('Get Student Public Professions after acceptation of the 2nd profession', async ({
+    client,
+  }) => {
     await StudentProfilesHasProfessions.query()
       .where('student_profile_id', fakeStudent.studentProfileId)
       .where('profession_id', secondProfessionId)
       .update({ profession_has_been_accepted: true })
+
+    const response = await client
+      .get('/get-student-public-professions/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeClient.tokenCookie)
+    response.assertStatus(200)
+    response.assertBodyContains([{ name: 'Graphiste' }, { name: 'Développeur' }])
   })
 
-  // Ajouter des tests pour vérifier que si certains métiers sont validés et pas d'autres qu'ils ne ressortent pas.
+  test('Get Student Services by the student himself', async ({ client, assert }) => {
+    const response = await client
+      .get('/get-student-services/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(200)
+    let found = false
+    for (const item of response.body()) {
+      if (item.service.name === 'Création de logo') {
+        found = true
+        break
+      }
+    }
+    assert.equal(found, true)
 
-  // Ajouter l'ajout de services à un profil étudiant
-  // Ajouter des tests pour vérifier que les services dont les métiers ne sont pas validés ne ressortent pas.
-  // Ajouter des tests pour vérifier que les services dont les métiers sont validés ressortent.
-  // Supprimer les liens entre les métiers et les étudiants
-  // Supprimer les liens entre les services et les étudiants
-  // Supprimer les métiers
-  // Supprimer les services
-
-  // Add Professions to Student Profile Test
+    found = false
+    for (const item of response.body()) {
+      if (item.service.name === 'Création graphique de site internet') {
+        found = true
+        break
+      }
+    }
+    assert.equal(found, true)
+    found = false
+    for (const item of response.body()) {
+      if (item.service.name === 'Développement de site web') {
+        found = true
+        break
+      }
+    }
+    assert.equal(found, true)
+  })
 })

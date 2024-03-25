@@ -74,10 +74,14 @@ export class FakeStudentForTest {
   }
 
   public async deleteLinksWithProfessions() {
-    await StudentProfilesHasProfessions.query().where('student_profile_id', this.userId).delete()
+    await StudentProfilesHasProfessions.query()
+      .where('student_profile_id', this.studentProfileId)
+      .delete()
   }
 
   public async deleteLinksWithServices() {
-    await StudentProfilesHasServices.query().where('student_profile_id', this.userId).delete()
+    await StudentProfilesHasServices.query()
+      .where('student_profile_id', this.studentProfileId)
+      .delete()
   }
 }
