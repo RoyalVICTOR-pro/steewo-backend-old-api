@@ -6,10 +6,11 @@ import Role from '@Enums/Roles'
 import StudentUserStatus from '@Enums/StudentUserStatus'
 import { FakeUserForTest } from './helpers/Auth.helper'
 import { hardDeleteProfession, hardDeleteService } from './Utils.helper'
+import StudentProfilesHasProfessions from 'App/Models/StudentProfilesHasProfessions'
 
 const BASE_URL = `${process.env.TEST_API_URL}`
 
-test.group('Student Profile Completion Process', (group) => {
+test.group('Student Profile Professions and Services Management', (group) => {
   let fakeStudent = new FakeStudentForTest()
   let secondFakeStudent = new FakeStudentForTest('arya.stark@winterfell.com')
   let fakeClient = new FakeClientForTest()
@@ -242,10 +243,30 @@ test.group('Student Profile Completion Process', (group) => {
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains([{ name: 'Graphiste' }, { name: 'Développeur' }])
+
+    await StudentProfilesHasProfessions.query()
+      .where('student_profile_id', fakeStudent.studentProfileId)
+      .where('profession_id', firstProfessionId)
+      .update({ profession_has_been_accepted: true })
   })
 
-  // Ajouter ici l'acceptation d'un métier par l'admin pour que le test suivant fonctionne
+  // Ajouter ici l'acceptation d'un métier par l'admin pour que le test suivant
+  test('Get Student Public Professions', async ({ client }) => {
+    const response = await client
+      .get('/get-student-public-professions/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeClient.tokenCookie)
+    response.assertStatus(200)
+    console.log('response.body() :>> ', response.body())
+    response.assertBodyContains([{ name: 'Graphiste' }])
+
+    await StudentProfilesHasProfessions.query()
+      .where('student_profile_id', fakeStudent.studentProfileId)
+      .where('profession_id', secondProfessionId)
+      .update({ profession_has_been_accepted: true })
+  })
+
   // Ajouter des tests pour vérifier que si certains métiers sont validés et pas d'autres qu'ils ne ressortent pas.
+
   // Ajouter l'ajout de services à un profil étudiant
   // Ajouter des tests pour vérifier que les services dont les métiers ne sont pas validés ne ressortent pas.
   // Ajouter des tests pour vérifier que les services dont les métiers sont validés ressortent.
@@ -254,15 +275,5 @@ test.group('Student Profile Completion Process', (group) => {
   // Supprimer les métiers
   // Supprimer les services
 
-  /*
-  test('Get Student Public Professions', async ({ client }) => {
-    const response = await client
-      .get('/get-student-public-professions/' + fakeStudent.studentProfileId)
-      .header('Cookie', fakeClient.tokenCookie)
-    response.assertStatus(200)
-    console.log('response.body() :>> ', response.body())
-    response.assertBodyContains([{ name: 'Graphiste' }, { name: 'Développeur' }])
-  }) 
-  */
   // Add Professions to Student Profile Test
 })

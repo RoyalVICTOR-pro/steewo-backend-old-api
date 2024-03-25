@@ -30,6 +30,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
   private achievementRepository: AchievementsRepository
   private userRepository: UserRepository
   private readonly studentProfilePath = 'students/profiles/'
+  private readonly achievementsSubFolder = '/achievements/'
 
   constructor(studentProfileRepository: StudentProfileRepository) {
     this.studentProfileRepository = studentProfileRepository
@@ -381,7 +382,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
     if (main_image_file) {
       achievement.main_image_file = await UploadService.uploadFileTo(
         main_image_file,
-        this.studentProfilePath + studentProfileId.toString() + '/',
+        this.studentProfilePath + studentProfileId.toString() + this.achievementsSubFolder,
         'achievement-main-image-' + getDatetimeForFileName()
       )
     }
@@ -395,7 +396,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
       for (let i = 0; i < achievement_details.length; i++) {
         const achievementDetailFilepath = await UploadService.uploadFileTo(
           achievement_details[i],
-          this.studentProfilePath + studentProfileId.toString() + '/',
+          this.studentProfilePath + studentProfileId.toString() + this.achievementsSubFolder,
           'achievement-detail-' + getDatetimeForFileName()
         )
 
