@@ -39,6 +39,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
       new StudentProfileAndProfessionRelationRepository()
     this.studentProfileAndServiceRelationRepository =
       new StudentProfileAndServiceRelationRepository()
+    this.achievementRepository = new AchievementsRepository()
   }
 
   public async createStudentProfile(data: StudentProfileCreateDTO) {

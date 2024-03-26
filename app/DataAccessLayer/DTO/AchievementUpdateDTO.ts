@@ -6,6 +6,6 @@ export default interface AchievementUpdateDTO {
   description?: string | null
   context?: string | null
   date?: DateTime | null
-  isFavorite?: boolean
+  is_favorite?: boolean
   main_image_file?: string | null
 }

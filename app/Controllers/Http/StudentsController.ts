@@ -235,7 +235,7 @@ export default class StudentProfilesController {
       description: data.description,
       context: data.context,
       date: data.date,
-      isFavorite: data.isFavorite,
+      is_favorite: data.is_favorite,
     }
 
     await this.studentProfileService.addAchievementsToStudentProfile(

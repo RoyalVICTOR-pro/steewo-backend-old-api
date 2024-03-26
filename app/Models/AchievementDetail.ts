@@ -25,7 +25,7 @@ export default class AchievementDetail extends BaseModel {
   public caption: string | null
 
   @column()
-  public detailOrder: number | null
+  public detail_order: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

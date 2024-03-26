@@ -5,7 +5,6 @@ export default class extends BaseSchema {
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
       table.increments('id').primary()
       table
         .integer('student_profile_id')
@@ -20,8 +19,8 @@ export default class extends BaseSchema {
         .onDelete('NO ACTION')
         .onUpdate('NO ACTION')
       table.date('date').nullable()
-      table.string('title', 60).nullable()
-      table.string('context', 45).nullable()
+      table.string('title', 60)
+      table.text('context').nullable()
       table.text('description').nullable()
       table.string('main_image_file', 255).nullable()
       table.boolean('is_favorite').defaultTo(false)

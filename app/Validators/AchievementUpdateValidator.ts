@@ -11,7 +11,7 @@ export default class AchievementAddOrUpdateValidator {
     description: schema.string.optional(),
     context: schema.string.optional(),
     date: schema.date.optional(),
-    isFavorite: schema.boolean.optional(),
+    is_favorite: schema.boolean.optional(),
     main_image_file: schema.file.optional({
       size: Config.get('custom.MAX_IMAGE_FILE_SIZE'),
       extnames: Config.get('custom.IMAGE_FILE_TYPES'),
@@ -25,7 +25,7 @@ export default class AchievementAddOrUpdateValidator {
     'description.string': 'La description doit être une chaîne de caractères.',
     'context.string': 'Le contexte doit être une chaîne de caractères.',
     'date.date': 'La date doit être une date.',
-    'isFavorite.boolean': 'La valeur de favori doit être un booléen.',
+    'is_favorite.boolean': 'La valeur de favori doit être un booléen.',
     'main_image_file.file': "Vous n'avez pas fourni de fichier image.",
     'main_image_file.size':
       "La taille de l'image ne doit pas dépasser la taille maximale autorisée (" +
