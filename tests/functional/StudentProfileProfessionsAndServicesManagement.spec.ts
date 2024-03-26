@@ -1,12 +1,16 @@
-import { FakeClientForTest } from './helpers/Client.helper'
-import { FakeStudentForTest } from './helpers/Student.helper'
+// ADONIS
 import { test } from '@japa/runner'
 import supertest from 'supertest'
-import Role from '@Enums/Roles'
-import StudentUserStatus from '@Enums/StudentUserStatus'
+// HELPERS
+import { FakeClientForTest } from './helpers/Client.helper'
+import { FakeStudentForTest } from './helpers/Student.helper'
 import { FakeUserForTest } from './helpers/Auth.helper'
 import { hardDeleteProfession, hardDeleteService } from './Utils.helper'
-import StudentProfilesHasProfessions from 'App/Models/StudentProfilesHasProfessions'
+// ENUMS
+import Role from '@Enums/Roles'
+import StudentUserStatus from '@Enums/StudentUserStatus'
+// MODELS
+import StudentProfilesHasProfessions from '@Models/StudentProfilesHasProfessions'
 
 const BASE_URL = `${process.env.TEST_API_URL}`
 
