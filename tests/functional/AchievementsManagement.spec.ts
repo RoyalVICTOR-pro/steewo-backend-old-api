@@ -5,7 +5,7 @@ import supertest from 'supertest'
 import { FakeClientForTest } from './helpers/Client.helper'
 import { FakeStudentForTest } from './helpers/Student.helper'
 import { FakeUserForTest } from './helpers/Auth.helper'
-import { hardDeleteProfession, hardDeleteService } from './Utils.helper'
+import { hardDeleteProfession, hardDeleteService, deleteFile } from './Utils.helper'
 // ENUMS
 import Role from '@Enums/Roles'
 import StudentUserStatus from '@Enums/StudentUserStatus'
@@ -38,6 +38,11 @@ test.group('Achievements Management', (group) => {
   let secondServiceOfFirstProfessionId: number
   let firstServiceOfSecondProfessionId: number
   let secondServiceOfSecondProfessionId: number
+  let firstAchievementMainFile: string
+  let firstAchievementDetailFile: string
+  let secondAchievementDetailFile: string
+  let thirdAchievementDetailFile: string
+  let fourthAchievementDetailFile: string
 
   group.setup(async () => {
     await fakeClient.registerFakeClient()
@@ -66,6 +71,11 @@ test.group('Achievements Management', (group) => {
     await hardDeleteService(secondServiceOfFirstProfessionId)
     await hardDeleteService(firstServiceOfSecondProfessionId)
     await hardDeleteService(secondServiceOfSecondProfessionId)
+    await deleteFile(firstAchievementMainFile)
+    await deleteFile(firstAchievementDetailFile)
+    await deleteFile(secondAchievementDetailFile)
+    await deleteFile(thirdAchievementDetailFile)
+    await deleteFile(fourthAchievementDetailFile)
   })
 
   test('Register student with valid data', async ({ assert }) => {
@@ -353,7 +363,7 @@ test.group('Achievements Management', (group) => {
     response.assertStatus(422)
   })
 
-  /* test('Add Achievement to Student Profile by the student with too big media file', async ({
+  test('Add Achievement to Student Profile by the student with too big media file', async ({
     client,
   }) => {
     const response = await client
@@ -371,7 +381,7 @@ test.group('Achievements Management', (group) => {
         is_favorite: true,
       })
     response.assertStatus(422)
-  }) */
+  })
 
   test('Add Achievement to Student Profile by the student with wrong extension media file', async ({
     client,
@@ -447,10 +457,10 @@ test.group('Achievements Management', (group) => {
         is_favorite: true,
       })
     response.assertStatus(200)
-    const firstAchievementMainFile = response.body().achievement.main_image_file
-    const firstAchievementDetailFile = response.body().details[0].file
-    const secondAchievementDetailFile = response.body().details[1].file
-    const thirdAchievementDetailFile = response.body().details[2].file
-    const fourthAchievementDetailFile = response.body().details[3].file
+    firstAchievementMainFile = response.body().achievement.main_image_file
+    firstAchievementDetailFile = response.body().details[0].file
+    secondAchievementDetailFile = response.body().details[1].file
+    thirdAchievementDetailFile = response.body().details[2].file
+    fourthAchievementDetailFile = response.body().details[3].file
   })
 })

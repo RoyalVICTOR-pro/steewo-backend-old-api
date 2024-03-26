@@ -9,5 +9,5 @@ export default {
   MEDIA_FILE_TYPES: ['mp3', 'mp4'],
   MAX_IMAGE_FILE_SIZE: '2mb',
   MAX_DOCUMENT_FILE_SIZE: '5mb',
-  MAX_VIDEO_FILE_SIZE: '50mb',
+  MAX_MEDIA_FILE_SIZE: '8mb',
 }

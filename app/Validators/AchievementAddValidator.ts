@@ -18,7 +18,7 @@ export default class AchievementAddOrUpdateValidator {
     }),
     achievement_details: schema.array.optional().members(
       schema.file({
-        size: Config.get('custom.MAX_DOCUMENT_FILE_SIZE'),
+        size: Config.get('custom.MAX_MEDIA_FILE_SIZE'),
         extnames: [
           ...Config.get('custom.IMAGE_FILE_TYPES'),
           ...Config.get('custom.DOCUMENT_FILE_TYPES'),
