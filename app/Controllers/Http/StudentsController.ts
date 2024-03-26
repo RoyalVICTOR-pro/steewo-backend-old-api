@@ -238,14 +238,14 @@ export default class StudentProfilesController {
       is_favorite: data.is_favorite,
     }
 
-    await this.studentProfileService.addAchievementsToStudentProfile(
+    const achievement = await this.studentProfileService.addAchievementsToStudentProfile(
       Number(params.student_profile_id),
       newAchievement,
       data.main_image_file,
       data.achievement_details
     )
 
-    return response.status(200).send('Achievements added') // 200 OK
+    return response.ok(achievement) // 200 OK
   }
 
   /* 

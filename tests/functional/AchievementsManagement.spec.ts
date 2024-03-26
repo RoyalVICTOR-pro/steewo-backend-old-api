@@ -13,9 +13,19 @@ import StudentUserStatus from '@Enums/StudentUserStatus'
 import StudentProfilesHasProfessions from '@Models/StudentProfilesHasProfessions'
 
 const BASE_URL = `${process.env.TEST_API_URL}`
-const image1Path = './tests/functional/files_for_tests/red_img_test_100x100.jpg'
-const image2Path = './tests/functional/files_for_tests/orange_img_test_100x100.jpg'
-const image3Path = './tests/functional/files_for_tests/green_img_test_100x100.jpg'
+const TESTS_FILES_PATH = './tests/functional/files_for_tests/'
+const image1Path = TESTS_FILES_PATH + 'red_img_test_100x100.jpg'
+const image2Path = TESTS_FILES_PATH + 'orange_img_test_100x100.jpg'
+const image3Path = TESTS_FILES_PATH + 'green_img_test_100x100.jpg'
+const documentPath = TESTS_FILES_PATH + 'student_good_achievement.pdf'
+const mediaPath = TESTS_FILES_PATH + 'good_video.mp4'
+
+const tooBigImagePath = TESTS_FILES_PATH + 'student_big_photo.jpg'
+const wrongExtensionImagePath = TESTS_FILES_PATH + 'student_wrong_photo.gif'
+const tooBigDocumentPath = TESTS_FILES_PATH + 'student_big_certificate.pdf'
+const wrongExtensionDocumentPath = TESTS_FILES_PATH + 'student_wrong_certificate.xlsx'
+const tooBigMediaPath = TESTS_FILES_PATH + 'too_big_video.mp4'
+const wrongExtensionMediaPath = TESTS_FILES_PATH + 'student_wrong_proof.docx'
 
 test.group('Achievements Management', (group) => {
   let fakeStudent = new FakeStudentForTest()
@@ -186,10 +196,207 @@ test.group('Achievements Management', (group) => {
       .update({ profession_has_been_accepted: true })
   })
 
-  test('Add Achievement to Student Profile by the student himself', async ({ client }) => {
+  test('Add Achievement to Student Profile by the student himself with missing title', async ({
+    client,
+  }) => {
     const response = await client
       .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
+      .file('main_image_file', image1Path)
+      .file('achievement_details', image2Path)
+      .file('achievement_details', image3Path)
+      .fields({
+        service_id: firstServiceOfFirstProfessionId,
+        description: 'Projet fictif de planète à conquérir',
+        context: "J'ai réalisé un projet de fin d'études en tant que graphiste",
+        date: '2020-11-15',
+        is_favorite: true,
+      })
+    response.assertStatus(422)
+  })
+  test('Add Achievement to Student Profile by the student himself with title too short', async ({
+    client,
+  }) => {
+    const response = await client
+      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('main_image_file', image1Path)
+      .file('achievement_details', image2Path)
+      .file('achievement_details', image3Path)
+      .fields({
+        service_id: firstServiceOfFirstProfessionId,
+        title: 'abcd',
+        description: 'Projet fictif de planète à conquérir',
+        context: "J'ai réalisé un projet de fin d'études en tant que graphiste",
+        date: '2020-11-15',
+        is_favorite: true,
+      })
+    response.assertStatus(422)
+  })
+  test('Add Achievement to Student Profile by the student himself with title too long', async ({
+    client,
+  }) => {
+    const response = await client
+      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('main_image_file', image1Path)
+      .file('achievement_details', image2Path)
+      .file('achievement_details', image3Path)
+      .fields({
+        service_id: firstServiceOfFirstProfessionId,
+        title:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        description: 'Projet fictif de planète à conquérir',
+        context: "J'ai réalisé un projet de fin d'études en tant que graphiste",
+        date: '2020-11-15',
+        is_favorite: true,
+      })
+    response.assertStatus(422)
+  })
+
+  test('Add Achievement to Student Profile by the student himself with missing service id', async ({
+    client,
+  }) => {
+    const response = await client
+      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('main_image_file', image1Path)
+      .file('achievement_details', image2Path)
+      .file('achievement_details', image3Path)
+      .fields({
+        title: "Projet de fin d'études",
+        description: 'Projet fictif de planète à conquérir',
+        context: "J'ai réalisé un projet de fin d'études en tant que graphiste",
+        date: '2020-11-15',
+        is_favorite: true,
+      })
+    response.assertStatus(422)
+  })
+
+  test('Add Achievement to Student Profile by the student with too big main file', async ({
+    client,
+  }) => {
+    const response = await client
+      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('main_image_file', tooBigImagePath)
+      .file('achievement_details', image2Path)
+      .file('achievement_details', image3Path)
+      .fields({
+        service_id: firstServiceOfFirstProfessionId,
+        title: "Projet de fin d'études",
+        description: 'Projet fictif de planète à conquérir',
+        context: "J'ai réalisé un projet de fin d'études en tant que graphiste",
+        date: '2020-11-15',
+        is_favorite: true,
+      })
+    response.assertStatus(422)
+  })
+
+  test('Add Achievement to Student Profile by the student with wrong extension main file', async ({
+    client,
+  }) => {
+    const response = await client
+      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('main_image_file', wrongExtensionImagePath)
+      .file('achievement_details', image2Path)
+      .file('achievement_details', image3Path)
+      .fields({
+        service_id: firstServiceOfFirstProfessionId,
+        title: "Projet de fin d'études",
+        description: 'Projet fictif de planète à conquérir',
+        context: "J'ai réalisé un projet de fin d'études en tant que graphiste",
+        date: '2020-11-15',
+        is_favorite: true,
+      })
+    response.assertStatus(422)
+  })
+
+  test('Add Achievement to Student Profile by the student with too big document file', async ({
+    client,
+  }) => {
+    const response = await client
+      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('main_image_file', image1Path)
+      .file('achievement_details', tooBigDocumentPath)
+      .file('achievement_details', image3Path)
+      .fields({
+        service_id: firstServiceOfFirstProfessionId,
+        title: "Projet de fin d'études",
+        description: 'Projet fictif de planète à conquérir',
+        context: "J'ai réalisé un projet de fin d'études en tant que graphiste",
+        date: '2020-11-15',
+        is_favorite: true,
+      })
+    response.assertStatus(422)
+  })
+
+  test('Add Achievement to Student Profile by the student with wrong extension document file', async ({
+    client,
+  }) => {
+    const response = await client
+      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('main_image_file', image1Path)
+      .file('achievement_details', wrongExtensionDocumentPath)
+      .file('achievement_details', image3Path)
+      .fields({
+        service_id: firstServiceOfFirstProfessionId,
+        title: "Projet de fin d'études",
+        description: 'Projet fictif de planète à conquérir',
+        context: "J'ai réalisé un projet de fin d'études en tant que graphiste",
+        date: '2020-11-15',
+        is_favorite: true,
+      })
+    response.assertStatus(422)
+  })
+
+  /* test('Add Achievement to Student Profile by the student with too big media file', async ({
+    client,
+  }) => {
+    const response = await client
+      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('main_image_file', image1Path)
+      .file('achievement_details', image2Path)
+      .file('achievement_details', tooBigMediaPath)
+      .fields({
+        service_id: firstServiceOfFirstProfessionId,
+        title: "Projet de fin d'études",
+        description: 'Projet fictif de planète à conquérir',
+        context: "J'ai réalisé un projet de fin d'études en tant que graphiste",
+        date: '2020-11-15',
+        is_favorite: true,
+      })
+    response.assertStatus(422)
+  }) */
+
+  test('Add Achievement to Student Profile by the student with wrong extension media file', async ({
+    client,
+  }) => {
+    const response = await client
+      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('main_image_file', image1Path)
+      .file('achievement_details', image2Path)
+      .file('achievement_details', wrongExtensionMediaPath)
+      .fields({
+        service_id: firstServiceOfFirstProfessionId,
+        title: "Projet de fin d'études",
+        description: 'Projet fictif de planète à conquérir',
+        context: "J'ai réalisé un projet de fin d'études en tant que graphiste",
+        date: '2020-11-15',
+        is_favorite: true,
+      })
+    response.assertStatus(422)
+  })
+
+  test('Add Achievement to Student Profile by a client', async ({ client }) => {
+    const response = await client
+      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeClient.tokenCookie)
       .file('main_image_file', image1Path)
       .file('achievement_details', image2Path)
       .file('achievement_details', image3Path)
@@ -201,6 +408,49 @@ test.group('Achievements Management', (group) => {
         date: '2020-11-15',
         is_favorite: true,
       })
+    response.assertStatus(401)
+  })
+
+  test('Add Achievement to Student Profile by an other student', async ({ client }) => {
+    const response = await client
+      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .header('Cookie', secondFakeStudent.tokenCookie)
+      .file('main_image_file', image1Path)
+      .file('achievement_details', image2Path)
+      .file('achievement_details', image3Path)
+      .fields({
+        service_id: firstServiceOfFirstProfessionId,
+        title: "Projet de fin d'études",
+        description: 'Projet fictif de planète à conquérir',
+        context: "J'ai réalisé un projet de fin d'études en tant que graphiste",
+        date: '2020-11-15',
+        is_favorite: true,
+      })
+    response.assertStatus(401)
+  })
+
+  test('Add Achievement to Student Profile by the student himself', async ({ client }) => {
+    const response = await client
+      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+      .file('main_image_file', image1Path)
+      .file('achievement_details', image2Path)
+      .file('achievement_details', image3Path)
+      .file('achievement_details', documentPath)
+      .file('achievement_details', mediaPath)
+      .fields({
+        service_id: firstServiceOfFirstProfessionId,
+        title: "Projet de fin d'études",
+        description: 'Projet fictif de planète à conquérir',
+        context: "J'ai réalisé un projet de fin d'études en tant que graphiste",
+        date: '2020-11-15',
+        is_favorite: true,
+      })
     response.assertStatus(200)
+    const firstAchievementMainFile = response.body().achievement.main_image_file
+    const firstAchievementDetailFile = response.body().details[0].file
+    const secondAchievementDetailFile = response.body().details[1].file
+    const thirdAchievementDetailFile = response.body().details[2].file
+    const fourthAchievementDetailFile = response.body().details[3].file
   })
 })

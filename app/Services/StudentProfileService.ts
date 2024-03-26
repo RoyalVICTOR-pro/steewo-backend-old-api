@@ -2,6 +2,7 @@ import { getDatetimeForFileName, getExtension, getFileTypeFromExtension } from '
 import { inject, Exception } from '@adonisjs/core/build/standalone'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
 import AchievementCreateDTO from '@DTO/AchievementCreateDTO'
+import AchievementDetail from '@Models/AchievementDetail'
 import AchievementDetailCreateOrUpdateDTO from '@DTO/AchievementDetailCreateOrUpdateDTO'
 import MailService from '@Services/MailService'
 import Profession from 'App/Models/Profession'
@@ -393,6 +394,11 @@ export default class StudentProfileService implements StudentProfileServiceInter
       achievement
     )
 
+    const returnAchievement = {
+      achievement: createdAchievement,
+      details: [] as AchievementDetail[],
+    }
+
     if (achievement_details) {
       for (let i = 0; i < achievement_details.length; i++) {
         const achievementDetailFilepath = await UploadService.uploadFileTo(
@@ -407,8 +413,12 @@ export default class StudentProfileService implements StudentProfileServiceInter
           file: achievementDetailFilepath,
         }
 
-        await this.achievementRepository.addAchievementDetailToAchievement(newAchievementDetail)
+        const achievementDetail =
+          await this.achievementRepository.addAchievementDetailToAchievement(newAchievementDetail)
+        returnAchievement.details.push(achievementDetail)
       }
     }
+
+    return returnAchievement
   }
 }
