@@ -83,7 +83,6 @@ export default class StudentProfileService implements StudentProfileServiceInter
     if (studentProfile.user.status < StudentUserStatus.ACCOUNT_VALIDATED) {
       throw new Exception('User not available', 403, 'E_FORBIDDEN')
     }
-    // TODO : Add professions, services, achievments to the public profile
     const studentPublicProfile = {
       user_id: studentProfile.user_id,
       student_id: studentProfile.id,
@@ -99,6 +98,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
       photo_file: studentProfile.photo_file,
       banner_file: studentProfile.banner_file,
     }
+    // TODO : Add professions, services, achievments to the public profile
 
     return studentPublicProfile
   }
@@ -111,7 +111,6 @@ export default class StudentProfileService implements StudentProfileServiceInter
     if (studentProfile.user.status < StudentUserStatus.ACCOUNT_CREATED) {
       throw new Exception('User not available', 403, 'E_FORBIDDEN')
     }
-    // TODO : Add professions, services, achievments to the private profile
     const studentPrivateProfile = {
       user_id: studentProfile.user_id,
       student_id: studentProfile.id,
@@ -139,6 +138,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
       school_certificate_file: studentProfile.school_certificate_file,
       company_exists_proof_file: studentProfile.company_exists_proof_file,
     }
+    // TODO : Add professions, services, achievments to the private profile
     return studentPrivateProfile
   }
 
