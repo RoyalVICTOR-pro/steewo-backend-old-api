@@ -2,8 +2,11 @@ import { getDatetimeForFileName, getExtension, getFileTypeFromExtension } from '
 import { inject, Exception } from '@adonisjs/core/build/standalone'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
 import AchievementCreateDTO from '@DTO/AchievementCreateDTO'
+import AchievementUpdateDTO from '@DTO/AchievementUpdateDTO'
 import AchievementDetail from '@Models/AchievementDetail'
 import AchievementDetailCreateOrUpdateDTO from '@DTO/AchievementDetailCreateOrUpdateDTO'
+import AchievementsUpdateOrderDTO from '@DTO/AchievementsUpdateOrderDTO'
+import AchievementDetailsUpdateOrderDTO from 'App/DataAccessLayer/DTO/AchievementDetailsUpdateOrderDTO'
 import MailService from '@Services/MailService'
 import Profession from 'App/Models/Profession'
 import Service from 'App/Models/Service'
@@ -420,5 +423,114 @@ export default class StudentProfileService implements StudentProfileServiceInter
     }
 
     return returnAchievement
+  }
+
+  public async addAchievementDetailsToAchievement(
+    achievementId: number,
+    data: AchievementDetailCreateOrUpdateDTO,
+    achievement_details: MultipartFileContract[] | null = null
+  ) {
+    const returnAchievementDetails = [] as AchievementDetail[]
+    if (achievement_details) {
+      for (let i = 0; i < achievement_details.length; i++) {
+        let newAchievementDetail: AchievementDetailCreateOrUpdateDTO
+
+        const achievementDetailFilepath = await UploadService.uploadFileTo(
+          achievement_details[i],
+          this.studentProfilePath + achievementId.toString() + this.achievementsSubFolder,
+          'achievement-detail-' + getDatetimeForFileName()
+        )
+        newAchievementDetail = {
+          achievement_id: achievementId,
+          type: getFileTypeFromExtension(getExtension(achievementDetailFilepath)),
+          file: achievementDetailFilepath,
+          name: data.name ? data.name : null,
+          caption: data.caption ? data.caption : null,
+        }
+        const achievementDetail =
+          await this.achievementRepository.addAchievementDetailToAchievement(newAchievementDetail)
+        returnAchievementDetails.push(achievementDetail)
+      }
+    } else {
+      let newAchievementDetail = {
+        achievement_id: achievementId,
+        type: data.type,
+        value: data.value,
+        name: data.name ? data.name : null,
+        caption: data.caption ? data.caption : null,
+      }
+      const achievementDetail =
+        await this.achievementRepository.addAchievementDetailToAchievement(newAchievementDetail)
+      returnAchievementDetails.push(achievementDetail)
+    }
+
+    return returnAchievementDetails
+  }
+
+  public async updateAchievement(
+    achievementId: number,
+    data: AchievementUpdateDTO,
+    main_image_file: MultipartFileContract | null = null
+  ) {
+    if (main_image_file) {
+      data.main_image_file = await UploadService.uploadFileTo(
+        main_image_file,
+        this.studentProfilePath + achievementId.toString() + this.achievementsSubFolder,
+        'achievement-main-image-' + getDatetimeForFileName()
+      )
+    }
+
+    return await this.achievementRepository.updateAchievement(achievementId, data)
+  }
+
+  public async updateAchievementDetail(
+    achievementDetailId: number,
+    data: AchievementDetailCreateOrUpdateDTO,
+    file: MultipartFileContract | null = null
+  ) {
+    if (file) {
+      data.file = await UploadService.uploadFileTo(
+        file,
+        this.studentProfilePath + achievementDetailId.toString() + this.achievementsSubFolder,
+        'achievement-detail-' + getDatetimeForFileName()
+      )
+      data.type = getFileTypeFromExtension(getExtension(data.file))
+    }
+    return await this.achievementRepository.updateAchievementDetail(achievementDetailId, data)
+  }
+
+  public async deleteAchievement(achievementId: number) {
+    const achievement = await this.achievementRepository.getAchievementById(achievementId)
+    if (!achievement) {
+      throw new Exception('Achievement not found', 404, 'E_NOT_FOUND')
+    }
+    if (achievement.main_image_file) {
+      await UploadService.deleteFile(achievement.main_image_file)
+    }
+    return await this.achievementRepository.deleteAchievement(achievementId)
+  }
+
+  public async deleteAchievementDetail(achievementDetailId: number) {
+    const achievementDetail =
+      await this.achievementRepository.getAchievementDetailById(achievementDetailId)
+    if (!achievementDetail) {
+      throw new Exception('Achievement Detail not found', 404, 'E_NOT_FOUND')
+    }
+    if (achievementDetail.file) {
+      await UploadService.deleteFile(achievementDetail.file)
+    }
+    return await this.achievementRepository.deleteAchievementDetail(achievementDetailId)
+  }
+
+  public async updateAchievementsOrder(reorderedAchievements: AchievementsUpdateOrderDTO[]) {
+    return await this.achievementRepository.updateAchievementsOrder(reorderedAchievements)
+  }
+
+  public async updateAchievementDetailsOrder(
+    reorderedAchievementDetails: AchievementDetailsUpdateOrderDTO[]
+  ) {
+    return await this.achievementRepository.updateAchievementDetailsOrder(
+      reorderedAchievementDetails
+    )
   }
 }

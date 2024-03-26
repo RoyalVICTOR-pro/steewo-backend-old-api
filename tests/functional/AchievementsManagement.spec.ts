@@ -77,11 +77,11 @@ test.group('Achievements Management', (group) => {
     await hardDeleteService(secondServiceOfFirstProfessionId)
     await hardDeleteService(firstServiceOfSecondProfessionId)
     await hardDeleteService(secondServiceOfSecondProfessionId)
-    await deleteFile(firstAchievementMainFile)
-    await deleteFile(firstAchievementDetailFile)
-    await deleteFile(secondAchievementDetailFile)
-    await deleteFile(thirdAchievementDetailFile)
-    await deleteFile(fourthAchievementDetailFile)
+    // await deleteFile(firstAchievementMainFile)
+    // await deleteFile(firstAchievementDetailFile)
+    // await deleteFile(secondAchievementDetailFile)
+    // await deleteFile(thirdAchievementDetailFile)
+    // await deleteFile(fourthAchievementDetailFile)
   })
 
   test('Register student with valid data', async ({ assert }) => {
@@ -497,11 +497,26 @@ test.group('Achievements Management', (group) => {
     const response = await client
       .post('/add-achievement-details-to-achievement/' + secondAchievementId)
       .header('Cookie', fakeStudent.tokenCookie)
-      .file('file', image1Path)
+      .file('achievement_details', image2Path)
       .fields({
         type: 'image',
         name: 'Image de la planète',
         caption: 'Image de la planète à conquérir',
+      })
+    response.assertStatus(200)
+  })
+
+  test('Add a second achievement detail to an achievement without file by the student himself', async ({
+    client,
+  }) => {
+    const response = await client
+      .post('/add-achievement-details-to-achievement/' + secondAchievementId)
+      .header('Cookie', fakeStudent.tokenCookie)
+      .fields({
+        type: 'url',
+        name: 'Lien du site',
+        caption: 'Découvrez en plus',
+        value: 'https://www.example.com',
       })
     response.assertStatus(200)
   })
@@ -758,27 +773,6 @@ test.group('Achievements Management', (group) => {
     }
   })
 
-  test('Delete an achievement by a client', async ({ client }) => {
-    const response = await client
-      .delete('/delete-achievement/' + secondAchievementId)
-      .header('Cookie', fakeClient.tokenCookie)
-    response.assertStatus(401)
-  })
-
-  test('Delete an achievement by an other student', async ({ client }) => {
-    const response = await client
-      .delete('/delete-achievement/' + secondAchievementId)
-      .header('Cookie', secondFakeStudent.tokenCookie)
-    response.assertStatus(401)
-  })
-
-  test('Delete an achievement by the student himself', async ({ client }) => {
-    const response = await client
-      .delete('/delete-achievement/' + secondAchievementId)
-      .header('Cookie', fakeStudent.tokenCookie)
-    response.assertStatus(204)
-  })
-
   test('Delete an achievement detail by a client', async ({ client }) => {
     const response = await client
       .delete('/delete-achievement-detail/' + secondAchievementDetailId)
@@ -798,5 +792,48 @@ test.group('Achievements Management', (group) => {
       .delete('/delete-achievement-detail/' + secondAchievementDetailId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(204)
+  })
+
+  test('Delete an achievement by a client', async ({ client }) => {
+    const response = await client
+      .delete('/delete-achievement/' + firstAchievementId)
+      .header('Cookie', fakeClient.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Delete an achievement by an other student', async ({ client }) => {
+    const response = await client
+      .delete('/delete-achievement/' + firstAchievementId)
+      .header('Cookie', secondFakeStudent.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Delete an achievement by the student himself', async ({ client }) => {
+    const response = await client
+      .delete('/delete-achievement/' + firstAchievementId)
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(204)
+  })
+
+  test('Delete the second achievement by the student himself', async ({ client }) => {
+    const response = await client
+      .delete('/delete-achievement/' + secondAchievementId)
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(204)
+  })
+
+  test('Get Student profile to check if the achievements are well deleted', async ({
+    client,
+    assert,
+  }) => {
+    const response = await client
+      .get('/get-student-public-profile/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(200)
+    const achievements = response.body().achievements
+    const firstAchievement = achievements.find((a) => a.id === firstAchievementId)
+    const secondAchievement = achievements.find((a) => a.id === secondAchievementId)
+    assert.notExists(firstAchievement)
+    assert.notExists(secondAchievement)
   })
 })

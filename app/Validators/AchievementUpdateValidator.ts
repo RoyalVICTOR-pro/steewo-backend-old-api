@@ -7,7 +7,7 @@ export default class AchievementAddOrUpdateValidator {
 
   public schema = schema.create({
     service_id: schema.number([rules.exists({ table: 'services', column: 'id' })]),
-    title: schema.string(),
+    title: schema.string([rules.minLength(5), rules.maxLength(60)]),
     description: schema.string.optional(),
     context: schema.string.optional(),
     date: schema.date.optional(),
