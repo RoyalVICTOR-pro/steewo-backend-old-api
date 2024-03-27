@@ -1,3 +1,4 @@
+// ADONIS
 import {
   BaseModel,
   column,
@@ -10,6 +11,7 @@ import {
 import { compose } from '@ioc:Adonis/Core/Helpers'
 import { DateTime } from 'luxon'
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
+// MODELS
 import Profession from '@Models/Profession'
 import ServicesFormField from '@Models/ServicesFormField'
 import StudentProfilesHasServices from '@Models/StudentProfilesHasServices'

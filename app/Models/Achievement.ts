@@ -1,3 +1,4 @@
+// ADONIS
 import { DateTime } from 'luxon'
 import {
   BaseModel,
@@ -8,10 +9,12 @@ import {
   HasMany,
   beforeDelete,
 } from '@ioc:Adonis/Lucid/Orm'
+// MODELS
 import Service from '@Models/Service'
 import StudentProfile from '@Models/StudentProfile'
 import AchievementDetail from '@Models/AchievementDetail'
-import UploadService from 'App/Services/UploadService'
+// SERVICES
+import UploadService from '@Services/UploadService'
 
 export default class Achievement extends BaseModel {
   @column({ isPrimary: true })

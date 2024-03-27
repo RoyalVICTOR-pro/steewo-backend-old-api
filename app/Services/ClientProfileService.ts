@@ -1,16 +1,22 @@
+// ADONIS
 import { getDatetimeForFileName } from '@Utils/Various'
 import { inject, Exception } from '@adonisjs/core/build/standalone'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
+// DTO
 import ClientProfileCreateDTO from '@DTO/ClientProfileCreateDTO'
 import ClientProfileDescriptionUpdateDTO from '@DTO/ClientProfileDescriptionUpdateDTO'
 import ClientProfileMainUpdateDTO from '@DTO/ClientProfileMainUpdateDTO'
 import ClientProfilePhotoUpdateDTO from '@DTO/ClientProfilePhotoUpdateDTO'
-import ClientProfileRepository from '@DALRepositories/ClientProfileRepository'
-import ClientProfileServiceInterface from '@Services/Interfaces/ClientProfileServiceInterface'
+// ENUMS
 import ClientUserStatus from '@Enums/ClientUserStatus'
+// INTERFACES
+import ClientProfileServiceInterface from '@Services/Interfaces/ClientProfileServiceInterface'
+// REPOSITORIES
+import ClientProfileRepository from '@DALRepositories/ClientProfileRepository'
+import UserRepository from '@DALRepositories/UserRepository'
+// SERVICES
 import MailService from '@Services/MailService'
 import UploadService from '@Services/UploadService'
-import UserRepository from '@DALRepositories/UserRepository'
 
 @inject()
 export default class ClientProfileService implements ClientProfileServiceInterface {

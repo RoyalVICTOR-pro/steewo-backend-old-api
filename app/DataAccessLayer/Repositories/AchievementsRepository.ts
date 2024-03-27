@@ -1,11 +1,14 @@
+// ADONIS
 import { inject } from '@adonisjs/core/build/standalone'
-import Achievement from '@Models/Achievement'
+// DTO
 import AchievementCreateDTO from '@DTO/AchievementCreateDTO'
-import AchievementUpdateDTO from '@DTO/AchievementUpdateDTO'
-import AchievementDetail from '@Models/AchievementDetail'
 import AchievementDetailCreateOrUpdateDTO from '@DTO/AchievementDetailCreateOrUpdateDTO'
 import AchievementRepositoryInterface from '@DALInterfaces/AchievementRepositoryInterface'
 import AchievementsUpdateOrderDTO from '@DTO/AchievementsUpdateOrderDTO'
+import AchievementUpdateDTO from '@DTO/AchievementUpdateDTO'
+// MODELS
+import Achievement from '@Models/Achievement'
+import AchievementDetail from '@Models/AchievementDetail'
 
 @inject()
 export default class AchievementsRepository implements AchievementRepositoryInterface {

@@ -1,7 +1,10 @@
+// ADONIS
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
-import Profession from '@Models/Profession'
+// DTO
 import ProfessionCreateOrUpdateDTO from '@DTO/ProfessionCreateOrUpdateDTO'
 import ProfessionStatusUpdateDTO from '@DTO/ProfessionStatusUpdateDTO'
+// MODELS
+import Profession from '@Models/Profession'
 
 export default interface ProfessionServiceInterface {
   listProfessions(): Promise<Profession[]>

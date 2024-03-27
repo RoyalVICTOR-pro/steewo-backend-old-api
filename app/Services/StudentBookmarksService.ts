@@ -1,5 +1,7 @@
+// ADONIS
 import Database from '@ioc:Adonis/Lucid/Database'
-import Bookmark from 'App/Models/Bookmark'
+// MODELS
+import Bookmark from '@Models/Bookmark'
 
 export default class StudentBookmarksService {
   public static async isBookmarked(studentProfileId: number, clientProfileId: number) {

@@ -1,7 +1,10 @@
+// ADONIS
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
-import StudentProfile from '@Models/StudentProfile'
+// DTO
 import StudentProfileCreateDTO from '@DTO/StudentProfileCreateDTO'
 import StudentProfileMainUpdateDTO from '@DTO/StudentProfileMainUpdateDTO'
+// MODELS
+import StudentProfile from '@Models/StudentProfile'
 import User from '@Models/User'
 
 export default interface StudentProfileServiceInterface {

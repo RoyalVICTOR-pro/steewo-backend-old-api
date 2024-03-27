@@ -1,10 +1,12 @@
+// ADONIS
 import { BaseModel, column, belongsTo, BelongsTo, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import { compose } from '@ioc:Adonis/Core/Helpers'
 import { DateTime } from 'luxon'
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
+// MODELS
 import Bookmark from '@Models/Bookmark'
 import StudentProfilesHasProfessions from '@Models/StudentProfilesHasProfessions'
-import StudentProfilesHasServices from 'App/Models/StudentProfilesHasServices'
+import StudentProfilesHasServices from '@Models/StudentProfilesHasServices'
 import StudentProfileView from '@Models/StudentProfileView'
 import User from '@Models/User'
 

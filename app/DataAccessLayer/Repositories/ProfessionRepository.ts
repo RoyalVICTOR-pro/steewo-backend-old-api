@@ -1,8 +1,11 @@
+// ADONIS
 import { inject } from '@adonisjs/core/build/standalone'
-import Profession from '@Models/Profession'
+// DTO
 import ProfessionCreateOrUpdateDTO from '@DTO/ProfessionCreateOrUpdateDTO'
 import ProfessionRepositoryInterface from '@DALInterfaces/ProfessionRepositoryInterface'
 import ProfessionStatusUpdateDTO from '@DTO/ProfessionStatusUpdateDTO'
+// MODELS
+import Profession from '@Models/Profession'
 
 @inject()
 export default class ProfessionRepository implements ProfessionRepositoryInterface {

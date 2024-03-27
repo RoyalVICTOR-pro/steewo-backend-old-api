@@ -1,5 +1,7 @@
+// ADONIS
 import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
+// MODELS
 import User from '@Models/User'
 
 export default class ApiToken extends BaseModel {

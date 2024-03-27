@@ -1,4 +1,6 @@
+// ADONIS
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+// MODELS
 import ClientProfile from '@Models/ClientProfile'
 
 export default class IsClientProfileOwner {

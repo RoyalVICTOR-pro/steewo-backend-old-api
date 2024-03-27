@@ -1,5 +1,7 @@
+// ADONIS
 import { DateTime } from 'luxon'
 import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
+// MODELS
 import Achievement from '@Models/Achievement'
 
 export default class AchievementDetail extends BaseModel {

@@ -1,6 +1,9 @@
+// ADONIS
 import { inject } from '@adonisjs/core/build/standalone'
-import StudentProfilesHasServices from '@Models/StudentProfilesHasServices'
+// INTERFACES
 import StudentProfileAndServiceRelationRepositoryInterface from '@DALInterfaces/StudentProfileAndServiceRelationRepositoryInterface'
+// MODELS
+import StudentProfilesHasServices from '@Models/StudentProfilesHasServices'
 
 @inject()
 export default class StudentProfileAndServiceRelationRepository

@@ -1,3 +1,4 @@
+// ENUMS
 import AuthentificationMode from '@Enums/AuthentificationMode'
 import UserStatus from '@Enums/UserStatus'
 

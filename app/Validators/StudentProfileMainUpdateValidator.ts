@@ -1,5 +1,7 @@
+// ADONIS
 import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+// ENUMS
 import Config from '@ioc:Adonis/Core/Config'
 import Gender from '@Enums/Gender'
 

@@ -1,8 +1,11 @@
+// ADONIS
 import { test } from '@japa/runner'
 import supertest from 'supertest'
-import { FakeClientForTest } from './helpers/Client.helper'
+// ENUMS
 import Role from '@Enums/Roles'
 import ClientUserStatus from '@Enums/ClientUserStatus'
+// HELPERS
+import { FakeClientForTest } from './helpers/Client.helper'
 
 const BASE_URL = `${process.env.TEST_API_URL}`
 

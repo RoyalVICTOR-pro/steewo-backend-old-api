@@ -1,20 +1,28 @@
+// ADONIS
 import { AuthContract } from '@ioc:Adonis/Addons/Auth'
 import { DateTime } from 'luxon'
 import { inject, Exception } from '@adonisjs/core/build/standalone'
 import { v4 as uuidv4 } from 'uuid'
-import ApiToken from '@Models/ApiToken'
-import AuthServiceInterface from '@Services/Interfaces/AuthServiceInterface'
 import Config from '@ioc:Adonis/Core/Config'
-import FailedLoginAttemptRepository from '@DALRepositories/FailedLoginAttemptRepository'
-import MailService from '@Services/MailService'
-import TooManyRequestsException from '@Exceptions/TooManyRequestsException'
-import User from '@Models/User'
+// DTO
 import UserCreateDTO from '@DTO/UserCreateDTO'
-import UserRepository from '@DALRepositories/UserRepository'
-import UserStatus from '@Enums/UserStatus'
 import UserUpdateDTO from '@DTO/UserUpdateDTO'
 import UserUpdatePasswordDTO from '@DTO/UserUpdatePasswordDTO'
+// ENUMS
+import UserStatus from '@Enums/UserStatus'
 import Role from '@Enums/Roles'
+// EXCEPTIONS
+import TooManyRequestsException from '@Exceptions/TooManyRequestsException'
+// INTERFACES
+import AuthServiceInterface from '@Services/Interfaces/AuthServiceInterface'
+// MODELS
+import ApiToken from '@Models/ApiToken'
+import User from '@Models/User'
+// REPOSITORIES
+import FailedLoginAttemptRepository from '@DALRepositories/FailedLoginAttemptRepository'
+import UserRepository from '@DALRepositories/UserRepository'
+// SERVICES
+import MailService from '@Services/MailService'
 
 @inject()
 export default class AuthService implements AuthServiceInterface {

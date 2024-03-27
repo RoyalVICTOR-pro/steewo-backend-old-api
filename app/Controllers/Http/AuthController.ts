@@ -1,16 +1,22 @@
+// ADONIS
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { inject, Exception } from '@adonisjs/core/build/standalone'
-import AuthentificationMode from '@Enums/AuthentificationMode'
-import AuthService from '@Services/AuthService'
 import Config from '@ioc:Adonis/Core/Config'
-import Role from '@Enums/Roles'
-import TooManyRequestsException from '@Exceptions/TooManyRequestsException'
+// DTO
 import UserCreateDTO from '@DTO/UserCreateDTO'
+// ENUMS
+import AuthentificationMode from '@Enums/AuthentificationMode'
+import Role from '@Enums/Roles'
+import UserStatus from '@Enums/UserStatus'
+// EXCEPTIONS
+import TooManyRequestsException from '@Exceptions/TooManyRequestsException'
+// SERVICES
+import AuthService from '@Services/AuthService'
+// VALIDATORS
 import UserCreateValidator from '@Validators/UserCreateValidator'
 import UserForgotPasswordValidator from '@Validators/UserForgotPasswordValidator'
 import UserLoginValidator from '@Validators/UserLoginValidator'
 import UserResetPasswordValidator from '@Validators/UserResetPasswordValidator'
-import UserStatus from '@Enums/UserStatus'
 
 const acceptLanguage = require('accept-language-parser')
 

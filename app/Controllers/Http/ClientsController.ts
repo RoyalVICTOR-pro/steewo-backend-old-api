@@ -1,13 +1,17 @@
+// ADONIS
 import { inject, Exception } from '@adonisjs/core/build/standalone'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+// DTO
+import ClientProfileCreateDTO from '@DTO/ClientProfileCreateDTO'
+import ClientProfileMainUpdateDTO from '@DTO/ClientProfileMainUpdateDTO'
+// SERVICES
+import ClientProfileService from '@Services/ClientProfileService'
+// VALIDATORS
 import ClientIndividualProfileCreateValidator from '@Validators/ClientIndividualProfileCreateValidator'
 import ClientProfessionalProfileCreateValidator from '@Validators/ClientProfessionalProfileCreateValidator'
-import ClientProfileCreateDTO from '@DTO/ClientProfileCreateDTO'
 import ClientProfileDescriptionUpdateValidator from '@Validators/ClientProfileDescriptionUpdateValidator'
-import ClientProfileMainUpdateDTO from '@DTO/ClientProfileMainUpdateDTO'
 import ClientProfileMainUpdateValidator from '@Validators/ClientProfileMainUpdateValidator'
 import ClientProfilePhotoUpdateValidator from '@Validators/ClientProfilePhotoUpdateValidator'
-import ClientProfileService from '@Services/ClientProfileService'
 import UserCharterAcceptationValidator from '@Validators/UserCharterAcceptationValidator'
 
 @inject()

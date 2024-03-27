@@ -1,6 +1,9 @@
+// ADONIS
 import { inject } from '@adonisjs/core/build/standalone'
-import StudentProfilesHasProfessions from '@Models/StudentProfilesHasProfessions'
+// INTERFACES
 import StudentProfileAndProfessionRelationRepositoryInterface from '@DALInterfaces/StudentProfileAndProfessionRelationRepositoryInterface'
+// MODELS
+import StudentProfilesHasProfessions from '@Models/StudentProfilesHasProfessions'
 import Profession from '@Models/Profession'
 
 @inject()

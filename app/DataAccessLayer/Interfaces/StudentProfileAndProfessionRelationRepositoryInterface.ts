@@ -1,3 +1,4 @@
+// MODELS
 import StudentProfilesHasProfessions from '@Models/StudentProfilesHasProfessions'
 
 export default interface StudentProfileAndProfessionRelationRepositoryInterface {

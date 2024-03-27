@@ -1,5 +1,7 @@
+// ADONIS
 import { DateTime } from 'luxon'
 import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
+// MODELS
 import ClientProfile from '@Models/ClientProfile'
 import StudentProfile from '@Models/StudentProfile'
 

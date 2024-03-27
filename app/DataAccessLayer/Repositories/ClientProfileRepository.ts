@@ -1,10 +1,14 @@
+// ADONIS
 import { inject, Exception } from '@adonisjs/core/build/standalone'
-import ClientProfile from '@Models/ClientProfile'
+// DTO
 import ClientProfileCreateDTO from '@DTO/ClientProfileCreateDTO'
 import ClientProfileDescriptionUpdateDTO from '@DTO/ClientProfileDescriptionUpdateDTO'
 import ClientProfileMainUpdateDTO from '@DTO/ClientProfileMainUpdateDTO'
 import ClientProfilePhotoUpdateDTO from '@DTO/ClientProfilePhotoUpdateDTO'
+// INTERFACES
 import ClientProfileRepositoryInterface from '@DALInterfaces/ClientProfileRepositoryInterface'
+// MODELS
+import ClientProfile from '@Models/ClientProfile'
 
 @inject()
 export default class ClientProfileRepository implements ClientProfileRepositoryInterface {

@@ -1,4 +1,6 @@
+// ADONIS
 import { DateTime } from 'luxon'
+// ENUMS
 import Gender from '@Enums/Gender'
 
 export default interface StudentProfileMainUpdateDTO {

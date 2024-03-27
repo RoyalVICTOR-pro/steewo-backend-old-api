@@ -1,8 +1,11 @@
+// ADONIS
 import { inject } from '@adonisjs/core/build/standalone'
-import Service from '@Models/Service'
+// DTO
 import ServiceCreateOrUpdateDTO from '@DTO/ServiceCreateOrUpdateDTO'
 import ServiceRepositoryInterface from '@DALInterfaces/ServiceRepositoryInterface'
 import ServiceStatusUpdateDTO from '@DTO/ServiceStatusUpdateDTO'
+// MODELS
+import Service from '@Models/Service'
 
 @inject()
 export default class ServiceRepository implements ServiceRepositoryInterface {

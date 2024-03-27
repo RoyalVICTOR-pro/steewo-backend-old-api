@@ -1,31 +1,38 @@
+// ADONIS
 import { getDatetimeForFileName, getExtension, getFileTypeFromExtension } from '@Utils/Various'
 import { inject, Exception } from '@adonisjs/core/build/standalone'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
-import Achievement from '@Models/Achievement'
+// DTO
 import AchievementCreateDTO from '@DTO/AchievementCreateDTO'
-import AchievementDetail from '@Models/AchievementDetail'
 import AchievementDetailCreateOrUpdateDTO from '@DTO/AchievementDetailCreateOrUpdateDTO'
-import AchievementDetailsUpdateOrderDTO from 'App/DataAccessLayer/DTO/AchievementDetailsUpdateOrderDTO'
-import AchievementsRepository from '@DALRepositories/AchievementsRepository'
+import AchievementDetailsUpdateOrderDTO from '@DTO/AchievementDetailsUpdateOrderDTO'
 import AchievementsUpdateOrderDTO from '@DTO/AchievementsUpdateOrderDTO'
 import AchievementUpdateDTO from '@DTO/AchievementUpdateDTO'
-import MailService from '@Services/MailService'
-import Profession from 'App/Models/Profession'
-import Service from 'App/Models/Service'
-import StudentBookmarksRepository from 'App/DataAccessLayer/Repositories/BookmarkRepository'
-import StudentProfileAndProfessionRelationRepository from 'App/DataAccessLayer/Repositories/StudentAndProfessionRelationRepository'
-import StudentProfileAndServiceRelationRepository from 'App/DataAccessLayer/Repositories/StudentAndServiceRelationRepository'
 import StudentProfileBannerUpdateDTO from '@DTO/StudentProfileBannerUpdateDTO'
 import StudentProfileCreateDTO from '@DTO/StudentProfileCreateDTO'
 import StudentProfileDescriptionUpdateDTO from '@DTO/StudentProfileDescriptionUpdateDTO'
 import StudentProfileMainUpdateDTO from '@DTO/StudentProfileMainUpdateDTO'
 import StudentProfilePhotoUpdateDTO from '@DTO/StudentProfilePhotoUpdateDTO'
-import StudentProfileRepository from '@DALRepositories/StudentProfileRepository'
-import StudentProfileServiceInterface from '@Services/Interfaces/StudentProfileServiceInterface'
-import StudentProfileViewRepository from '@DALRepositories/StudentProfileViewRepository'
+// ENUMS
 import StudentUserStatus from '@Enums/StudentUserStatus'
-import UploadService from '@Services/UploadService'
+// INTERFACES
+import StudentProfileServiceInterface from '@Services/Interfaces/StudentProfileServiceInterface'
+// MODELS
+import Achievement from '@Models/Achievement'
+import AchievementDetail from '@Models/AchievementDetail'
+import Profession from '@Models/Profession'
+import Service from '@Models/Service'
+// REPOSITORIES
+import AchievementsRepository from '@DALRepositories/AchievementsRepository'
+import StudentBookmarksRepository from '@DALRepositories/BookmarkRepository'
+import StudentProfileAndProfessionRelationRepository from '@DALRepositories/StudentAndProfessionRelationRepository'
+import StudentProfileAndServiceRelationRepository from '@DALRepositories/StudentAndServiceRelationRepository'
+import StudentProfileRepository from '@DALRepositories/StudentProfileRepository'
+import StudentProfileViewRepository from '@DALRepositories/StudentProfileViewRepository'
 import UserRepository from '@DALRepositories/UserRepository'
+// SERVICES
+import MailService from '@Services/MailService'
+import UploadService from '@Services/UploadService'
 
 @inject()
 export default class StudentProfileService implements StudentProfileServiceInterface {

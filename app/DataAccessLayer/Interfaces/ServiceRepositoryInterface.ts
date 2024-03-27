@@ -1,6 +1,8 @@
-import Service from '@Models/Service'
+// DTO
 import ServiceCreateOrUpdateDTO from '@DTO/ServiceCreateOrUpdateDTO'
 import ServiceStatusUpdateDTO from '@DTO/ServiceStatusUpdateDTO'
+// MODELS
+import Service from '@Models/Service'
 
 export default interface ServiceInterface {
   listServicesByProfession(professionId: number): Promise<Service[]>

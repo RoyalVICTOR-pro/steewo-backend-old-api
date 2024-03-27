@@ -1,6 +1,9 @@
+// ADONIS
 import { AuthContract } from '@ioc:Adonis/Addons/Auth'
-import User from '@Models/User'
+// DTO
 import UserCreateDTO from '@DTO/UserCreateDTO'
+// MODELS
+import User from '@Models/User'
 
 export default interface AuthServiceInterface {
   createUserAccount(data: UserCreateDTO): Promise<User>

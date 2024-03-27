@@ -1,9 +1,11 @@
-import StudentProfile from '@Models/StudentProfile'
+// DTO
 import StudentProfileBannerUpdateDTO from '@DTO/StudentProfileBannerUpdateDTO'
 import StudentProfileCreateDTO from '@DTO/StudentProfileCreateDTO'
 import StudentProfileDescriptionUpdateDTO from '@DTO/StudentProfileDescriptionUpdateDTO'
 import StudentProfileMainUpdateDTO from '@DTO/StudentProfileMainUpdateDTO'
 import StudentProfilePhotoUpdateDTO from '@DTO/StudentProfilePhotoUpdateDTO'
+// MODELS
+import StudentProfile from '@Models/StudentProfile'
 
 export default interface StudentProfileRepositoryInterface {
   createStudentProfile(data: StudentProfileCreateDTO): Promise<StudentProfile>

@@ -1,7 +1,9 @@
+// MODELS
 import Profession from '@Models/Profession'
 import Service from '@Models/Service'
 import ServicesFormField from '@Models/ServicesFormField'
-import UploadService from 'App/Services/UploadService'
+// SERVICES
+import UploadService from '@Services/UploadService'
 
 export const hardDeleteProfession = async (idToDelete: number) => {
   await Profession.query().where('id', idToDelete).delete()

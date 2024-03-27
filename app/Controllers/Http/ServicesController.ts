@@ -1,8 +1,12 @@
+// ADONIS
 import { inject } from '@adonisjs/core/build/standalone'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+// DTO
 import ServiceCreateOrUpdateDTO from '@DTO/ServiceCreateOrUpdateDTO'
-import ServiceCreateValidator from '@Validators/ServiceCreateValidator'
+// SERVICES
 import ServiceService from '@Services/ServiceService'
+// VALIDATORS
+import ServiceCreateValidator from '@Validators/ServiceCreateValidator'
 import ServiceStatusUpdateValidator from '@Validators/ServiceStatusUpdateValidator'
 import ServiceUpdateValidator from '@Validators/ServiceUpdateValidator'
 

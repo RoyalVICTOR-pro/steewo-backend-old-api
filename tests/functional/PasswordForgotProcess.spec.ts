@@ -1,7 +1,8 @@
+// ADONIS
 import { test } from '@japa/runner'
 import supertest from 'supertest'
+// MODELS
 import User from '@Models/User'
-// import Database from '@ioc:Adonis/Lucid/Database'
 
 const BASE_URL = `${process.env.TEST_API_URL}`
 let userEmail: string = 'test@example.com'

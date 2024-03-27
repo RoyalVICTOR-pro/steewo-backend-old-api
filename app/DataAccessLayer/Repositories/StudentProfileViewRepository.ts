@@ -1,5 +1,7 @@
-import StudentProfileView from '@Models/StudentProfileView'
+// ADONIS
 import Database from '@ioc:Adonis/Lucid/Database'
+// MODELS
+import StudentProfileView from '@Models/StudentProfileView'
 
 export default class StudentProfileViewRepository {
   public static async addView(studentProfileId: number, clientProfileId: number): Promise<boolean> {

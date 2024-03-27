@@ -1,3 +1,4 @@
+//MODELS
 import StudentProfilesHasServices from '@Models/StudentProfilesHasServices'
 
 export default interface StudentProfileAndServiceRelationRepositoryInterface {

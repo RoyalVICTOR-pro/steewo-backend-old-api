@@ -1,11 +1,14 @@
+// ADONIS
 import { DateTime } from 'luxon'
-import { FakeClientForTest } from './helpers/Client.helper'
-import { FakeStudentForTest } from './helpers/Student.helper'
 import { test } from '@japa/runner'
+import supertest from 'supertest'
+// ENUMS
 import Gender from '@Enums/Gender'
 import Role from '@Enums/Roles'
 import StudentUserStatus from '@Enums/StudentUserStatus'
-import supertest from 'supertest'
+// HELPERS
+import { FakeClientForTest } from './helpers/Client.helper'
+import { FakeStudentForTest } from './helpers/Student.helper'
 
 const BASE_URL = `${process.env.TEST_API_URL}`
 const testPath = './tests/functional/files_for_tests/'

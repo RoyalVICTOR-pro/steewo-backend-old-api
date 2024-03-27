@@ -1,8 +1,9 @@
+// ADONIS
 import { test } from '@japa/runner'
-// import supertest from 'supertest'
+import Drive from '@ioc:Adonis/Core/Drive'
+// HELPERS
 import { FakeUserForTest } from './helpers/Auth.helper'
 import { hardDeleteProfession, hardDeleteService } from './Utils.helper'
-import Drive from '@ioc:Adonis/Core/Drive'
 
 // const BASE_URL = `${process.env.API_URL}`
 const picto1Path = './tests/functional/files_for_tests/red_img_test_50x50.jpg'

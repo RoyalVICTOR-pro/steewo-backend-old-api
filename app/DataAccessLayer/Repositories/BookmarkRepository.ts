@@ -1,4 +1,6 @@
+// ADONIS
 import Database from '@ioc:Adonis/Lucid/Database'
+// MODELS
 import Bookmark from '@Models/Bookmark'
 
 export default class StudentBookmarksRepository {

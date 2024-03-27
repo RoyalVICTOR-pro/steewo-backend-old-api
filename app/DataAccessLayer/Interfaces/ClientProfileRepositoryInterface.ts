@@ -1,8 +1,10 @@
-import ClientProfile from '@Models/ClientProfile'
+// DTO
 import ClientProfileCreateDTO from '@DTO/ClientProfileCreateDTO'
 import ClientProfileDescriptionUpdateDTO from '@DTO/ClientProfileDescriptionUpdateDTO'
 import ClientProfileMainUpdateDTO from '@DTO/ClientProfileMainUpdateDTO'
 import ClientProfilePhotoUpdateDTO from '@DTO/ClientProfilePhotoUpdateDTO'
+// MODELS
+import ClientProfile from '@Models/ClientProfile'
 
 export default interface ClientProfileRepositoryInterface {
   createClientProfile(data: ClientProfileCreateDTO): Promise<ClientProfile>

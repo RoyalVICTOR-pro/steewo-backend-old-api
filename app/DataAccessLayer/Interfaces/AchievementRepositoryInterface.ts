@@ -1,7 +1,9 @@
-import Achievement from '@Models/Achievement'
+// DTO
 import AchievementCreateDTO from '@DTO/AchievementCreateDTO'
-import AchievementDetail from '@Models/AchievementDetail'
 import AchievementDetailCreateOrUpdateDTO from '@DTO/AchievementDetailCreateOrUpdateDTO'
+// MODELS
+import Achievement from '@Models/Achievement'
+import AchievementDetail from '@Models/AchievementDetail'
 
 export default interface AchievementRepositoryInterface {
   addAchievementToStudentProfile(

@@ -1,12 +1,16 @@
+// ADONIS
 import { inject, Exception } from '@adonisjs/core/build/standalone'
-import StudentProfile from '@Models/StudentProfile'
+import Database from '@ioc:Adonis/Lucid/Database'
+// DTO
 import StudentProfileBannerUpdateDTO from '@DTO/StudentProfileBannerUpdateDTO'
 import StudentProfileCreateDTO from '@DTO/StudentProfileCreateDTO'
 import StudentProfileDescriptionUpdateDTO from '@DTO/StudentProfileDescriptionUpdateDTO'
 import StudentProfileMainUpdateDTO from '@DTO/StudentProfileMainUpdateDTO'
 import StudentProfilePhotoUpdateDTO from '@DTO/StudentProfilePhotoUpdateDTO'
+// INTERFACES
 import StudentProfileRepositoryInterface from '@DALInterfaces/StudentProfileRepositoryInterface'
-import Database from '@ioc:Adonis/Lucid/Database'
+// MODELS
+import StudentProfile from '@Models/StudentProfile'
 
 @inject()
 export default class StudentProfileRepository implements StudentProfileRepositoryInterface {

@@ -1,28 +1,32 @@
+// ADONIS
 import { inject, Exception } from '@adonisjs/core/build/standalone'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-
+// DTO
+import StudentProfileCreateDTO from '@DTO/StudentProfileCreateDTO'
+import StudentProfileMainUpdateDTO from '@DTO/StudentProfileMainUpdateDTO'
+import AchievementCreateDTO from '@DTO/AchievementCreateDTO'
+import AchievementUpdateDTO from '@DTO/AchievementUpdateDTO'
+import AchievementDetailCreateOrUpdateDTO from '@DTO/AchievementDetailCreateOrUpdateDTO'
+// ENUMS
+import Role from '@Enums/Roles'
+// SERVICES
+import AuthService from '@Services/AuthService'
+import StudentProfileService from '@Services/StudentProfileService'
+// VALIDATORS
 import AchievementAddValidator from '@Validators/AchievementAddValidator'
 import AchievementUpdateValidator from '@Validators/AchievementUpdateValidator'
 import AchievementDetailsAddValidator from '@Validators/AchievementDetailsAddValidator'
 import AchievementDetailsUpdateValidator from '@Validators/AchievementDetailsUpdateValidator'
 import AchievementDetailsUpdateOrderValidator from '@Validators/AchievementDetailsUpdateOrderValidator'
 import AchievementUpdateOrderValidator from '@Validators/AchievementUpdateOrderValidator'
-import AuthService from '@Services/AuthService'
-import Role from '@Enums/Roles'
 import StudentProfileBannerUpdateValidator from '@Validators/StudentProfileBannerUpdateValidator'
-import StudentProfileCreateDTO from '@DTO/StudentProfileCreateDTO'
 import StudentProfileCreateValidator from '@Validators/StudentProfileCreateValidator'
 import StudentProfileDescriptionUpdateValidator from '@Validators/StudentProfileDescriptionUpdateValidator'
-import StudentProfileMainUpdateDTO from '@DTO/StudentProfileMainUpdateDTO'
 import StudentProfileMainUpdateValidator from '@Validators/StudentProfileMainUpdateValidator'
 import StudentProfilePhotoUpdateValidator from '@Validators/StudentProfilePhotoUpdateValidator'
-import StudentProfileService from '@Services/StudentProfileService'
 import StudentProfilesProfessionsAddValidator from '@Validators/StudentProfilesProfessionsAddValidator'
 import StudentProfilesServicesAddValidator from '@Validators/StudentProfilesServicesAddValidator'
 import UserCharterAcceptationValidator from '@Validators/UserCharterAcceptationValidator'
-import AchievementCreateDTO from '@DTO/AchievementCreateDTO'
-import AchievementUpdateDTO from '@DTO/AchievementUpdateDTO'
-import AchievementDetailCreateOrUpdateDTO from '@DTO/AchievementDetailCreateOrUpdateDTO'
 
 @inject()
 export default class StudentProfilesController {

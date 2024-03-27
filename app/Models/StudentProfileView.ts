@@ -1,7 +1,9 @@
+// ADONIS
 import { DateTime } from 'luxon'
 import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
-import StudentProfile from 'App/Models/StudentProfile'
-import ClientProfile from 'App/Models/ClientProfile'
+// MODELS
+import StudentProfile from '@Models/StudentProfile'
+import ClientProfile from '@Models/ClientProfile'
 
 export default class StudentProfileView extends BaseModel {
   @column({ isPrimary: true })

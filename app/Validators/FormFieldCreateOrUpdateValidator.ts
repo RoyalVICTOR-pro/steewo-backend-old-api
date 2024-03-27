@@ -1,6 +1,8 @@
+// ADONIS
 import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Config from '@ioc:Adonis/Core/Config'
+// ENUMS
 import FormFieldsTypes from '@Enums/FormFieldsTypes'
 
 export default class FormFieldCreateOrUpdateValidator {

@@ -1,10 +1,16 @@
+// ADONIS
 import { inject } from '@adonisjs/core/build/standalone'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
+// DTO
 import ServiceCreateOrUpdateDTO from '@DTO/ServiceCreateOrUpdateDTO'
-import ServiceRepository from '@DALRepositories/ServiceRepository'
-import ServiceServiceInterface from '@Services/Interfaces/ServiceServiceInterface'
 import ServiceStatusUpdateDTO from '@DTO/ServiceStatusUpdateDTO'
+// INTERFACES
+import ServiceServiceInterface from '@Services/Interfaces/ServiceServiceInterface'
+// REPOSITORIES
+import ServiceRepository from '@DALRepositories/ServiceRepository'
+// SERVICES
 import UploadService from '@Services/UploadService'
+
 @inject()
 export default class ServiceService implements ServiceServiceInterface {
   private serviceRepository: ServiceRepository

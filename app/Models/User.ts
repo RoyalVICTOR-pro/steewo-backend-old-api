@@ -1,14 +1,17 @@
+// ADONIS
 import { BaseModel, column, beforeSave, BelongsTo, belongsTo } from '@ioc:Adonis/Lucid/Orm'
 import { compose } from '@ioc:Adonis/Core/Helpers'
 import { DateTime } from 'luxon'
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
+import Hash from '@ioc:Adonis/Core/Hash'
+// ENUMS
 import AuthentificationMode from '@Enums/AuthentificationMode'
 import ClientUserStatus from '@Enums/ClientUserStatus'
-import Country from '@Models/Country'
-import Hash from '@ioc:Adonis/Core/Hash'
-import Role from '@Enums/Roles'
 import StudentUserStatus from '@Enums/StudentUserStatus'
+import Role from '@Enums/Roles'
 import UserStatus from '@Enums/UserStatus'
+// MODELS
+import Country from '@Models/Country'
 
 export default class User extends compose(BaseModel, SoftDeletes) {
   @column({ isPrimary: true })

@@ -1,7 +1,9 @@
+// ADONIS
 import { BaseModel, column, beforeDelete, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import { compose } from '@ioc:Adonis/Core/Helpers'
 import { DateTime } from 'luxon'
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
+// MODELS
 import Service from '@Models/Service'
 import UploadService from '@Services/UploadService'
 import StudentProfilesHasProfessions from '@Models/StudentProfilesHasProfessions'
