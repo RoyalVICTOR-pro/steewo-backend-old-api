@@ -1,6 +1,6 @@
 // ADONIS
 import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, belongsTo, BelongsTo, beforeFetch } from '@ioc:Adonis/Lucid/Orm'
 // MODELS
 import Achievement from '@Models/Achievement'
 
@@ -39,4 +39,9 @@ export default class AchievementDetail extends BaseModel {
     foreignKey: 'achievementId',
   })
   public achievement: BelongsTo<typeof Achievement>
+
+  @beforeFetch()
+  public static orderResults(query) {
+    query.orderBy('detail_order', 'asc')
+  }
 }

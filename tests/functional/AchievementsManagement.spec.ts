@@ -793,6 +793,10 @@ test.group('Achievements Management', (group) => {
     const firstAchievement = achievements.find((a) => a.id === firstAchievementId)
     if (firstAchievement) {
       const details = firstAchievement.achievementDetails
+      assert.equal(details[0].detail_order, 1)
+      assert.equal(details[1].detail_order, 2)
+      assert.equal(details[2].detail_order, 3)
+      assert.equal(details[3].detail_order, 4)
       const firstDetail = details.find((a) => a.id === firstAchievementDetailId)
       const secondDetail = details.find((a) => a.id === secondAchievementDetailId)
       const thirdDetail = details.find((a) => a.id === thirdAchievementDetailId)
