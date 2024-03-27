@@ -64,7 +64,10 @@ Route.group(() => {
     .middleware(['auth', 'isStudentProfileOwner'])
 
   // STUDENT VIEWS
-  Route.get('/get-student-views-count/', 'StudentsController.getStudentViewsCount')
+  Route.get(
+    '/get-student-views-count/:student_profile_id',
+    'StudentsController.getStudentViewsCount'
+  )
     .as('getStudentViewsCount')
     .middleware(['auth', 'isStudentProfileOwner'])
 
@@ -76,7 +79,10 @@ Route.group(() => {
     .middleware('auth')
 
   // STUDENT BOOKMARKS
-  Route.get('/get-student-bookmarks-count/', 'StudentsController.getStudentBookmarksCount')
+  Route.get(
+    '/get-student-bookmarks-count/:student_profile_id',
+    'StudentsController.getStudentBookmarksCount'
+  )
     .as('getStudentBookmarksCount')
     .middleware(['auth', 'isStudentProfileOwner'])
 

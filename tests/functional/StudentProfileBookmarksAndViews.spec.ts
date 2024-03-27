@@ -84,7 +84,7 @@ test.group('Student Profile Bookmarks and views', (group) => {
 
   test('Get Student Views Count by the student himself', async ({ client }) => {
     const response = await client
-      .get('/get-student-views-count/')
+      .get('/get-student-views-count/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains({
@@ -142,21 +142,21 @@ test.group('Student Profile Bookmarks and views', (group) => {
 
   test('Get Student Views Count by a client', async ({ client }) => {
     const response = await client
-      .get('/get-student-views-count/')
+      .get('/get-student-views-count/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(401)
   })
 
   test('Get Student Views Count by an other student', async ({ client }) => {
     const response = await client
-      .get('/get-student-views-count/')
+      .get('/get-student-views-count/' + fakeStudent.studentProfileId)
       .header('Cookie', secondFakeStudent.tokenCookie)
     response.assertStatus(401)
   })
 
   test('Get Student Views Count by the student himself', async ({ client }) => {
     const response = await client
-      .get('/get-student-views-count/')
+      .get('/get-student-views-count/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains({
@@ -166,7 +166,7 @@ test.group('Student Profile Bookmarks and views', (group) => {
 
   test('Get Student Bookmarks Count by the student himself', async ({ client }) => {
     const response = await client
-      .get('/get-student-bookmarks-count/')
+      .get('/get-student-bookmarks-count/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains({
@@ -212,21 +212,21 @@ test.group('Student Profile Bookmarks and views', (group) => {
 
   test('Get Student Bookmarks Count by a client', async ({ client }) => {
     const response = await client
-      .get('/get-student-bookmarks-count/')
+      .get('/get-student-bookmarks-count/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(401)
   })
 
   test('Get Student Bookmarks Count by an other student', async ({ client }) => {
     const response = await client
-      .get('/get-student-bookmarks-count/')
+      .get('/get-student-bookmarks-count/' + fakeStudent.studentProfileId)
       .header('Cookie', secondFakeStudent.tokenCookie)
     response.assertStatus(401)
   })
 
   test('Get Student Bookmarks Count by the student himself', async ({ client }) => {
     const response = await client
-      .get('/get-student-bookmarks-count/')
+      .get('/get-student-bookmarks-count/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains({
@@ -274,7 +274,7 @@ test.group('Student Profile Bookmarks and views', (group) => {
 
   test('Get Student Bookmarks Count by the student himself', async ({ client }) => {
     const response = await client
-      .get('/get-student-bookmarks-count/')
+      .get('/get-student-bookmarks-count/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains({
