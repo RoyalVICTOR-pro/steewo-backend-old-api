@@ -5,7 +5,7 @@ import supertest from 'supertest'
 import { FakeClientForTest } from './helpers/Client.helper'
 import { FakeStudentForTest } from './helpers/Student.helper'
 import { FakeUserForTest } from './helpers/Auth.helper'
-import { hardDeleteProfession, hardDeleteService, deleteFile } from './Utils.helper'
+import { hardDeleteProfession, hardDeleteService } from './Utils.helper'
 // ENUMS
 import Role from '@Enums/Roles'
 import StudentUserStatus from '@Enums/StudentUserStatus'
@@ -38,11 +38,6 @@ test.group('Achievements Management', (group) => {
   let secondServiceOfFirstProfessionId: number
   let firstServiceOfSecondProfessionId: number
   let secondServiceOfSecondProfessionId: number
-  let firstAchievementMainFile: string
-  let firstAchievementDetailFile: string
-  let secondAchievementDetailFile: string
-  let thirdAchievementDetailFile: string
-  let fourthAchievementDetailFile: string
   let firstAchievementId: number
   let secondAchievementId: number
   let firstAchievementDetailId: number
@@ -473,15 +468,10 @@ test.group('Achievements Management', (group) => {
       })
     response.assertStatus(200)
     firstAchievementId = response.body().achievement.id
-    firstAchievementMainFile = response.body().achievement.main_image_file
     firstAchievementDetailId = response.body().details[0].id
-    firstAchievementDetailFile = response.body().details[0].file
     secondAchievementDetailId = response.body().details[1].id
-    secondAchievementDetailFile = response.body().details[1].file
     thirdAchievementDetailId = response.body().details[2].id
-    thirdAchievementDetailFile = response.body().details[2].file
     fourthAchievementDetailId = response.body().details[3].id
-    fourthAchievementDetailFile = response.body().details[3].file
   })
 
   test('Add a second Achievement for the same student with 2 details', async ({ client }) => {
