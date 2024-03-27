@@ -25,7 +25,7 @@ export default class ExceptionHandler extends HttpExceptionHandler {
   public async handle(error: any, ctx: HttpContextContract) {
     // TODO : Gérer les messages d'erreurs en fonction de la langue de l'utilisateur
     // console.log('error status :>> ', error.status)
-    // console.log('error complète :>> ', error)
+    console.log('error complète :>> ', error)
 
     if (error.status === 400) {
       // Gestion des erreurs 400 (Bad Request)
@@ -46,7 +46,7 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 
     if (error.status === 422) {
       // Gestion des erreurs de validation
-      // console.log('error.messages :>> ', JSON.stringify(error.messages))
+      console.log('error.messages :>> ', JSON.stringify(error.messages))
       return ctx.response.status(error.status).send(error.messages)
     }
 

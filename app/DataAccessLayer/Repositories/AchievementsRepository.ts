@@ -9,6 +9,14 @@ import AchievementsUpdateOrderDTO from '@DTO/AchievementsUpdateOrderDTO'
 
 @inject()
 export default class AchievementsRepository implements AchievementRepositoryInterface {
+  public async getAchievementsByStudentProfileId(studentProfileId: number): Promise<Achievement[]> {
+    return Achievement.query()
+      .preload('achievementDetails')
+      .where('student_profile_id', studentProfileId)
+      .orderBy('achievement_order', 'asc')
+      .orderBy('detail_order', 'asc')
+  }
+
   public async addAchievementToStudentProfile(
     studentProfileId: number,
     data: AchievementCreateDTO

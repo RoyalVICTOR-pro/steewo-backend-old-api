@@ -77,11 +77,6 @@ test.group('Achievements Management', (group) => {
     await hardDeleteService(secondServiceOfFirstProfessionId)
     await hardDeleteService(firstServiceOfSecondProfessionId)
     await hardDeleteService(secondServiceOfSecondProfessionId)
-    // await deleteFile(firstAchievementMainFile)
-    // await deleteFile(firstAchievementDetailFile)
-    // await deleteFile(secondAchievementDetailFile)
-    // await deleteFile(thirdAchievementDetailFile)
-    // await deleteFile(fourthAchievementDetailFile)
   })
 
   test('Register student with valid data', async ({ assert }) => {
@@ -210,6 +205,20 @@ test.group('Achievements Management', (group) => {
       .where('student_profile_id', fakeStudent.studentProfileId)
       .where('profession_id', secondProfessionId)
       .update({ profession_has_been_accepted: true })
+  })
+
+  test('Add Services to Student Profile by the student himself', async ({ client }) => {
+    const response = await client
+      .post('/add-services-to-student-profile/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+      .fields({
+        choosen_services: [
+          firstServiceOfFirstProfessionId,
+          secondServiceOfFirstProfessionId,
+          firstServiceOfSecondProfessionId,
+        ],
+      })
+    response.assertStatus(200)
   })
 
   test('Add Achievement to Student Profile by the student himself with missing title', async ({
@@ -498,6 +507,7 @@ test.group('Achievements Management', (group) => {
       .post('/add-achievement-details-to-achievement/' + secondAchievementId)
       .header('Cookie', fakeStudent.tokenCookie)
       .file('achievement_details', image2Path)
+      .file('achievement_details', image3Path)
       .fields({
         type: 'image',
         name: 'Image de la planète',
@@ -526,9 +536,10 @@ test.group('Achievements Management', (group) => {
     assert,
   }) => {
     const response = await client
-      .get('/get-student-public-profile/' + fakeStudent.studentProfileId)
+      .get('/get-student-public-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
+    console.log('response.body() :>> ', response.body())
     const achievements = response.body().achievements
     const firstAchievement = achievements.find((a) => a.id === firstAchievementId)
     const secondAchievement = achievements.find((a) => a.id === secondAchievementId)
@@ -541,7 +552,7 @@ test.group('Achievements Management', (group) => {
     assert,
   }) => {
     const response = await client
-      .get('/get-student-public-profile/' + fakeStudent.studentProfileId)
+      .get('/get-student-public-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     const achievements = response.body().achievements
@@ -607,7 +618,7 @@ test.group('Achievements Management', (group) => {
     assert,
   }) => {
     const response = await client
-      .get('/get-student-public-profile/' + fakeStudent.studentProfileId)
+      .get('/get-student-public-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     const achievements = response.body().achievements
@@ -670,7 +681,7 @@ test.group('Achievements Management', (group) => {
     assert,
   }) => {
     const response = await client
-      .get('/get-student-public-profile/' + fakeStudent.studentProfileId)
+      .get('/get-student-public-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     const achievements = response.body().achievements
@@ -730,7 +741,7 @@ test.group('Achievements Management', (group) => {
     assert,
   }) => {
     const response = await client
-      .get('/get-student-public-profile/' + fakeStudent.studentProfileId)
+      .get('/get-student-public-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     const achievements = response.body().achievements
@@ -749,7 +760,7 @@ test.group('Achievements Management', (group) => {
     assert,
   }) => {
     const response = await client
-      .get('/get-student-public-profile/' + fakeStudent.studentProfileId)
+      .get('/get-student-public-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     const achievements = response.body().achievements
@@ -827,7 +838,7 @@ test.group('Achievements Management', (group) => {
     assert,
   }) => {
     const response = await client
-      .get('/get-student-public-profile/' + fakeStudent.studentProfileId)
+      .get('/get-student-public-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     const achievements = response.body().achievements

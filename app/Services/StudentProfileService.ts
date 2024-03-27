@@ -1,15 +1,18 @@
 import { getDatetimeForFileName, getExtension, getFileTypeFromExtension } from '@Utils/Various'
 import { inject, Exception } from '@adonisjs/core/build/standalone'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
+import Achievement from '@Models/Achievement'
 import AchievementCreateDTO from '@DTO/AchievementCreateDTO'
-import AchievementUpdateDTO from '@DTO/AchievementUpdateDTO'
 import AchievementDetail from '@Models/AchievementDetail'
 import AchievementDetailCreateOrUpdateDTO from '@DTO/AchievementDetailCreateOrUpdateDTO'
-import AchievementsUpdateOrderDTO from '@DTO/AchievementsUpdateOrderDTO'
 import AchievementDetailsUpdateOrderDTO from 'App/DataAccessLayer/DTO/AchievementDetailsUpdateOrderDTO'
+import AchievementsRepository from '@DALRepositories/AchievementsRepository'
+import AchievementsUpdateOrderDTO from '@DTO/AchievementsUpdateOrderDTO'
+import AchievementUpdateDTO from '@DTO/AchievementUpdateDTO'
 import MailService from '@Services/MailService'
 import Profession from 'App/Models/Profession'
 import Service from 'App/Models/Service'
+import StudentBookmarksRepository from 'App/DataAccessLayer/Repositories/BookmarkRepository'
 import StudentProfileAndProfessionRelationRepository from 'App/DataAccessLayer/Repositories/StudentAndProfessionRelationRepository'
 import StudentProfileAndServiceRelationRepository from 'App/DataAccessLayer/Repositories/StudentAndServiceRelationRepository'
 import StudentProfileBannerUpdateDTO from '@DTO/StudentProfileBannerUpdateDTO'
@@ -20,11 +23,9 @@ import StudentProfilePhotoUpdateDTO from '@DTO/StudentProfilePhotoUpdateDTO'
 import StudentProfileRepository from '@DALRepositories/StudentProfileRepository'
 import StudentProfileServiceInterface from '@Services/Interfaces/StudentProfileServiceInterface'
 import StudentProfileViewRepository from '@DALRepositories/StudentProfileViewRepository'
-import StudentBookmarksRepository from 'App/DataAccessLayer/Repositories/BookmarkRepository'
 import StudentUserStatus from '@Enums/StudentUserStatus'
 import UploadService from '@Services/UploadService'
 import UserRepository from '@DALRepositories/UserRepository'
-import AchievementsRepository from '@DALRepositories/AchievementsRepository'
 
 @inject()
 export default class StudentProfileService implements StudentProfileServiceInterface {
@@ -100,9 +101,20 @@ export default class StudentProfileService implements StudentProfileServiceInter
       job_title: studentProfile.job_title,
       photo_file: studentProfile.photo_file,
       banner_file: studentProfile.banner_file,
+      professions: [] as Profession[],
+      services: [] as Service[],
+      achievements: [] as Achievement[],
     }
     // TODO : Add professions, services, achievments to the public profile
 
+    studentPublicProfile.professions = await this.getStudentPublicProfessions(studentProfile.id)
+
+    studentPublicProfile.services = await this.getStudentServices(studentProfile.id)
+
+    studentPublicProfile.achievements =
+      await this.achievementRepository.getAchievementsByStudentProfileId(studentProfile.id)
+
+    console.log('studentPublicProfile :>> ', studentPublicProfile)
     return studentPublicProfile
   }
 
@@ -140,8 +152,20 @@ export default class StudentProfileService implements StudentProfileServiceInter
       banner_file: studentProfile.banner_file,
       school_certificate_file: studentProfile.school_certificate_file,
       company_exists_proof_file: studentProfile.company_exists_proof_file,
+      professions: [] as Profession[],
+      services: [] as Service[],
+      achievements: [] as Achievement[],
     }
     // TODO : Add professions, services, achievments to the private profile
+
+    studentPrivateProfile.professions = await this.getStudentPrivateProfessions(studentProfile.id)
+
+    studentPrivateProfile.services = await this.getStudentServices(studentProfile.id)
+
+    studentPrivateProfile.achievements =
+      await this.achievementRepository.getAchievementsByStudentProfileId(studentProfile.id)
+
+    console.log('studentPrivateProfile :>> ', studentPrivateProfile)
     return studentPrivateProfile
   }
 
@@ -373,9 +397,15 @@ export default class StudentProfileService implements StudentProfileServiceInter
   }
 
   public async getStudentServices(studentProfileId: number) {
-    return await this.studentProfileAndServiceRelationRepository.getStudentServices(
-      studentProfileId
-    )
+    const studentServicesRelations =
+      await this.studentProfileAndServiceRelationRepository.getStudentServices(studentProfileId)
+
+    const studentServices = [] as Service[]
+    for (let i = 0; i < studentServicesRelations.length; i++) {
+      studentServices.push(studentServicesRelations[i].service)
+    }
+
+    return studentServices
   }
 
   public async addAchievementsToStudentProfile(

@@ -327,7 +327,7 @@ test.group('Student Profile Professions and Services Management', (group) => {
     response.assertStatus(200)
     let found = false
     for (const item of response.body()) {
-      if (item.service.name === 'Création de logo') {
+      if (item.name === 'Création de logo') {
         found = true
         break
       }
@@ -336,7 +336,7 @@ test.group('Student Profile Professions and Services Management', (group) => {
 
     found = false
     for (const item of response.body()) {
-      if (item.service.name === 'Création graphique de site internet') {
+      if (item.name === 'Création graphique de site internet') {
         found = true
         break
       }
@@ -344,7 +344,7 @@ test.group('Student Profile Professions and Services Management', (group) => {
     assert.equal(found, true)
     found = false
     for (const item of response.body()) {
-      if (item.service.name === 'Développement de site web') {
+      if (item.name === 'Développement de site web') {
         found = true
         break
       }
@@ -374,7 +374,7 @@ test.group('Student Profile Professions and Services Management', (group) => {
     response.assertStatus(200)
     let found = false
     for (const item of response.body()) {
-      if (item.service.name === 'Création de logo') {
+      if (item.name === 'Création de logo') {
         found = true
         break
       }
@@ -383,7 +383,7 @@ test.group('Student Profile Professions and Services Management', (group) => {
 
     found = false
     for (const item of response.body()) {
-      if (item.service.name === 'Création graphique de site internet') {
+      if (item.name === 'Création graphique de site internet') {
         found = true
         break
       }
@@ -391,7 +391,7 @@ test.group('Student Profile Professions and Services Management', (group) => {
     assert.equal(found, true)
     found = false
     for (const item of response.body()) {
-      if (item.service.name === 'Développement de site web') {
+      if (item.name === 'Développement de site web') {
         found = true
         break
       }

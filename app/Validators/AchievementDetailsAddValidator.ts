@@ -6,7 +6,6 @@ export default class AchievementDetailsAddValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
-    achievement_id: schema.number(),
     type: schema.string.optional(),
     value: schema.string.optional(),
     name: schema.string.optional(),
