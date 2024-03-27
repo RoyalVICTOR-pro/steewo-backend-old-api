@@ -24,7 +24,6 @@ export default class AchievementDetailsAddValidator {
 
   public messages: CustomMessages = {
     // IN FRENCH
-    'achievement_id.required': "L'identifiant de la réalisation est requis",
     'file.file.size': 'La taille du fichier ne doit pas dépasser 2 Mo',
     'file.file.extname':
       'Le fichier doit avoir une extension de fichier valide (' +

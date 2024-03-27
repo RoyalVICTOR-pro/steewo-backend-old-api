@@ -2,7 +2,7 @@ import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Config from '@ioc:Adonis/Core/Config'
 
-export default class AchievementAddOrUpdateValidator {
+export default class AchievementAddValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({

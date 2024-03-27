@@ -137,18 +137,21 @@ Route.group(() => {
     .middleware(['auth', 'isStudentProfileOwner'])
 
   Route.post(
-    '/add-achievement-details-to-achievement/:achievement_id',
+    '/add-achievement-details-to-achievement/:achievement_id/by-student/:student_profile_id',
     'StudentsController.addAchievementDetailsToAchievement'
   )
     .as('addAchievementDetailsToAchievement')
     .middleware(['auth', 'isStudentProfileOwner'])
 
-  Route.patch('/update-achievement/:achievement_id', 'StudentsController.updateAchievement')
+  Route.patch(
+    '/update-achievement/:achievement_id/by-student/:student_profile_id',
+    'StudentsController.updateAchievement'
+  )
     .as('updateAchievement')
     .middleware(['auth', 'isStudentProfileOwner'])
 
   Route.patch(
-    '/update-achievement-detail/:achievement_detail_id',
+    '/update-achievement-detail/:achievement_detail_id/by-student/:student_profile_id',
     'StudentsController.updateAchievementDetail'
   )
     .as('updateAchievementDetail')
@@ -168,12 +171,15 @@ Route.group(() => {
     .as('updateAchievementDetailsOrder')
     .middleware(['auth', 'isStudentProfileOwner'])
 
-  Route.delete('/delete-achievement/:achievement_id', 'StudentsController.deleteAchievement')
+  Route.delete(
+    '/delete-achievement/:achievement_id/by-student/:student_profile_id',
+    'StudentsController.deleteAchievement'
+  )
     .as('deleteAchievement')
     .middleware(['auth', 'isStudentProfileOwner'])
 
   Route.delete(
-    '/delete-achievement-detail/:achievement_detail_id',
+    '/delete-achievement-detail/:achievement_detail_id/by-student/:student_profile_id',
     'StudentsController.deleteAchievementDetail'
   )
     .as('deleteAchievementDetail')

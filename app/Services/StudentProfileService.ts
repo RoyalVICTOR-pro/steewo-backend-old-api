@@ -105,7 +105,6 @@ export default class StudentProfileService implements StudentProfileServiceInter
       services: [] as Service[],
       achievements: [] as Achievement[],
     }
-    // TODO : Add professions, services, achievments to the public profile
 
     studentPublicProfile.professions = await this.getStudentPublicProfessions(studentProfile.id)
 
@@ -114,7 +113,6 @@ export default class StudentProfileService implements StudentProfileServiceInter
     studentPublicProfile.achievements =
       await this.achievementRepository.getAchievementsByStudentProfileId(studentProfile.id)
 
-    console.log('studentPublicProfile :>> ', studentPublicProfile)
     return studentPublicProfile
   }
 
@@ -156,7 +154,6 @@ export default class StudentProfileService implements StudentProfileServiceInter
       services: [] as Service[],
       achievements: [] as Achievement[],
     }
-    // TODO : Add professions, services, achievments to the private profile
 
     studentPrivateProfile.professions = await this.getStudentPrivateProfessions(studentProfile.id)
 
@@ -165,7 +162,6 @@ export default class StudentProfileService implements StudentProfileServiceInter
     studentPrivateProfile.achievements =
       await this.achievementRepository.getAchievementsByStudentProfileId(studentProfile.id)
 
-    console.log('studentPrivateProfile :>> ', studentPrivateProfile)
     return studentPrivateProfile
   }
 
@@ -441,7 +437,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
         )
 
         const newAchievementDetail: AchievementDetailCreateOrUpdateDTO = {
-          achievement_id: createdAchievement.id,
+          achievementId: createdAchievement.id,
           type: getFileTypeFromExtension(getExtension(achievementDetailFilepath)),
           file: achievementDetailFilepath,
         }
@@ -471,7 +467,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
           'achievement-detail-' + getDatetimeForFileName()
         )
         newAchievementDetail = {
-          achievement_id: achievementId,
+          achievementId: achievementId,
           type: getFileTypeFromExtension(getExtension(achievementDetailFilepath)),
           file: achievementDetailFilepath,
           name: data.name ? data.name : null,
@@ -483,7 +479,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
       }
     } else {
       let newAchievementDetail = {
-        achievement_id: achievementId,
+        achievementId: achievementId,
         type: data.type,
         value: data.value,
         name: data.name ? data.name : null,

@@ -1,5 +1,5 @@
 export default interface AchievementDetailCreateOrUpdateDTO {
-  achievement_id: number
+  achievementId: number
   type: string | null
   value?: string | null
   file?: string | null

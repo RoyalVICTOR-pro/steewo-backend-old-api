@@ -29,7 +29,6 @@ export default class StudentProfileAndServiceRelationRepository
   }
 
   public async getStudentServices(studentId: number): Promise<StudentProfilesHasServices[]> {
-    console.log('studentId in getStudentServices in Repository :>> ', studentId)
     const studentServices = await StudentProfilesHasServices.query()
       .select('*')
       .join('services', 'student_profiles_has_services.service_id', 'services.id')
@@ -42,7 +41,6 @@ export default class StudentProfileAndServiceRelationRepository
       .where('student_profiles_has_services.student_profile_id', studentId)
       .where('student_profiles_has_professions.profession_has_been_accepted', 1)
 
-    console.log('studentServices in repository :>> ', studentServices)
     return studentServices
   }
 }

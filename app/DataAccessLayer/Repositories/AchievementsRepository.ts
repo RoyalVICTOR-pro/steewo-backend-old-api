@@ -14,7 +14,6 @@ export default class AchievementsRepository implements AchievementRepositoryInte
       .preload('achievementDetails')
       .where('student_profile_id', studentProfileId)
       .orderBy('achievement_order', 'asc')
-      .orderBy('detail_order', 'asc')
   }
 
   public async addAchievementToStudentProfile(
@@ -53,7 +52,7 @@ export default class AchievementsRepository implements AchievementRepositoryInte
     data: AchievementDetailCreateOrUpdateDTO
   ): Promise<AchievementDetail> {
     const highestOrder = await AchievementDetail.query()
-      .where('achievement_id', data.achievement_id)
+      .where('achievementId', data.achievementId)
       .orderBy('detail_order', 'desc')
       .first()
 
@@ -65,7 +64,7 @@ export default class AchievementsRepository implements AchievementRepositoryInte
     }
 
     const achievementDetail = new AchievementDetail()
-    achievementDetail.achievement_id = data.achievement_id
+    achievementDetail.achievementId = data.achievementId
     achievementDetail.type = data.type
     if (data.value) achievementDetail.value = data.value
     if (data.file) achievementDetail.file = data.file

@@ -67,7 +67,7 @@ export default class Achievement extends BaseModel {
   public static async deleteDetails(achievement: Achievement) {
     if (achievement.main_image_file) await UploadService.deleteFile(achievement.main_image_file)
     const details: AchievementDetail[] = await AchievementDetail.query().where(
-      'achievement_id',
+      'achievementId',
       achievement.id
     )
     for (let detail of details) {

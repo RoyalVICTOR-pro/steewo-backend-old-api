@@ -472,6 +472,7 @@ test.group('Achievements Management', (group) => {
         is_favorite: true,
       })
     response.assertStatus(200)
+    firstAchievementId = response.body().achievement.id
     firstAchievementMainFile = response.body().achievement.main_image_file
     firstAchievementDetailId = response.body().details[0].id
     firstAchievementDetailFile = response.body().details[0].file
@@ -483,7 +484,7 @@ test.group('Achievements Management', (group) => {
     fourthAchievementDetailFile = response.body().details[3].file
   })
 
-  test('Add a second Achievement for the same student', async ({ client }) => {
+  test('Add a second Achievement for the same student with 2 details', async ({ client }) => {
     const response = await client
       .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
@@ -502,9 +503,16 @@ test.group('Achievements Management', (group) => {
     secondAchievementId = response.body().achievement.id
   })
 
-  test('Add an achievement detail to an achievement by the student himself', async ({ client }) => {
+  test('Add an other achievement detail to the second achievement by the student himself', async ({
+    client,
+  }) => {
     const response = await client
-      .post('/add-achievement-details-to-achievement/' + secondAchievementId)
+      .post(
+        '/add-achievement-details-to-achievement/' +
+          secondAchievementId +
+          '/by-student/' +
+          fakeStudent.studentProfileId
+      )
       .header('Cookie', fakeStudent.tokenCookie)
       .file('achievement_details', image2Path)
       .file('achievement_details', image3Path)
@@ -516,11 +524,16 @@ test.group('Achievements Management', (group) => {
     response.assertStatus(200)
   })
 
-  test('Add a second achievement detail to an achievement without file by the student himself', async ({
+  test('Add a fourth achievement detail to the second achievement without file by the student himself', async ({
     client,
   }) => {
     const response = await client
-      .post('/add-achievement-details-to-achievement/' + secondAchievementId)
+      .post(
+        '/add-achievement-details-to-achievement/' +
+          secondAchievementId +
+          '/by-student/' +
+          fakeStudent.studentProfileId
+      )
       .header('Cookie', fakeStudent.tokenCookie)
       .fields({
         type: 'url',
@@ -539,7 +552,6 @@ test.group('Achievements Management', (group) => {
       .get('/get-student-public-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
-    console.log('response.body() :>> ', response.body())
     const achievements = response.body().achievements
     const firstAchievement = achievements.find((a) => a.id === firstAchievementId)
     const secondAchievement = achievements.find((a) => a.id === secondAchievementId)
@@ -560,20 +572,23 @@ test.group('Achievements Management', (group) => {
     const secondAchievement = achievements.find((a) => a.id === secondAchievementId)
     assert.exists(firstAchievement)
     assert.exists(secondAchievement)
-    const firstAchievementDetails = firstAchievement.details
-    const secondAchievementDetails = secondAchievement.details
+    const firstAchievementDetails = firstAchievement.achievementDetails
+    const secondAchievementDetails = secondAchievement.achievementDetails
     assert.exists(firstAchievementDetails)
     assert.exists(secondAchievementDetails)
     assert.equal(firstAchievementDetails.length, 4)
-    assert.equal(secondAchievementDetails.length, 1)
+    assert.equal(secondAchievementDetails.length, 5)
   })
 
   test('Update an achievement by a client', async ({ client }) => {
     const response = await client
-      .patch('/update-achievement/' + secondAchievementId)
+      .patch(
+        '/update-achievement/' + secondAchievementId + '/by-student/' + fakeStudent.studentProfileId
+      )
       .header('Cookie', fakeClient.tokenCookie)
       .file('main_image_file', image2Path)
       .fields({
+        service_id: secondServiceOfFirstProfessionId,
         title: 'Projet de site web',
         description: 'Projet fictif de site web pour une entreprise fictive',
         context: "J'ai réalisé un projet de site web en tant que graphiste",
@@ -585,10 +600,13 @@ test.group('Achievements Management', (group) => {
 
   test('Update an achievement by an other student', async ({ client }) => {
     const response = await client
-      .patch('/update-achievement/' + secondAchievementId)
+      .patch(
+        '/update-achievement/' + secondAchievementId + '/by-student/' + fakeStudent.studentProfileId
+      )
       .header('Cookie', secondFakeStudent.tokenCookie)
       .file('main_image_file', image2Path)
       .fields({
+        service_id: secondServiceOfFirstProfessionId,
         title: 'Projet de site web',
         description: 'Projet fictif de site web pour une entreprise fictive',
         context: "J'ai réalisé un projet de site web en tant que graphiste",
@@ -600,10 +618,13 @@ test.group('Achievements Management', (group) => {
 
   test('Update an achievement by the student himself', async ({ client }) => {
     const response = await client
-      .patch('/update-achievement/' + secondAchievementId)
+      .patch(
+        '/update-achievement/' + secondAchievementId + '/by-student/' + fakeStudent.studentProfileId
+      )
       .header('Cookie', fakeStudent.tokenCookie)
       .file('main_image_file', image2Path)
       .fields({
+        service_id: secondServiceOfFirstProfessionId,
         title: 'Projet de site web',
         description: 'Projet fictif de site web pour une entreprise fictive',
         context: "J'ai réalisé un projet de site web en tant que graphiste",
@@ -639,7 +660,12 @@ test.group('Achievements Management', (group) => {
 
   test('Update an achievement detail by a client', async ({ client }) => {
     const response = await client
-      .patch('/update-achievement-detail/' + secondAchievementId)
+      .patch(
+        '/update-achievement-detail/' +
+          secondAchievementId +
+          '/by-student/' +
+          fakeStudent.studentProfileId
+      )
       .header('Cookie', fakeClient.tokenCookie)
       .file('file', image3Path)
       .fields({
@@ -652,7 +678,12 @@ test.group('Achievements Management', (group) => {
 
   test('Update an achievement detail by an other student', async ({ client }) => {
     const response = await client
-      .patch('/update-achievement-detail/' + secondAchievementId)
+      .patch(
+        '/update-achievement-detail/' +
+          secondAchievementId +
+          '/by-student/' +
+          fakeStudent.studentProfileId
+      )
       .header('Cookie', secondFakeStudent.tokenCookie)
       .file('file', image3Path)
       .fields({
@@ -665,7 +696,12 @@ test.group('Achievements Management', (group) => {
 
   test('Update an achievement detail by the student himself', async ({ client }) => {
     const response = await client
-      .patch('/update-achievement-detail/' + secondAchievementId)
+      .patch(
+        '/update-achievement-detail/' +
+          firstAchievementDetailId +
+          '/by-student/' +
+          fakeStudent.studentProfileId
+      )
       .header('Cookie', fakeStudent.tokenCookie)
       .file('file', image3Path)
       .fields({
@@ -685,10 +721,10 @@ test.group('Achievements Management', (group) => {
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     const achievements = response.body().achievements
-    const secondAchievement = achievements.find((a) => a.id === secondAchievementId)
-    assert.exists(secondAchievement)
-    const details = secondAchievement.details
-    const updatedDetail = details.find((d) => d.id === secondAchievementDetailId)
+    const firstAchievement = achievements.find((a) => a.id === firstAchievementId)
+    assert.exists(firstAchievement)
+    const details = firstAchievement.achievementDetails
+    const updatedDetail = details.find((a) => a.id === firstAchievementDetailId)
     assert.exists(updatedDetail)
     assert.equal(updatedDetail.name, 'Image de la planète')
     assert.equal(updatedDetail.caption, 'Image de la planète à conquérir')
@@ -729,10 +765,10 @@ test.group('Achievements Management', (group) => {
         '/update-achievement/' +
           fakeStudent.studentProfileId +
           '/details-order/' +
-          secondAchievementId
+          firstAchievementId
       )
       .header('Cookie', fakeStudent.tokenCookie)
-      .json({ details: reorderedDetails })
+      .json({ achievement_details: reorderedDetails })
     response.assertStatus(204)
   })
 
@@ -764,18 +800,18 @@ test.group('Achievements Management', (group) => {
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     const achievements = response.body().achievements
-    const firstAchievement = achievements.find((a) => a.id === secondAchievementId)
+    const firstAchievement = achievements.find((a) => a.id === firstAchievementId)
     if (firstAchievement) {
-      const details = firstAchievement.details
-      const firstDetail = details.find((d) => d.id === secondAchievementDetailId)
-      const secondDetail = details.find((d) => d.id === firstAchievementDetailId)
-      const thirdDetail = details.find((d) => d.id === fourthAchievementDetailId)
-      const fourthDetail = details.find((d) => d.id === thirdAchievementDetailId)
+      const details = firstAchievement.achievementDetails
+      const firstDetail = details.find((a) => a.id === firstAchievementDetailId)
+      const secondDetail = details.find((a) => a.id === secondAchievementDetailId)
+      const thirdDetail = details.find((a) => a.id === thirdAchievementDetailId)
+      const fourthDetail = details.find((a) => a.id === fourthAchievementDetailId)
       if (firstDetail && secondDetail && thirdDetail && fourthDetail) {
-        assert.equal(firstDetail.detail_order, 1)
-        assert.equal(secondDetail.detail_order, 2)
-        assert.equal(thirdDetail.detail_order, 3)
-        assert.equal(fourthDetail.detail_order, 4)
+        assert.equal(firstDetail.detail_order, 2)
+        assert.equal(secondDetail.detail_order, 1)
+        assert.equal(thirdDetail.detail_order, 4)
+        assert.equal(fourthDetail.detail_order, 3)
       } else {
         assert.fail('Details not found')
       }
@@ -786,49 +822,72 @@ test.group('Achievements Management', (group) => {
 
   test('Delete an achievement detail by a client', async ({ client }) => {
     const response = await client
-      .delete('/delete-achievement-detail/' + secondAchievementDetailId)
+      .delete(
+        '/delete-achievement-detail/' +
+          secondAchievementDetailId +
+          '/by-student/' +
+          fakeStudent.studentProfileId
+      )
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(401)
   })
 
   test('Delete an achievement detail by an other student', async ({ client }) => {
     const response = await client
-      .delete('/delete-achievement-detail/' + secondAchievementDetailId)
+      .delete(
+        '/delete-achievement-detail/' +
+          secondAchievementDetailId +
+          '/by-student/' +
+          fakeStudent.studentProfileId
+      )
       .header('Cookie', secondFakeStudent.tokenCookie)
     response.assertStatus(401)
   })
 
   test('Delete an achievement detail by the student himself', async ({ client }) => {
     const response = await client
-      .delete('/delete-achievement-detail/' + secondAchievementDetailId)
+      .delete(
+        '/delete-achievement-detail/' +
+          secondAchievementDetailId +
+          '/by-student/' +
+          fakeStudent.studentProfileId
+      )
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(204)
   })
 
   test('Delete an achievement by a client', async ({ client }) => {
     const response = await client
-      .delete('/delete-achievement/' + firstAchievementId)
+      .delete(
+        '/delete-achievement/' + firstAchievementId + '/by-student/' + fakeStudent.studentProfileId
+      )
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(401)
   })
 
   test('Delete an achievement by an other student', async ({ client }) => {
     const response = await client
-      .delete('/delete-achievement/' + firstAchievementId)
+      .delete(
+        '/delete-achievement/' + firstAchievementId + '/by-student/' + fakeStudent.studentProfileId
+      )
       .header('Cookie', secondFakeStudent.tokenCookie)
     response.assertStatus(401)
   })
 
   test('Delete an achievement by the student himself', async ({ client }) => {
     const response = await client
-      .delete('/delete-achievement/' + firstAchievementId)
+      .delete(
+        '/delete-achievement/' + firstAchievementId + '/by-student/' + fakeStudent.studentProfileId
+      )
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(204)
   })
 
   test('Delete the second achievement by the student himself', async ({ client }) => {
     const response = await client
-      .delete('/delete-achievement/' + secondAchievementId)
+      .delete(
+        '/delete-achievement/' + secondAchievementId + '/by-student/' + fakeStudent.studentProfileId
+      )
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(204)
   })

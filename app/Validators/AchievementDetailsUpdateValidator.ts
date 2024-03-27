@@ -6,7 +6,6 @@ export default class AchievementDetailsUpdateValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
-    achievement_id: schema.number(),
     type: schema.string.optional(),
     value: schema.string.optional(),
     name: schema.string.optional(),
@@ -22,7 +21,7 @@ export default class AchievementDetailsUpdateValidator {
   })
 
   public messages: CustomMessages = {
-    'achievement_id.required': "L'identifiant de la réalisation est requis",
+    'achievementId.required': "L'identifiant de la réalisation est requis",
     'file.file.size':
       'La taille du fichier ne doit pas dépasser ' + Config.get('custom.MAX_MEDIA_FILE_SIZE'),
     'file.file.extname':

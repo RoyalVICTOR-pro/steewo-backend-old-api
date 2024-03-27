@@ -15,6 +15,9 @@ export default class IsStudentProfileOwner {
         return response.unauthorized({ message: 'You can only access your own profile.' })
       }
     }
+    if (!params.user_id && !params.student_profile_id) {
+      return response.unauthorized({ message: 'You can only access your own profile.' })
+    }
     await next()
   }
 }

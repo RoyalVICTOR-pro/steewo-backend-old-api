@@ -7,7 +7,7 @@ export default class AchievementDetail extends BaseModel {
   public id: number
 
   @column()
-  public achievement_id: number
+  public achievementId: number
 
   @column()
   public type: string | null
@@ -34,7 +34,7 @@ export default class AchievementDetail extends BaseModel {
   public updatedAt: DateTime
 
   @belongsTo(() => Achievement, {
-    foreignKey: 'achievement_id',
+    foreignKey: 'achievementId',
   })
   public achievement: BelongsTo<typeof Achievement>
 }
