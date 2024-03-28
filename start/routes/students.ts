@@ -1,4 +1,5 @@
 import Route from '@ioc:Adonis/Core/Route'
+import Role from '@Enums/Roles'
 
 Route.group(() => {
   // STUDENT PROFILE CREATION
@@ -9,11 +10,11 @@ Route.group(() => {
   // GET STUDENT PROFILE
   Route.get('/student/get-public-profile/:user_id', 'StudentsController.getStudentPublicProfile')
     .as('getStudentPublicProfile')
-    .middleware('auth')
+    .middleware(['auth', 'isValidEmail'])
 
   Route.get('/student/get-private-profile/:user_id', 'StudentsController.getStudentPrivateProfile')
     .as('getStudentPrivateProfile')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   // STUDENT PROFILE UPDATE
   Route.patch(
@@ -21,47 +22,47 @@ Route.group(() => {
     'StudentsController.updateStudentProfileMainInfo'
   )
     .as('updateStudentProfileMainInfo')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   Route.patch(
     '/student/update-profile/:user_id/photo',
     'StudentsController.updateStudentProfilePhoto'
   )
     .as('updateStudentProfilePhoto')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   Route.patch(
     '/student/update-profile/:user_id/banner',
     'StudentsController.updateStudentProfileBanner'
   )
     .as('updateStudentProfileBanner')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   Route.delete(
     '/student/delete-profile-photo/:student_profile_id',
     'StudentsController.deleteStudentProfilePhoto'
   )
     .as('deleteStudentProfilePhoto')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   Route.delete(
     '/student/delete-profile-banner/:student_profile_id',
     'StudentsController.deleteStudentProfileBanner'
   )
     .as('deleteStudentProfileBanner')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   Route.patch(
     '/student/update-profile/:user_id/description',
     'StudentsController.updateStudentProfileDescription'
   )
     .as('updateStudentProfileDescription')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   // STUDENT CHARTER
   Route.patch('/student/accept-charter/:user_id', 'StudentsController.acceptStudentCharter')
     .as('acceptStudentCharter')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   // STUDENT VIEWS
   Route.get(
@@ -69,14 +70,14 @@ Route.group(() => {
     'StudentsController.getStudentViewsCount'
   )
     .as('getStudentViewsCount')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   Route.get(
     '/add-view-to-student-profile/:student_profile_id/from/:client_profile_id',
     'StudentsController.addViewToStudentProfile'
   )
     .as('addViewToStudentProfile')
-    .middleware('auth')
+    .middleware(['auth', 'isValidEmail'])
 
   // STUDENT BOOKMARKS
   Route.get(
@@ -84,21 +85,21 @@ Route.group(() => {
     'StudentsController.getStudentBookmarksCount'
   )
     .as('getStudentBookmarksCount')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   Route.get(
     '/toggle-student-profile-bookmark/:student_profile_id/from/:client_profile_id',
     'StudentsController.toggleStudentProfileBookmark'
   )
     .as('bookmarkStudentProfile')
-    .middleware('auth')
+    .middleware(['auth', 'isValidEmail'])
 
   Route.get(
     '/is-student-profile-bookmarked/:student_profile_id/from/:client_profile_id',
     'StudentsController.isStudentProfileBookmarked'
   )
     .as('isStudentProfileBookmarked')
-    .middleware('auth')
+    .middleware(['auth', 'isValidEmail'])
 
   // STUDENT PROFESSIONS
   Route.post(
@@ -106,7 +107,7 @@ Route.group(() => {
     'StudentsController.addProfessionsToStudentProfile'
   )
     .as('addProfessionsToStudentProfile')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   Route.get(
     '/student/get-public-professions/:student_profile_id',
@@ -120,7 +121,7 @@ Route.group(() => {
     'StudentsController.getStudentPrivateProfessions'
   )
     .as('getStudentPrivateProfessions')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   // STUDENT SERVICES
   Route.post(
@@ -128,7 +129,7 @@ Route.group(() => {
     'StudentsController.addServicesToStudentProfile'
   )
     .as('addServicesToStudentProfile')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   Route.get('/student/get-services/:student_profile_id', 'StudentsController.getStudentServices')
     .as('getStudentServices')
@@ -140,54 +141,69 @@ Route.group(() => {
     'StudentsController.addAchievementsToStudentProfile'
   )
     .as('addAchievementsToStudentProfile')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   Route.post(
     '/student/add-achievement-details-to-achievement/:achievement_id/by-student/:student_profile_id',
     'StudentsController.addAchievementDetailsToAchievement'
   )
     .as('addAchievementDetailsToAchievement')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   Route.patch(
     '/student/update-achievement/:achievement_id/by-student/:student_profile_id',
     'StudentsController.updateAchievement'
   )
     .as('updateAchievement')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   Route.patch(
     '/student/update-achievement-detail/:achievement_detail_id/by-student/:student_profile_id',
     'StudentsController.updateAchievementDetail'
   )
     .as('updateAchievementDetail')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   Route.patch(
     '/student/update-achievements/:student_profile_id/order/:service_id',
     'StudentsController.updateAchievementsOrder'
   )
     .as('updateAchievementsOrder')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   Route.patch(
     '/student/update-achievement/:student_profile_id/details-order/:achievement_id',
     'StudentsController.updateAchievementDetailsOrder'
   )
     .as('updateAchievementDetailsOrder')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   Route.delete(
     '/student/delete-achievement/:achievement_id/by-student/:student_profile_id',
     'StudentsController.deleteAchievement'
   )
     .as('deleteAchievement')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   Route.delete(
     '/student/delete-achievement-detail/:achievement_detail_id/by-student/:student_profile_id',
     'StudentsController.deleteAchievementDetail'
   )
     .as('deleteAchievementDetail')
-    .middleware(['auth', 'isStudentProfileOwner'])
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
+
+  Route.patch(
+    '/student/ask-profile-validation/:student_profile_id',
+    'StudentsController.askProfileValidation'
+  )
+    .as('askProfileValidation')
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
+
+  Route.patch('/student/validate-profile/:student_profile_id', 'StudentsController.validateProfile')
+    .as('validateProfile')
+    .middleware(['auth', `role:${[Role.ADMIN]}`])
+
+  Route.get('/student/get-validation-requests', 'StudentsController.getValidationRequests')
+    .as('getValidationRequests')
+    .middleware(['auth', `role:${[Role.ADMIN]}`])
 }).prefix('/v1')
