@@ -21,7 +21,7 @@ test.group('Individual Client Profile Creation Process', (group) => {
   })
   test('Register individual client without user id', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-individual-client')
+      .post('/client/register-individual')
       .send({
         user_id: '',
         role: Role.CLIENT_INDIVIDUAL,
@@ -43,7 +43,7 @@ test.group('Individual Client Profile Creation Process', (group) => {
   })
   test('Register individual client without firstname', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-individual-client')
+      .post('/client/register-individual')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_INDIVIDUAL,
@@ -65,7 +65,7 @@ test.group('Individual Client Profile Creation Process', (group) => {
   })
   test('Register individual client without lastname', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-individual-client')
+      .post('/client/register-individual')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_INDIVIDUAL,
@@ -87,7 +87,7 @@ test.group('Individual Client Profile Creation Process', (group) => {
   })
   test('Register individual client without date_of_birth', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-individual-client')
+      .post('/client/register-individual')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_INDIVIDUAL,
@@ -109,7 +109,7 @@ test.group('Individual Client Profile Creation Process', (group) => {
   })
   test('Register individual client with wrong format date_of_birth', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-individual-client')
+      .post('/client/register-individual')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_INDIVIDUAL,
@@ -131,7 +131,7 @@ test.group('Individual Client Profile Creation Process', (group) => {
   })
   test('Register individual client without address number', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-individual-client')
+      .post('/client/register-individual')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_INDIVIDUAL,
@@ -153,7 +153,7 @@ test.group('Individual Client Profile Creation Process', (group) => {
   })
   test('Register individual client without address road', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-individual-client')
+      .post('/client/register-individual')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_INDIVIDUAL,
@@ -175,7 +175,7 @@ test.group('Individual Client Profile Creation Process', (group) => {
   })
   test('Register individual client without address city', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-individual-client')
+      .post('/client/register-individual')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_INDIVIDUAL,
@@ -197,7 +197,7 @@ test.group('Individual Client Profile Creation Process', (group) => {
   })
   test('Register individual client without address postal code', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-individual-client')
+      .post('/client/register-individual')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_INDIVIDUAL,
@@ -219,7 +219,7 @@ test.group('Individual Client Profile Creation Process', (group) => {
   })
   test('Register individual client without CGV Acceptation', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-individual-client')
+      .post('/client/register-individual')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_INDIVIDUAL,
@@ -241,7 +241,7 @@ test.group('Individual Client Profile Creation Process', (group) => {
   })
   test('Register individual client without Privacy Policy Acceptation', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-individual-client')
+      .post('/client/register-individual')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_INDIVIDUAL,
@@ -263,7 +263,7 @@ test.group('Individual Client Profile Creation Process', (group) => {
   })
   test('Register individual client with valid data', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-individual-client')
+      .post('/client/register-individual')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_INDIVIDUAL,

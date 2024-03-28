@@ -59,14 +59,14 @@ test.group('Student Profile Completion Process', (group) => {
 
   test('Get Student Public Profile by a client before profile registration', async ({ client }) => {
     const response = await client
-      .get('/get-student-public-profile/' + fakeStudent.userId)
+      .get('/student/get-public-profile/' + fakeStudent.userId)
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(404)
   })
 
   test('Register student with valid data', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-student')
+      .post('/student/register')
       .send({
         user_id: fakeStudent.userId,
         role: Role.STUDENT,
@@ -89,14 +89,14 @@ test.group('Student Profile Completion Process', (group) => {
   })
 
   test('Get Student Public Profile by an unauthenticated user', async ({ client }) => {
-    const response = await client.get('/get-student-public-profile/' + fakeStudent.userId)
+    const response = await client.get('/student/get-public-profile/' + fakeStudent.userId)
     response.assertStatus(401)
   })
   test('Get Student Public Profile by a client before getting validated by Steewo', async ({
     client,
   }) => {
     const response = await client
-      .get('/get-student-public-profile/' + fakeStudent.userId)
+      .get('/student/get-public-profile/' + fakeStudent.userId)
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(403)
   })
@@ -106,7 +106,7 @@ test.group('Student Profile Completion Process', (group) => {
   }) => {
     await fakeStudent.validateStudentProfile()
     const response = await client
-      .get('/get-student-public-profile/' + fakeStudent.userId)
+      .get('/student/get-public-profile/' + fakeStudent.userId)
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains({
@@ -121,20 +121,20 @@ test.group('Student Profile Completion Process', (group) => {
   })
   test('Get Student Private Profile by a client', async ({ client }) => {
     const response = await client
-      .get('/get-student-private-profile/' + fakeStudent.userId)
+      .get('/student/get-private-profile/' + fakeStudent.userId)
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(401)
   })
   test('Get Student Private Profile by an other student', async ({ client }) => {
     const response = await client
-      .get('/get-student-private-profile/' + fakeStudent.userId)
+      .get('/student/get-private-profile/' + fakeStudent.userId)
       .header('Cookie', secondFakeStudent.tokenCookie)
     response.assertStatus(401)
   })
 
   test('Get Student Private Profile by the student himself', async ({ client }) => {
     const response = await client
-      .get('/get-student-private-profile/' + fakeStudent.userId)
+      .get('/student/get-private-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains({
@@ -150,7 +150,7 @@ test.group('Student Profile Completion Process', (group) => {
 
   test('Update Student Profile Main Info by a client', async ({ client }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/main')
       .header('Cookie', fakeClient.tokenCookie)
       .fields({
         firstname: 'John',
@@ -165,7 +165,7 @@ test.group('Student Profile Completion Process', (group) => {
   })
   test('Update Student Profile Main Info by an other student', async ({ client }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/main')
       .header('Cookie', secondFakeStudent.tokenCookie)
       .fields({
         firstname: 'John',
@@ -183,7 +183,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/main')
       .header('Cookie', fakeStudent.tokenCookie)
       .fields({
         address_city: 'Paris',
@@ -210,7 +210,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/main')
       .header('Cookie', fakeStudent.tokenCookie)
       .fields({
         current_diploma: '',
@@ -227,7 +227,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/main')
       .header('Cookie', fakeStudent.tokenCookie)
       .fields({
         current_diploma: 'Directeur graphique',
@@ -244,7 +244,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/main')
       .header('Cookie', fakeStudent.tokenCookie)
       .fields({
         current_diploma: 'Directeur graphique',
@@ -261,7 +261,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/main')
       .header('Cookie', fakeStudent.tokenCookie)
       .fields({
         current_diploma: 'Directeur graphique',
@@ -277,7 +277,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/main')
       .header('Cookie', fakeStudent.tokenCookie)
       .fields({
         current_diploma: 'Directeur graphique',
@@ -294,7 +294,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/main')
       .header('Cookie', fakeStudent.tokenCookie)
       .fields({
         current_diploma: 'Directeur graphique',
@@ -311,7 +311,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/main')
       .header('Cookie', fakeStudent.tokenCookie)
       .fields({
         current_diploma: 'Directeur graphique',
@@ -328,7 +328,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/main')
       .header('Cookie', fakeStudent.tokenCookie)
       .fields({
         current_diploma: 'Directeur graphique',
@@ -346,7 +346,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/main')
       .header('Cookie', fakeStudent.tokenCookie)
       .fields({
         current_diploma: 'Directeur graphique',
@@ -363,7 +363,7 @@ test.group('Student Profile Completion Process', (group) => {
 
   test('Check Student Profile after update', async ({ client }) => {
     const response = await client
-      .get('/get-student-private-profile/' + fakeStudent.userId)
+      .get('/student/get-private-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains({
@@ -382,7 +382,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/main')
       .header('Cookie', fakeStudent.tokenCookie)
       .file('school_certificate_file', student1SchoolCertificateGoodFilePath)
       .file('company_exists_proof_file', student1CompanyProofGoodFilePath)
@@ -412,7 +412,7 @@ test.group('Student Profile Completion Process', (group) => {
 
   test('Check Student Profile after update', async ({ client }) => {
     const response = await client
-      .get('/get-student-private-profile/' + fakeStudent.userId)
+      .get('/student/get-private-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains({
@@ -442,7 +442,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/main')
       .header('Cookie', fakeStudent.tokenCookie)
       .file('school_certificate_file', student1SchoolCertificateWrongFileTypePath)
       .fields({
@@ -460,7 +460,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/main')
       .header('Cookie', fakeStudent.tokenCookie)
       .file('school_certificate_file', student1CompanyProofWrongFileTypePath)
       .fields({
@@ -478,7 +478,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/main')
       .header('Cookie', fakeStudent.tokenCookie)
       .file('school_certificate_file', student1SchoolCertificateTooBigFilePath)
       .fields({
@@ -496,7 +496,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/main')
       .header('Cookie', fakeStudent.tokenCookie)
       .file('school_certificate_file', student1CompanyProofTooBigFilePath)
       .fields({
@@ -513,14 +513,14 @@ test.group('Student Profile Completion Process', (group) => {
 
   test('Update Student Profile Photo by a client', async ({ client }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/photo')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/photo')
       .header('Cookie', fakeClient.tokenCookie)
       .file('photo_file', student1PhotoGoodFilePath)
     response.assertStatus(401)
   })
   test('Update Student Profile Photo by an other student', async ({ client }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/main')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/main')
       .header('Cookie', secondFakeStudent.tokenCookie)
       .file('photo_file', student1PhotoGoodFilePath)
     response.assertStatus(401)
@@ -530,7 +530,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/photo')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/photo')
       .header('Cookie', fakeStudent.tokenCookie)
       .file('photo_file', student1PhotoWrongFileTypePath)
     response.assertStatus(422)
@@ -540,7 +540,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/photo')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/photo')
       .header('Cookie', fakeStudent.tokenCookie)
       .file('photo_file', student1PhotoTooBigFilePath)
     response.assertStatus(422)
@@ -550,7 +550,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/photo')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/photo')
       .header('Cookie', fakeStudent.tokenCookie)
       .file('photo_file', student1PhotoGoodFilePath)
     response.assertStatus(200)
@@ -559,7 +559,7 @@ test.group('Student Profile Completion Process', (group) => {
 
   test('Check Student Profile after update', async ({ client }) => {
     const response = await client
-      .get('/get-student-private-profile/' + fakeStudent.userId)
+      .get('/student/get-private-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains({
@@ -569,7 +569,7 @@ test.group('Student Profile Completion Process', (group) => {
 
   test('Update Student Profile Banner by a client', async ({ client }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/banner')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/banner')
       .header('Cookie', fakeClient.tokenCookie)
       .file('banner_file', student1BannerGoodFilePath)
     response.assertStatus(401)
@@ -577,7 +577,7 @@ test.group('Student Profile Completion Process', (group) => {
 
   test('Update Student Profile Banner by an other student', async ({ client }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/banner')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/banner')
       .header('Cookie', secondFakeStudent.tokenCookie)
       .file('banner_file', student1BannerGoodFilePath)
     response.assertStatus(401)
@@ -587,7 +587,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/banner')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/banner')
       .header('Cookie', fakeStudent.tokenCookie)
       .file('banner_file', student1BannerWrongFileTypePath)
     response.assertStatus(422)
@@ -597,7 +597,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/banner')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/banner')
       .header('Cookie', fakeStudent.tokenCookie)
       .file('banner_file', student1BannerTooBigFilePath)
     response.assertStatus(422)
@@ -607,7 +607,7 @@ test.group('Student Profile Completion Process', (group) => {
     client,
   }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/banner')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/banner')
       .header('Cookie', fakeStudent.tokenCookie)
       .file('banner_file', student1BannerGoodFilePath)
     response.assertStatus(200)
@@ -616,7 +616,7 @@ test.group('Student Profile Completion Process', (group) => {
 
   test('Check Student Profile after update', async ({ client }) => {
     const response = await client
-      .get('/get-student-private-profile/' + fakeStudent.userId)
+      .get('/student/get-private-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains({
@@ -626,28 +626,28 @@ test.group('Student Profile Completion Process', (group) => {
 
   test('Delete Student Profile Photo by a client', async ({ client }) => {
     const response = await client
-      .delete('/delete-student-profile-photo/' + fakeStudent.studentProfileId)
+      .delete('/student/delete-profile-photo/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(401)
   })
 
   test('Delete Student Profile Photo by an other student', async ({ client }) => {
     const response = await client
-      .delete('/delete-student-profile-photo/' + fakeStudent.studentProfileId)
+      .delete('/student/delete-profile-photo/' + fakeStudent.studentProfileId)
       .header('Cookie', secondFakeStudent.tokenCookie)
     response.assertStatus(401)
   })
 
   test('Delete Student Profile Photo by the student himself', async ({ client }) => {
     const response = await client
-      .delete('/delete-student-profile-photo/' + fakeStudent.studentProfileId)
+      .delete('/student/delete-profile-photo/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(204)
   })
 
   test('Check Student Profile after update', async ({ client }) => {
     const response = await client
-      .get('/get-student-private-profile/' + fakeStudent.userId)
+      .get('/student/get-private-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains({
@@ -657,28 +657,28 @@ test.group('Student Profile Completion Process', (group) => {
 
   test('Delete Student Profile Banner by a client', async ({ client }) => {
     const response = await client
-      .delete('/delete-student-profile-banner/' + fakeStudent.studentProfileId)
+      .delete('/student/delete-profile-banner/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(401)
   })
 
   test('Delete Student Profile Banner by an other student', async ({ client }) => {
     const response = await client
-      .delete('/delete-student-profile-banner/' + fakeStudent.studentProfileId)
+      .delete('/student/delete-profile-banner/' + fakeStudent.studentProfileId)
       .header('Cookie', secondFakeStudent.tokenCookie)
     response.assertStatus(401)
   })
 
   test('Delete Student Profile Banner by the student himself', async ({ client }) => {
     const response = await client
-      .delete('/delete-student-profile-banner/' + fakeStudent.studentProfileId)
+      .delete('/student/delete-profile-banner/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(204)
   })
 
   test('Check Student Profile after update', async ({ client }) => {
     const response = await client
-      .get('/get-student-private-profile/' + fakeStudent.userId)
+      .get('/student/get-private-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains({
@@ -688,7 +688,7 @@ test.group('Student Profile Completion Process', (group) => {
 
   test('Update Student Profile Description by a client', async ({ client }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/description')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/description')
       .header('Cookie', fakeClient.tokenCookie)
       .fields({
         description: 'I am a student',
@@ -698,7 +698,7 @@ test.group('Student Profile Completion Process', (group) => {
 
   test('Update Student Profile Description by an other student', async ({ client }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/description')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/description')
       .header('Cookie', secondFakeStudent.tokenCookie)
       .fields({
         description: 'I am a student',
@@ -708,7 +708,7 @@ test.group('Student Profile Completion Process', (group) => {
 
   test('Update Student Profile Description by the student himself', async ({ client }) => {
     const response = await client
-      .patch('/update-student-profile/' + fakeStudent.userId + '/description')
+      .patch('/student/update-profile/' + fakeStudent.userId + '/description')
       .header('Cookie', fakeStudent.tokenCookie)
       .fields({
         description: 'I am a student',
@@ -718,7 +718,7 @@ test.group('Student Profile Completion Process', (group) => {
 
   test('Check Student Profile after update', async ({ client }) => {
     const response = await client
-      .get('/get-student-private-profile/' + fakeStudent.userId)
+      .get('/student/get-private-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains({

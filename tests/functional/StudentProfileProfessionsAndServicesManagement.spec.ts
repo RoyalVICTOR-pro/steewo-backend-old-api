@@ -61,7 +61,7 @@ test.group('Student Profile Professions and Services Management', (group) => {
 
   test('Register student with valid data', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-student')
+      .post('/student/register')
       .send({
         user_id: fakeStudent.userId,
         role: Role.STUDENT,
@@ -189,7 +189,7 @@ test.group('Student Profile Professions and Services Management', (group) => {
 
   test('Add Professions to Student Profile by a client', async ({ client }) => {
     const response = await client
-      .post('/add-professions-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-professions-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeClient.tokenCookie)
       .fields({
         choosen_professions: [firstProfessionId, secondProfessionId],
@@ -199,7 +199,7 @@ test.group('Student Profile Professions and Services Management', (group) => {
 
   test('Add Professions to Student Profile by an other student', async ({ client }) => {
     const response = await client
-      .post('/add-professions-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-professions-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', secondFakeStudent.tokenCookie)
       .fields({
         choosen_professions: [firstProfessionId, secondProfessionId],
@@ -209,7 +209,7 @@ test.group('Student Profile Professions and Services Management', (group) => {
 
   test('Add Professions to Student Profile by the student himself', async ({ client }) => {
     const response = await client
-      .post('/add-professions-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-professions-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
       .fields({
         choosen_professions: [firstProfessionId, secondProfessionId],
@@ -219,7 +219,7 @@ test.group('Student Profile Professions and Services Management', (group) => {
 
   test('Get Student Public Professions', async ({ client }) => {
     const response = await client
-      .get('/get-student-public-professions/' + fakeStudent.studentProfileId)
+      .get('/student/get-public-professions/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains([])
@@ -227,21 +227,21 @@ test.group('Student Profile Professions and Services Management', (group) => {
 
   test('Get Student Private Professions by a client', async ({ client }) => {
     const response = await client
-      .get('/get-student-private-professions/' + fakeStudent.studentProfileId)
+      .get('/student/get-private-professions/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(401)
   })
 
   test('Get Student Private Professions by an other student', async ({ client }) => {
     const response = await client
-      .get('/get-student-private-professions/' + fakeStudent.studentProfileId)
+      .get('/student/get-private-professions/' + fakeStudent.studentProfileId)
       .header('Cookie', secondFakeStudent.tokenCookie)
     response.assertStatus(401)
   })
 
   test('Get Student Private Professions by the student himself', async ({ client }) => {
     const response = await client
-      .get('/get-student-private-professions/' + fakeStudent.studentProfileId)
+      .get('/student/get-private-professions/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains([{ name: 'Graphiste' }, { name: 'Développeur' }])
@@ -249,7 +249,7 @@ test.group('Student Profile Professions and Services Management', (group) => {
 
   test('Add Services to Student Profile by a client', async ({ client }) => {
     const response = await client
-      .post('/add-services-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-services-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeClient.tokenCookie)
       .fields({
         choosen_services: [
@@ -263,7 +263,7 @@ test.group('Student Profile Professions and Services Management', (group) => {
 
   test('Add Services to Student Profile by an other student', async ({ client }) => {
     const response = await client
-      .post('/add-services-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-services-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', secondFakeStudent.tokenCookie)
       .fields({
         choosen_services: [
@@ -277,7 +277,7 @@ test.group('Student Profile Professions and Services Management', (group) => {
 
   test('Add Services to Student Profile by the student himself', async ({ client }) => {
     const response = await client
-      .post('/add-services-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-services-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
       .fields({
         choosen_services: [
@@ -299,7 +299,7 @@ test.group('Student Profile Professions and Services Management', (group) => {
       .update({ profession_has_been_accepted: true })
 
     const response = await client
-      .get('/get-student-public-professions/' + fakeStudent.studentProfileId)
+      .get('/student/get-public-professions/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains([{ name: 'Graphiste' }])
@@ -308,21 +308,21 @@ test.group('Student Profile Professions and Services Management', (group) => {
 
   test('Get Student Services by the client', async ({ client }) => {
     const response = await client
-      .get('/get-student-services/' + fakeStudent.studentProfileId)
+      .get('/student/get-services/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(200)
   })
 
   test('Get Student Services by an other student', async ({ client }) => {
     const response = await client
-      .get('/get-student-services/' + fakeStudent.studentProfileId)
+      .get('/student/get-services/' + fakeStudent.studentProfileId)
       .header('Cookie', secondFakeStudent.tokenCookie)
     response.assertStatus(200)
   })
 
   test('Get Student Services by the student himself', async ({ client, assert }) => {
     const response = await client
-      .get('/get-student-services/' + fakeStudent.studentProfileId)
+      .get('/student/get-services/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     let found = false
@@ -361,7 +361,7 @@ test.group('Student Profile Professions and Services Management', (group) => {
       .update({ profession_has_been_accepted: true })
 
     const response = await client
-      .get('/get-student-public-professions/' + fakeStudent.studentProfileId)
+      .get('/student/get-public-professions/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(200)
     response.assertBodyContains([{ name: 'Graphiste' }, { name: 'Développeur' }])
@@ -369,7 +369,7 @@ test.group('Student Profile Professions and Services Management', (group) => {
 
   test('Get Student Services by the student himself', async ({ client, assert }) => {
     const response = await client
-      .get('/get-student-services/' + fakeStudent.studentProfileId)
+      .get('/student/get-services/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     let found = false

@@ -21,7 +21,7 @@ test.group('Professional Client Profile Creation Process', (group) => {
   })
   test('Register professional client without user id', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-professional-client')
+      .post('/client/register-professional')
       .send({
         user_id: '',
         role: Role.CLIENT_PROFESSIONAL,
@@ -42,7 +42,7 @@ test.group('Professional Client Profile Creation Process', (group) => {
   })
   test('Register professional client without firstname', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-professional-client')
+      .post('/client/register-professional')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_PROFESSIONAL,
@@ -63,7 +63,7 @@ test.group('Professional Client Profile Creation Process', (group) => {
   })
   test('Register professional client without lastname', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-professional-client')
+      .post('/client/register-professional')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_PROFESSIONAL,
@@ -84,7 +84,7 @@ test.group('Professional Client Profile Creation Process', (group) => {
   })
   test('Register professional client without date_of_birth', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-professional-client')
+      .post('/client/register-professional')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_PROFESSIONAL,
@@ -105,7 +105,7 @@ test.group('Professional Client Profile Creation Process', (group) => {
   })
   test('Register professional client with wrong format date_of_birth', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-professional-client')
+      .post('/client/register-professional')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_PROFESSIONAL,
@@ -126,7 +126,7 @@ test.group('Professional Client Profile Creation Process', (group) => {
   })
   test('Register professional client without company name', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-professional-client')
+      .post('/client/register-professional')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_PROFESSIONAL,
@@ -147,7 +147,7 @@ test.group('Professional Client Profile Creation Process', (group) => {
   })
   test('Register professional client without position', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-professional-client')
+      .post('/client/register-professional')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_PROFESSIONAL,
@@ -168,7 +168,7 @@ test.group('Professional Client Profile Creation Process', (group) => {
   })
   test('Register professional client without siret number', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-professional-client')
+      .post('/client/register-professional')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_PROFESSIONAL,
@@ -189,7 +189,7 @@ test.group('Professional Client Profile Creation Process', (group) => {
   })
   test('Register professional client without CGV Acceptation', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-professional-client')
+      .post('/client/register-professional')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_PROFESSIONAL,
@@ -210,7 +210,7 @@ test.group('Professional Client Profile Creation Process', (group) => {
   })
   test('Register professional client without Privacy Policy Acceptation', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-professional-client')
+      .post('/client/register-professional')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_PROFESSIONAL,
@@ -231,7 +231,7 @@ test.group('Professional Client Profile Creation Process', (group) => {
   })
   test('Register professional client with valid data', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-professional-client')
+      .post('/client/register-professional')
       .send({
         user_id: fakeClient.userId,
         role: Role.CLIENT_PROFESSIONAL,

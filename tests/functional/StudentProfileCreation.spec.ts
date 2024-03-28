@@ -24,7 +24,7 @@ test.group('Student Profile Creation Process', (group) => {
   })
   test('Register student without user id', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-student')
+      .post('/student/register')
       .send({
         user_id: '',
         role: Role.STUDENT,
@@ -46,7 +46,7 @@ test.group('Student Profile Creation Process', (group) => {
   })
   test('Register student without firstname', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-student')
+      .post('/student/register')
       .send({
         user_id: fakeStudent.userId,
         role: Role.STUDENT,
@@ -68,7 +68,7 @@ test.group('Student Profile Creation Process', (group) => {
   })
   test('Register student without lastname', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-student')
+      .post('/student/register')
       .send({
         user_id: fakeStudent.userId,
         role: Role.STUDENT,
@@ -90,7 +90,7 @@ test.group('Student Profile Creation Process', (group) => {
   })
   test('Register student without date_of_birth', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-student')
+      .post('/student/register')
       .send({
         user_id: fakeStudent.userId,
         role: Role.STUDENT,
@@ -112,7 +112,7 @@ test.group('Student Profile Creation Process', (group) => {
   })
   test('Register student with wrong format date_of_birth', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-student')
+      .post('/student/register')
       .send({
         user_id: fakeStudent.userId,
         role: Role.STUDENT,
@@ -134,7 +134,7 @@ test.group('Student Profile Creation Process', (group) => {
   })
   test('Register student without current diploma', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-student')
+      .post('/student/register')
       .send({
         user_id: fakeStudent.userId,
         role: Role.STUDENT,
@@ -156,7 +156,7 @@ test.group('Student Profile Creation Process', (group) => {
   })
   test('Register student without current diploma school', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-student')
+      .post('/student/register')
       .send({
         user_id: fakeStudent.userId,
         role: Role.STUDENT,
@@ -178,7 +178,7 @@ test.group('Student Profile Creation Process', (group) => {
   })
   test('Register student without CGV Acceptation', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-student')
+      .post('/student/register')
       .send({
         user_id: fakeStudent.userId,
         role: Role.STUDENT,
@@ -200,7 +200,7 @@ test.group('Student Profile Creation Process', (group) => {
   })
   test('Register student without Privacy Policy Acceptation', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-student')
+      .post('/student/register')
       .send({
         user_id: fakeStudent.userId,
         role: Role.STUDENT,
@@ -222,7 +222,7 @@ test.group('Student Profile Creation Process', (group) => {
   })
   test('Register student with valid data', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-student')
+      .post('/student/register')
       .send({
         user_id: fakeStudent.userId,
         role: Role.STUDENT,

@@ -76,7 +76,7 @@ test.group('Achievements Management', (group) => {
 
   test('Register student with valid data', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
-      .post('/register-student')
+      .post('/student/register')
       .send({
         user_id: fakeStudent.userId,
         role: Role.STUDENT,
@@ -184,7 +184,7 @@ test.group('Achievements Management', (group) => {
 
   test('Add Professions to Student Profile by the student himself', async ({ client }) => {
     const response = await client
-      .post('/add-professions-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-professions-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
       .fields({
         choosen_professions: [firstProfessionId, secondProfessionId],
@@ -204,7 +204,7 @@ test.group('Achievements Management', (group) => {
 
   test('Add Services to Student Profile by the student himself', async ({ client }) => {
     const response = await client
-      .post('/add-services-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-services-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
       .fields({
         choosen_services: [
@@ -220,7 +220,7 @@ test.group('Achievements Management', (group) => {
     client,
   }) => {
     const response = await client
-      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-achievements-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
       .file('main_image_file', image1Path)
       .file('achievement_details', image2Path)
@@ -238,7 +238,7 @@ test.group('Achievements Management', (group) => {
     client,
   }) => {
     const response = await client
-      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-achievements-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
       .file('main_image_file', image1Path)
       .file('achievement_details', image2Path)
@@ -257,7 +257,7 @@ test.group('Achievements Management', (group) => {
     client,
   }) => {
     const response = await client
-      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-achievements-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
       .file('main_image_file', image1Path)
       .file('achievement_details', image2Path)
@@ -278,7 +278,7 @@ test.group('Achievements Management', (group) => {
     client,
   }) => {
     const response = await client
-      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-achievements-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
       .file('main_image_file', image1Path)
       .file('achievement_details', image2Path)
@@ -297,7 +297,7 @@ test.group('Achievements Management', (group) => {
     client,
   }) => {
     const response = await client
-      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-achievements-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
       .file('main_image_file', tooBigImagePath)
       .file('achievement_details', image2Path)
@@ -317,7 +317,7 @@ test.group('Achievements Management', (group) => {
     client,
   }) => {
     const response = await client
-      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-achievements-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
       .file('main_image_file', wrongExtensionImagePath)
       .file('achievement_details', image2Path)
@@ -337,7 +337,7 @@ test.group('Achievements Management', (group) => {
     client,
   }) => {
     const response = await client
-      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-achievements-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
       .file('main_image_file', image1Path)
       .file('achievement_details', tooBigDocumentPath)
@@ -357,7 +357,7 @@ test.group('Achievements Management', (group) => {
     client,
   }) => {
     const response = await client
-      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-achievements-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
       .file('main_image_file', image1Path)
       .file('achievement_details', wrongExtensionDocumentPath)
@@ -377,7 +377,7 @@ test.group('Achievements Management', (group) => {
     client,
   }) => {
     const response = await client
-      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-achievements-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
       .file('main_image_file', image1Path)
       .file('achievement_details', image2Path)
@@ -397,7 +397,7 @@ test.group('Achievements Management', (group) => {
     client,
   }) => {
     const response = await client
-      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-achievements-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
       .file('main_image_file', image1Path)
       .file('achievement_details', image2Path)
@@ -415,7 +415,7 @@ test.group('Achievements Management', (group) => {
 
   test('Add Achievement to Student Profile by a client', async ({ client }) => {
     const response = await client
-      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-achievements-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeClient.tokenCookie)
       .file('main_image_file', image1Path)
       .file('achievement_details', image2Path)
@@ -433,7 +433,7 @@ test.group('Achievements Management', (group) => {
 
   test('Add Achievement to Student Profile by an other student', async ({ client }) => {
     const response = await client
-      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-achievements-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', secondFakeStudent.tokenCookie)
       .file('main_image_file', image1Path)
       .file('achievement_details', image2Path)
@@ -451,7 +451,7 @@ test.group('Achievements Management', (group) => {
 
   test('Add Achievement to Student Profile by the student himself', async ({ client }) => {
     const response = await client
-      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-achievements-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
       .file('main_image_file', image1Path)
       .file('achievement_details', image2Path)
@@ -476,7 +476,7 @@ test.group('Achievements Management', (group) => {
 
   test('Add a second Achievement for the same student with 2 details', async ({ client }) => {
     const response = await client
-      .post('/add-achievements-to-student-profile/' + fakeStudent.studentProfileId)
+      .post('/student/add-achievements-to-profile/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
       .file('main_image_file', image1Path)
       .file('achievement_details', image2Path)
@@ -498,7 +498,7 @@ test.group('Achievements Management', (group) => {
   }) => {
     const response = await client
       .post(
-        '/add-achievement-details-to-achievement/' +
+        '/student/add-achievement-details-to-achievement/' +
           secondAchievementId +
           '/by-student/' +
           fakeStudent.studentProfileId
@@ -519,7 +519,7 @@ test.group('Achievements Management', (group) => {
   }) => {
     const response = await client
       .post(
-        '/add-achievement-details-to-achievement/' +
+        '/student/add-achievement-details-to-achievement/' +
           secondAchievementId +
           '/by-student/' +
           fakeStudent.studentProfileId
@@ -539,7 +539,7 @@ test.group('Achievements Management', (group) => {
     assert,
   }) => {
     const response = await client
-      .get('/get-student-public-profile/' + fakeStudent.userId)
+      .get('/student/get-public-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     const achievements = response.body().achievements
@@ -554,7 +554,7 @@ test.group('Achievements Management', (group) => {
     assert,
   }) => {
     const response = await client
-      .get('/get-student-public-profile/' + fakeStudent.userId)
+      .get('/student/get-public-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     const achievements = response.body().achievements
@@ -573,7 +573,10 @@ test.group('Achievements Management', (group) => {
   test('Update an achievement by a client', async ({ client }) => {
     const response = await client
       .patch(
-        '/update-achievement/' + secondAchievementId + '/by-student/' + fakeStudent.studentProfileId
+        '/student/update-achievement/' +
+          secondAchievementId +
+          '/by-student/' +
+          fakeStudent.studentProfileId
       )
       .header('Cookie', fakeClient.tokenCookie)
       .file('main_image_file', image2Path)
@@ -591,7 +594,10 @@ test.group('Achievements Management', (group) => {
   test('Update an achievement by an other student', async ({ client }) => {
     const response = await client
       .patch(
-        '/update-achievement/' + secondAchievementId + '/by-student/' + fakeStudent.studentProfileId
+        '/student/update-achievement/' +
+          secondAchievementId +
+          '/by-student/' +
+          fakeStudent.studentProfileId
       )
       .header('Cookie', secondFakeStudent.tokenCookie)
       .file('main_image_file', image2Path)
@@ -609,7 +615,10 @@ test.group('Achievements Management', (group) => {
   test('Update an achievement by the student himself', async ({ client }) => {
     const response = await client
       .patch(
-        '/update-achievement/' + secondAchievementId + '/by-student/' + fakeStudent.studentProfileId
+        '/student/update-achievement/' +
+          secondAchievementId +
+          '/by-student/' +
+          fakeStudent.studentProfileId
       )
       .header('Cookie', fakeStudent.tokenCookie)
       .file('main_image_file', image2Path)
@@ -629,7 +638,7 @@ test.group('Achievements Management', (group) => {
     assert,
   }) => {
     const response = await client
-      .get('/get-student-public-profile/' + fakeStudent.userId)
+      .get('/student/get-public-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     const achievements = response.body().achievements
@@ -651,7 +660,7 @@ test.group('Achievements Management', (group) => {
   test('Update an achievement detail by a client', async ({ client }) => {
     const response = await client
       .patch(
-        '/update-achievement-detail/' +
+        '/student/update-achievement-detail/' +
           secondAchievementId +
           '/by-student/' +
           fakeStudent.studentProfileId
@@ -669,7 +678,7 @@ test.group('Achievements Management', (group) => {
   test('Update an achievement detail by an other student', async ({ client }) => {
     const response = await client
       .patch(
-        '/update-achievement-detail/' +
+        '/student/update-achievement-detail/' +
           secondAchievementId +
           '/by-student/' +
           fakeStudent.studentProfileId
@@ -687,7 +696,7 @@ test.group('Achievements Management', (group) => {
   test('Update an achievement detail by the student himself', async ({ client }) => {
     const response = await client
       .patch(
-        '/update-achievement-detail/' +
+        '/student/update-achievement-detail/' +
           firstAchievementDetailId +
           '/by-student/' +
           fakeStudent.studentProfileId
@@ -707,7 +716,7 @@ test.group('Achievements Management', (group) => {
     assert,
   }) => {
     const response = await client
-      .get('/get-student-public-profile/' + fakeStudent.userId)
+      .get('/student/get-public-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     const achievements = response.body().achievements
@@ -730,7 +739,7 @@ test.group('Achievements Management', (group) => {
     ]
     const response = await client
       .patch(
-        '/update-achievements/' +
+        '/student/update-achievements/' +
           fakeStudent.studentProfileId +
           '/order/' +
           secondServiceOfFirstProfessionId
@@ -752,7 +761,7 @@ test.group('Achievements Management', (group) => {
     ]
     const response = await client
       .patch(
-        '/update-achievement/' +
+        '/student/update-achievement/' +
           fakeStudent.studentProfileId +
           '/details-order/' +
           firstAchievementId
@@ -767,7 +776,7 @@ test.group('Achievements Management', (group) => {
     assert,
   }) => {
     const response = await client
-      .get('/get-student-public-profile/' + fakeStudent.userId)
+      .get('/student/get-public-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     const achievements = response.body().achievements
@@ -786,7 +795,7 @@ test.group('Achievements Management', (group) => {
     assert,
   }) => {
     const response = await client
-      .get('/get-student-public-profile/' + fakeStudent.userId)
+      .get('/student/get-public-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     const achievements = response.body().achievements
@@ -817,7 +826,7 @@ test.group('Achievements Management', (group) => {
   test('Delete an achievement detail by a client', async ({ client }) => {
     const response = await client
       .delete(
-        '/delete-achievement-detail/' +
+        '/student/delete-achievement-detail/' +
           secondAchievementDetailId +
           '/by-student/' +
           fakeStudent.studentProfileId
@@ -829,7 +838,7 @@ test.group('Achievements Management', (group) => {
   test('Delete an achievement detail by an other student', async ({ client }) => {
     const response = await client
       .delete(
-        '/delete-achievement-detail/' +
+        '/student/delete-achievement-detail/' +
           secondAchievementDetailId +
           '/by-student/' +
           fakeStudent.studentProfileId
@@ -841,7 +850,7 @@ test.group('Achievements Management', (group) => {
   test('Delete an achievement detail by the student himself', async ({ client }) => {
     const response = await client
       .delete(
-        '/delete-achievement-detail/' +
+        '/student/delete-achievement-detail/' +
           secondAchievementDetailId +
           '/by-student/' +
           fakeStudent.studentProfileId
@@ -853,7 +862,10 @@ test.group('Achievements Management', (group) => {
   test('Delete an achievement by a client', async ({ client }) => {
     const response = await client
       .delete(
-        '/delete-achievement/' + firstAchievementId + '/by-student/' + fakeStudent.studentProfileId
+        '/student/delete-achievement/' +
+          firstAchievementId +
+          '/by-student/' +
+          fakeStudent.studentProfileId
       )
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(401)
@@ -862,7 +874,10 @@ test.group('Achievements Management', (group) => {
   test('Delete an achievement by an other student', async ({ client }) => {
     const response = await client
       .delete(
-        '/delete-achievement/' + firstAchievementId + '/by-student/' + fakeStudent.studentProfileId
+        '/student/delete-achievement/' +
+          firstAchievementId +
+          '/by-student/' +
+          fakeStudent.studentProfileId
       )
       .header('Cookie', secondFakeStudent.tokenCookie)
     response.assertStatus(401)
@@ -871,7 +886,10 @@ test.group('Achievements Management', (group) => {
   test('Delete an achievement by the student himself', async ({ client }) => {
     const response = await client
       .delete(
-        '/delete-achievement/' + firstAchievementId + '/by-student/' + fakeStudent.studentProfileId
+        '/student/delete-achievement/' +
+          firstAchievementId +
+          '/by-student/' +
+          fakeStudent.studentProfileId
       )
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(204)
@@ -880,7 +898,10 @@ test.group('Achievements Management', (group) => {
   test('Delete the second achievement by the student himself', async ({ client }) => {
     const response = await client
       .delete(
-        '/delete-achievement/' + secondAchievementId + '/by-student/' + fakeStudent.studentProfileId
+        '/student/delete-achievement/' +
+          secondAchievementId +
+          '/by-student/' +
+          fakeStudent.studentProfileId
       )
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(204)
@@ -891,7 +912,7 @@ test.group('Achievements Management', (group) => {
     assert,
   }) => {
     const response = await client
-      .get('/get-student-public-profile/' + fakeStudent.userId)
+      .get('/student/get-public-profile/' + fakeStudent.userId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     const achievements = response.body().achievements
