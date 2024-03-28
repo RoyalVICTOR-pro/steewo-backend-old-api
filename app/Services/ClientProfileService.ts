@@ -15,7 +15,7 @@ import ClientProfileServiceInterface from '@Services/Interfaces/ClientProfileSer
 import ClientProfileRepository from '@DALRepositories/ClientProfileRepository'
 import UserRepository from '@DALRepositories/UserRepository'
 // SERVICES
-import MailService from '@Services/MailService'
+import ClientMailService from '@Services/MailServices/ClientMailService'
 import UploadService from '@Services/UploadService'
 
 @inject()
@@ -49,7 +49,7 @@ export default class ClientProfileService implements ClientProfileServiceInterfa
       throw new Exception('Client profile already exists', 409, 'E_CONFLICT')
     }
 
-    await MailService.sendClientEmailVerificationMail(
+    await ClientMailService.sendClientEmailVerificationMail(
       user.email,
       user.email_validation_token,
       data.firstname

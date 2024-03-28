@@ -11,6 +11,8 @@ import StudentProfilePhotoUpdateDTO from '@DTO/StudentProfilePhotoUpdateDTO'
 import StudentProfileRepositoryInterface from '@DALInterfaces/StudentProfileRepositoryInterface'
 // MODELS
 import StudentProfile from '@Models/StudentProfile'
+import StudentUserStatus from '@Enums/StudentUserStatus'
+import User from '@Models/User'
 
 @inject()
 export default class StudentProfileRepository implements StudentProfileRepositoryInterface {
@@ -124,5 +126,49 @@ export default class StudentProfileRepository implements StudentProfileRepositor
       .where('student_profile_id', studentId)
       .count('* as total')
     return bookmarksCount[0].total
+  }
+
+  public async askProfileValidation(studentProfileId: number) {
+    const studentProfileUser = await User.query()
+      .join('student_profiles', 'users.id', 'student_profiles.user_id')
+      .where('student_profiles.id', studentProfileId)
+      .first()
+    if (!studentProfileUser) {
+      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
+    }
+    studentProfileUser.status = StudentUserStatus.ACCOUNT_VALIDATION_ASKED
+    await studentProfileUser.save()
+  }
+
+  public async validateProfile(studentProfileId: number) {
+    const studentProfileUser = await User.query()
+      .join('student_profiles', 'users.id', 'student_profiles.user_id')
+      .where('student_profiles.id', studentProfileId)
+      .first()
+    if (!studentProfileUser) {
+      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
+    }
+    studentProfileUser.status = StudentUserStatus.ACCOUNT_VALIDATED
+    await studentProfileUser.save()
+  }
+
+  public async getValidationRequests() {
+    const validationAskingStudentProfiles = await StudentProfile.query()
+      .preload('user')
+      .where('status', StudentUserStatus.ACCOUNT_VALIDATION_ASKED)
+      .orderBy('updated_at', 'desc')
+    return validationAskingStudentProfiles
+  }
+
+  public async rejectProfileValidation(studentProfileId: number) {
+    const studentProfileUser = await User.query()
+      .join('student_profiles', 'users.id', 'student_profiles.user_id')
+      .where('student_profiles.id', studentProfileId)
+      .first()
+    if (!studentProfileUser) {
+      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
+    }
+    studentProfileUser.status = StudentUserStatus.ACCOUNT_CREATED
+    await studentProfileUser.save()
   }
 }

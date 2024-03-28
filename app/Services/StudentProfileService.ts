@@ -31,7 +31,7 @@ import StudentProfileRepository from '@DALRepositories/StudentProfileRepository'
 import StudentProfileViewRepository from '@DALRepositories/StudentProfileViewRepository'
 import UserRepository from '@DALRepositories/UserRepository'
 // SERVICES
-import MailService from '@Services/MailService'
+import StudentMailService from '@Services/MailServices/StudentMailService'
 import UploadService from '@Services/UploadService'
 
 @inject()
@@ -76,7 +76,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
       throw new Exception('Student profile already exists', 409, 'E_CONFLICT')
     }
 
-    await MailService.sendStudentEmailVerificationMail(
+    await StudentMailService.sendStudentEmailVerificationMail(
       user.email,
       user.email_validation_token,
       data.firstname
@@ -565,5 +565,27 @@ export default class StudentProfileService implements StudentProfileServiceInter
     return await this.achievementRepository.updateAchievementDetailsOrder(
       reorderedAchievementDetails
     )
+  }
+
+  public async askProfileValidation(studentProfileId: number) {
+    // TODO : Send email to admin
+    return await this.studentProfileRepository.askProfileValidation(studentProfileId)
+  }
+
+  public async validateProfile(studentProfileId: number) {
+    // TODO : Send email to student
+    // TODO : Create a notification for the student
+    // TODO : Validate student's professions and services
+    return await this.studentProfileRepository.validateProfile(studentProfileId)
+  }
+
+  public async getValidationRequests() {
+    return await this.studentProfileRepository.getValidationRequests()
+  }
+
+  public async rejectProfileValidation(studentProfileId: number) {
+    // TODO : Send email to student with reason
+    // TODO : Create a notification for the student
+    return await this.studentProfileRepository.rejectProfileValidation(studentProfileId)
   }
 }

@@ -339,4 +339,24 @@ export default class StudentProfilesController {
     await this.studentProfileService.updateAchievementDetailsOrder(data.achievement_details)
     return response.status(204).send('Achievement details order updated')
   }
+
+  public async askProfileValidation({ params, response }: HttpContextContract) {
+    await this.studentProfileService.askProfileValidation(Number(params.student_profile_id))
+    return response.status(200).send('Profile validation asked') // 200 OK
+  }
+
+  public async validateProfile({ params, response }: HttpContextContract) {
+    await this.studentProfileService.validateProfile(Number(params.student_profile_id))
+    return response.status(200).send('Profile validated') // 200 OK
+  }
+
+  public async getValidationRequests({ response }: HttpContextContract) {
+    const validationRequests = await this.studentProfileService.getValidationRequests()
+    return response.ok(validationRequests) // 200 OK
+  }
+
+  public async rejectProfileValidation({ params, response }: HttpContextContract) {
+    await this.studentProfileService.rejectProfileValidation(Number(params.student_profile_id))
+    return response.status(200).send('Profile validation rejected') // 200 OK
+  }
 }

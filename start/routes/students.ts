@@ -192,6 +192,7 @@ Route.group(() => {
     .as('deleteAchievementDetail')
     .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
+  // STUDENT PROFILE VALIDATION
   Route.patch(
     '/student/ask-profile-validation/:student_profile_id',
     'StudentsController.askProfileValidation'
@@ -205,5 +206,12 @@ Route.group(() => {
 
   Route.get('/student/get-validation-requests', 'StudentsController.getValidationRequests')
     .as('getValidationRequests')
+    .middleware(['auth', `role:${[Role.ADMIN]}`])
+
+  Route.post(
+    '/student/reject-profile-validation/:student_profile_id',
+    'StudentsController.rejectProfileValidation'
+  )
+    .as('rejectProfileValidation')
     .middleware(['auth', `role:${[Role.ADMIN]}`])
 }).prefix('/v1')

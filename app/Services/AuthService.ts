@@ -22,7 +22,7 @@ import User from '@Models/User'
 import FailedLoginAttemptRepository from '@DALRepositories/FailedLoginAttemptRepository'
 import UserRepository from '@DALRepositories/UserRepository'
 // SERVICES
-import MailService from '@Services/MailService'
+import UserMailService from '@Services/MailServices/UserMailService'
 
 @inject()
 export default class AuthService implements AuthServiceInterface {
@@ -112,7 +112,7 @@ export default class AuthService implements AuthServiceInterface {
       password_reset_token_expiration_datetime: passwordResetTokenExpiration,
     }
 
-    await MailService.sendForgotPasswordMail(email, passwordResetToken)
+    await UserMailService.sendForgotPasswordMail(email, passwordResetToken)
 
     return this.userRepository.updateUserData(user, userDataToUpdate)
   }
