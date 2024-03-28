@@ -19,7 +19,7 @@ export default class ClientProfileMainUpdateValidator {
       format: 'yyyy-MM-dd',
     }),
     firstname: schema.string({}, [rules.required()]),
-    gender: schema.enum([Gender.FEMALE, Gender.MALE, Gender.NON_BINARY], [rules.required()]),
+    gender: schema.enum(Object.values(Gender).map((value) => String(value))),
     position: schema.string.optional(),
     lastname: schema.string({}, [rules.required()]),
     phone: schema.string.optional(),

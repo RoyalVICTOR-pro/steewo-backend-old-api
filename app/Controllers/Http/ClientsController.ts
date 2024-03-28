@@ -61,7 +61,7 @@ export default class ClientProfilesController {
       bank_iban: data.bank_iban,
       date_of_birth: data.date_of_birth,
       firstname: data.firstname,
-      gender: data.gender,
+      gender: parseInt(data.gender),
       lastname: data.lastname,
       phone: data.phone,
       siret_number: data.siret_number,

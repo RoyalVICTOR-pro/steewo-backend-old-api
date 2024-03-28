@@ -24,12 +24,7 @@ Route.group(() => {
   Route.patch('/client/update-profile/:user_id/photo', 'ClientsController.updateClientProfilePhoto')
     .as('updateClientProfilePhoto')
     .middleware(['auth', 'isClientProfileOwner'])
-  Route.patch(
-    '/client/update-profile/:user_id/banner',
-    'ClientsController.updateClientProfileBanner'
-  )
-    .as('updateClientProfileBanner')
-    .middleware(['auth', 'isClientProfileOwner'])
+
   Route.patch(
     '/client/update-profile/:user_id/description',
     'ClientsController.updateClientProfileDescription'
