@@ -20,7 +20,7 @@ Route.group(() => {
     '/student/get-private-profile-to-validate/:user_id',
     'StudentsController.getStudentPrivateProfile'
   )
-    .as('getStudentPrivateProfile')
+    .as('getStudentPrivateProfileToValidate')
     .middleware(['auth', `role:${[Role.ADMIN]}`])
 
   // STUDENT PROFILE UPDATE
