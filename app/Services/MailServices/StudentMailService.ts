@@ -23,4 +23,51 @@ export default class StudentMailService extends MailService {
 
     await this.sendMail(options)
   }
+
+  public static async sendStudentProfileValidationRejectedMail(
+    email: string,
+    firstname: string,
+    comment: string
+  ) {
+    const options = {
+      from: this.emailSender,
+      to: email,
+      subject: 'Steewo - Ton profil a été refusé',
+      html_view: this.emailsViewPath + 'student_profile_rejected',
+      variables_for_view: {
+        firstname: firstname,
+        comment: comment,
+      },
+    }
+
+    await this.sendMail(options)
+  }
+
+  public static sendStudentProfileValidationRequestMail() {
+    const options = {
+      from: this.emailSender,
+      to: this.validationAdminEmail,
+      subject: 'Steewo - Demande de validation de profil',
+      html_view: this.adminEmailsViewPath + 'student_profile_validation_asked',
+      variables_for_view: {
+        backoffice_url: this.backofficeURL,
+      },
+    }
+
+    this.sendMail(options)
+  }
+
+  public static async sendStudentProfileValidationAcceptedMail(email: string, firstname: string) {
+    const options = {
+      from: this.emailSender,
+      to: email,
+      subject: 'Steewo - Ton profil a été validé',
+      html_view: this.emailsViewPath + 'student_profile_accepted',
+      variables_for_view: {
+        firstname: firstname,
+      },
+    }
+
+    await this.sendMail(options)
+  }
 }

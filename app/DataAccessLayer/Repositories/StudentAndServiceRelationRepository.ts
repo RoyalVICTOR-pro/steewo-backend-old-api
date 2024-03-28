@@ -46,4 +46,17 @@ export default class StudentProfileAndServiceRelationRepository
 
     return studentServices
   }
+
+  public async acceptAllServicesOfAStudent(studentId: number): Promise<void> {
+    await StudentProfilesHasServices.query()
+      .where('student_profile_id', studentId)
+      .update({ service_has_been_accepted: true })
+  }
+
+  public async acceptServiceOfAStudent(studentId: number, serviceId: number): Promise<void> {
+    await StudentProfilesHasServices.query()
+      .where('student_profile_id', studentId)
+      .where('service_id', serviceId)
+      .update({ service_has_been_accepted: true })
+  }
 }

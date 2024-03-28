@@ -19,6 +19,7 @@ import AchievementDetailsAddValidator from '@Validators/AchievementDetailsAddVal
 import AchievementDetailsUpdateValidator from '@Validators/AchievementDetailsUpdateValidator'
 import AchievementDetailsUpdateOrderValidator from '@Validators/AchievementDetailsUpdateOrderValidator'
 import AchievementUpdateOrderValidator from '@Validators/AchievementUpdateOrderValidator'
+import RejectProfileValidator from '@Validators/RejectProfileValidator'
 import StudentProfileBannerUpdateValidator from '@Validators/StudentProfileBannerUpdateValidator'
 import StudentProfileCreateValidator from '@Validators/StudentProfileCreateValidator'
 import StudentProfileDescriptionUpdateValidator from '@Validators/StudentProfileDescriptionUpdateValidator'
@@ -234,6 +235,7 @@ export default class StudentProfilesController {
     return response.ok(studentServices) // 200 OK
   }
 
+  // ACHIEVEMENTS
   public async addAchievementsToStudentProfile({ request, params, response }: HttpContextContract) {
     const data = await request.validate(AchievementAddValidator)
 
@@ -340,6 +342,7 @@ export default class StudentProfilesController {
     return response.status(204).send('Achievement details order updated')
   }
 
+  // PROFILE VALIDATION
   public async askProfileValidation({ params, response }: HttpContextContract) {
     await this.studentProfileService.askProfileValidation(Number(params.student_profile_id))
     return response.status(200).send('Profile validation asked') // 200 OK
@@ -355,8 +358,13 @@ export default class StudentProfilesController {
     return response.ok(validationRequests) // 200 OK
   }
 
-  public async rejectProfileValidation({ params, response }: HttpContextContract) {
-    await this.studentProfileService.rejectProfileValidation(Number(params.student_profile_id))
+  public async rejectProfileValidation({ request, params, response }: HttpContextContract) {
+    const data = await request.validate(RejectProfileValidator)
+
+    await this.studentProfileService.rejectProfileValidation(
+      Number(params.student_profile_id),
+      data.comment
+    )
     return response.status(200).send('Profile validation rejected') // 200 OK
   }
 }

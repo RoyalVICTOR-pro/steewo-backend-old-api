@@ -44,6 +44,14 @@ export default class StudentProfileRepository implements StudentProfileRepositor
     return studentProfile
   }
 
+  public async getStudentProfileById(studentId: number): Promise<StudentProfile | null> {
+    const studentProfile = await StudentProfile.query()
+      .where('id', studentId)
+      .preload('user')
+      .first()
+    return studentProfile
+  }
+
   public async updateStudentProfileMainInfo(
     userId: number,
     data: StudentProfileMainUpdateDTO

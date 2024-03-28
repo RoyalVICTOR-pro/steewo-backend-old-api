@@ -46,4 +46,17 @@ export default class StudentProfileAndProfessionRelationRepository
       .preload('profession')
     return professions.map((studentProfession) => studentProfession.profession)
   }
+
+  public async acceptAllProfessionsOfAStudent(studentId: number): Promise<void> {
+    await StudentProfilesHasProfessions.query()
+      .where('student_profile_id', studentId)
+      .update({ profession_has_been_accepted: true })
+  }
+
+  public async acceptProfessionOfAStudent(studentId: number, professionId: number): Promise<void> {
+    await StudentProfilesHasProfessions.query()
+      .where('student_profile_id', studentId)
+      .where('profession_id', professionId)
+      .update({ profession_has_been_accepted: true })
+  }
 }

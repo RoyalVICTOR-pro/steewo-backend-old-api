@@ -568,24 +568,50 @@ export default class StudentProfileService implements StudentProfileServiceInter
   }
 
   public async askProfileValidation(studentProfileId: number) {
-    // TODO : Send email to admin
+    await StudentMailService.sendStudentProfileValidationRequestMail()
     return await this.studentProfileRepository.askProfileValidation(studentProfileId)
   }
 
   public async validateProfile(studentProfileId: number) {
-    // TODO : Send email to student
+    const student = await this.studentProfileRepository.getStudentProfileById(studentProfileId)
+    if (!student || !student.firstname) {
+      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
+    }
+
+    await this.studentProfileAndProfessionRelationRepository.acceptAllProfessionsOfAStudent(
+      studentProfileId
+    )
+    await this.studentProfileAndServiceRelationRepository.acceptAllServicesOfAStudent(
+      studentProfileId
+    )
+
+    await this.studentProfileRepository.validateProfile(studentProfileId)
+
     // TODO : Create a notification for the student
-    // TODO : Validate student's professions and services
-    return await this.studentProfileRepository.validateProfile(studentProfileId)
+
+    await StudentMailService.sendStudentProfileValidationAcceptedMail(
+      student.user.email,
+      student.firstname
+    )
   }
 
   public async getValidationRequests() {
     return await this.studentProfileRepository.getValidationRequests()
   }
 
-  public async rejectProfileValidation(studentProfileId: number) {
-    // TODO : Send email to student with reason
+  public async rejectProfileValidation(studentProfileId: number, comment: string) {
+    const student = await this.studentProfileRepository.getStudentProfileById(studentProfileId)
+    if (!student || !student.firstname) {
+      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
+    }
+    await this.studentProfileRepository.rejectProfileValidation(studentProfileId)
+
     // TODO : Create a notification for the student
-    return await this.studentProfileRepository.rejectProfileValidation(studentProfileId)
+
+    await StudentMailService.sendStudentProfileValidationRejectedMail(
+      student.user.email,
+      student.firstname,
+      comment
+    )
   }
 }
