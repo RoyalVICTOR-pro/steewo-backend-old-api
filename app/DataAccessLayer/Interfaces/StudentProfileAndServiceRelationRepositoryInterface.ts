@@ -7,4 +7,5 @@ export default interface StudentProfileAndServiceRelationRepositoryInterface {
     serviceId: number
   ): Promise<StudentProfilesHasServices>
   isStudentHasAlreadyThisService(studentId: number, serviceId: number): Promise<boolean>
+  getStudentServices(studentId: number): Promise<StudentProfilesHasServices[]>
 }

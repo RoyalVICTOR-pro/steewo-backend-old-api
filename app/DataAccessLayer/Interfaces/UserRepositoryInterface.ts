@@ -9,4 +9,5 @@ export default interface UserRepositoryInterface {
   getUserByEmail(email: string): Promise<User | null>
   getUserById(id: number): Promise<User | null>
   updateUserData(user: User, data: UserUpdateDTO): Promise<User>
+  updateUserPassword(user: User, data: UserUpdateDTO): Promise<User>
 }

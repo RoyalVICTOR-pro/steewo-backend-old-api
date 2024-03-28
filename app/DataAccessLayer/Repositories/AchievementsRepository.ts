@@ -3,6 +3,7 @@ import { inject } from '@adonisjs/core/build/standalone'
 // DTO
 import AchievementCreateDTO from '@DTO/AchievementCreateDTO'
 import AchievementDetailCreateOrUpdateDTO from '@DTO/AchievementDetailCreateOrUpdateDTO'
+import AchievementDetailsUpdateOrderDTO from '@DTO/AchievementDetailsUpdateOrderDTO'
 import AchievementRepositoryInterface from '@DALInterfaces/AchievementRepositoryInterface'
 import AchievementsUpdateOrderDTO from '@DTO/AchievementsUpdateOrderDTO'
 import AchievementUpdateDTO from '@DTO/AchievementUpdateDTO'
@@ -140,7 +141,7 @@ export default class AchievementsRepository implements AchievementRepositoryInte
   }
 
   public async updateAchievementDetailsOrder(
-    reorderedAchievementDetails: AchievementsUpdateOrderDTO[]
+    reorderedAchievementDetails: AchievementDetailsUpdateOrderDTO[]
   ): Promise<Boolean> {
     for (const achievementDetail of reorderedAchievementDetails) {
       const achievementDetailToUpdate = await AchievementDetail.findOrFail(achievementDetail.id)

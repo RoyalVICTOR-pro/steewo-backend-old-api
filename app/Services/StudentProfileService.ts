@@ -262,11 +262,11 @@ export default class StudentProfileService implements StudentProfileServiceInter
   }
 
   public async deleteStudentProfilePhoto(studentProfileId: number) {
-    return await this.studentProfileRepository.deleteStudentProfilePhoto(studentProfileId)
+    await this.studentProfileRepository.deleteStudentProfilePhoto(studentProfileId)
   }
 
   public async deleteStudentProfileBanner(studentProfileId: number) {
-    return await this.studentProfileRepository.deleteStudentProfileBanner(studentProfileId)
+    await this.studentProfileRepository.deleteStudentProfileBanner(studentProfileId)
   }
 
   public async updateStudentProfileDescription(user_id: number, description: string) {
