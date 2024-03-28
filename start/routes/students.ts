@@ -16,6 +16,13 @@ Route.group(() => {
     .as('getStudentPrivateProfile')
     .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
+  Route.get(
+    '/student/get-private-profile-to-validate/:user_id',
+    'StudentsController.getStudentPrivateProfile'
+  )
+    .as('getStudentPrivateProfile')
+    .middleware(['auth', `role:${[Role.ADMIN]}`])
+
   // STUDENT PROFILE UPDATE
   Route.patch(
     '/student/update-profile/:user_id/main',
