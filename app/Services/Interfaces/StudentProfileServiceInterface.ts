@@ -43,7 +43,8 @@ export default interface StudentProfileServiceInterface {
   addServicesToStudentProfile(studentProfileId: number, services: number[]): Promise<void>
   getStudentPublicProfessions(studentProfileId: number): Promise<Profession[]>
   getStudentPrivateProfessions(studentProfileId: number): Promise<Profession[]>
-  getStudentServices(studentProfileId: number): Promise<Service[]>
+  getStudentPublicServices(studentProfileId: number): Promise<Service[]>
+  getStudentPrivateServices(studentProfileId: number): Promise<Service[]>
   addAchievementsToStudentProfile(
     studentProfileId: number,
     achievement: AchievementCreateDTO,

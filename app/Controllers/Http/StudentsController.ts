@@ -228,8 +228,15 @@ export default class StudentProfilesController {
     return response.ok(studentPrivateProfessions) // 200 OK
   }
 
-  public async getStudentServices({ params, response }: HttpContextContract) {
-    const studentServices = await this.studentProfileService.getStudentServices(
+  public async getStudentPublicServices({ params, response }: HttpContextContract) {
+    const studentServices = await this.studentProfileService.getStudentPublicServices(
+      Number(params.student_profile_id)
+    )
+    return response.ok(studentServices) // 200 OK
+  }
+
+  public async getStudentPrivateServices({ params, response }: HttpContextContract) {
+    const studentServices = await this.studentProfileService.getStudentPrivateServices(
       Number(params.student_profile_id)
     )
     return response.ok(studentServices) // 200 OK

@@ -121,7 +121,7 @@ Route.group(() => {
     'StudentsController.getStudentPublicProfessions'
   )
     .as('getStudentPublicProfessions')
-    .middleware(['auth'])
+    .middleware(['auth', 'isValidEmail'])
 
   Route.get(
     '/student/get-private-professions/:student_profile_id',
@@ -138,9 +138,19 @@ Route.group(() => {
     .as('addServicesToStudentProfile')
     .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
-  Route.get('/student/get-services/:student_profile_id', 'StudentsController.getStudentServices')
-    .as('getStudentServices')
-    .middleware(['auth'])
+  Route.get(
+    '/student/get-public-services/:student_profile_id',
+    'StudentsController.getStudentPublicServices'
+  )
+    .as('getStudentPublicServices')
+    .middleware(['auth', 'isValidEmail'])
+
+  Route.get(
+    '/student/get-private-services/:student_profile_id',
+    'StudentsController.getStudentPrivateServices'
+  )
+    .as('getStudentPrivateServicesle')
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
   // STUDENT ACHIEVEMENTS
   Route.post(

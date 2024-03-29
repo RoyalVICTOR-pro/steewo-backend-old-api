@@ -306,23 +306,68 @@ test.group('Student Profile Professions and Services Management', (group) => {
     assert.notInclude(response.body(), { name: 'Développeur' })
   })
 
-  test('Get Student Services by the client', async ({ client }) => {
+  test('Get Student Private Services by the client', async ({ client }) => {
     const response = await client
-      .get('/student/get-services/' + fakeStudent.studentProfileId)
+      .get('/student/get-private-services/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeClient.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Get Student Private Services by an other student', async ({ client }) => {
+    const response = await client
+      .get('/student/get-private-services/' + fakeStudent.studentProfileId)
+      .header('Cookie', secondFakeStudent.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Get Student Private Services by the student himself', async ({ client, assert }) => {
+    const response = await client
+      .get('/student/get-private-services/' + fakeStudent.studentProfileId)
+      .header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(200)
+    let found = false
+    for (const item of response.body()) {
+      if (item.name === 'Création de logo') {
+        found = true
+        break
+      }
+    }
+    assert.equal(found, true)
+
+    found = false
+    for (const item of response.body()) {
+      if (item.name === 'Création graphique de site internet') {
+        found = true
+        break
+      }
+    }
+    assert.equal(found, true)
+    found = false
+    for (const item of response.body()) {
+      if (item.name === 'Développement de site web') {
+        found = true
+        break
+      }
+    }
+    assert.equal(found, true)
+  })
+  test('Get Student Public Services by the client', async ({ client }) => {
+    const response = await client
+      .get('/student/get-public-services/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(200)
   })
 
-  test('Get Student Services by an other student', async ({ client }) => {
+  test('Get Student Public Services by an other student', async ({ client }) => {
     const response = await client
-      .get('/student/get-services/' + fakeStudent.studentProfileId)
+      .get('/student/get-public-services/' + fakeStudent.studentProfileId)
       .header('Cookie', secondFakeStudent.tokenCookie)
     response.assertStatus(200)
   })
 
-  test('Get Student Services by the student himself', async ({ client, assert }) => {
+  test('Get Student Public Services by the student himself', async ({ client, assert }) => {
     const response = await client
-      .get('/student/get-services/' + fakeStudent.studentProfileId)
+      .get('/student/get-public-services/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     let found = false
@@ -369,7 +414,7 @@ test.group('Student Profile Professions and Services Management', (group) => {
 
   test('Get Student Services by the student himself', async ({ client, assert }) => {
     const response = await client
-      .get('/student/get-services/' + fakeStudent.studentProfileId)
+      .get('/student/get-public-services/' + fakeStudent.studentProfileId)
       .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
     let found = false

@@ -115,7 +115,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
 
     studentPublicProfile.professions = await this.getStudentPublicProfessions(studentProfile.id)
 
-    studentPublicProfile.services = await this.getStudentServices(studentProfile.id)
+    studentPublicProfile.services = await this.getStudentPublicServices(studentProfile.id)
 
     studentPublicProfile.achievements =
       await this.achievementRepository.getAchievementsByStudentProfileId(studentProfile.id)
@@ -164,7 +164,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
 
     studentPrivateProfile.professions = await this.getStudentPrivateProfessions(studentProfile.id)
 
-    studentPrivateProfile.services = await this.getStudentServices(studentProfile.id)
+    studentPrivateProfile.services = await this.getStudentPrivateServices(studentProfile.id)
 
     studentPrivateProfile.achievements =
       await this.achievementRepository.getAchievementsByStudentProfileId(studentProfile.id)
@@ -399,9 +399,25 @@ export default class StudentProfileService implements StudentProfileServiceInter
     )
   }
 
-  public async getStudentServices(studentProfileId: number) {
+  public async getStudentPublicServices(studentProfileId: number) {
     const studentServicesRelations =
-      await this.studentProfileAndServiceRelationRepository.getStudentServices(studentProfileId)
+      await this.studentProfileAndServiceRelationRepository.getStudentPublicServices(
+        studentProfileId
+      )
+
+    const studentServices = [] as Service[]
+    for (let i = 0; i < studentServicesRelations.length; i++) {
+      studentServices.push(studentServicesRelations[i].service)
+    }
+
+    return studentServices
+  }
+
+  public async getStudentPrivateServices(studentProfileId: number) {
+    const studentServicesRelations =
+      await this.studentProfileAndServiceRelationRepository.getStudentPrivateServices(
+        studentProfileId
+      )
 
     const studentServices = [] as Service[]
     for (let i = 0; i < studentServicesRelations.length; i++) {
