@@ -19,7 +19,7 @@ import AchievementDetailsAddValidator from '@Validators/AchievementDetailsAddVal
 import AchievementDetailsUpdateValidator from '@Validators/AchievementDetailsUpdateValidator'
 import AchievementDetailsUpdateOrderValidator from '@Validators/AchievementDetailsUpdateOrderValidator'
 import AchievementUpdateOrderValidator from '@Validators/AchievementUpdateOrderValidator'
-import RejectProfileValidator from '@Validators/RejectProfileValidator'
+import RejectProfileOrNewProfessionValidator from '@Validators/RejectProfileOrNewProfessionValidator'
 import StudentProfileBannerUpdateValidator from '@Validators/StudentProfileBannerUpdateValidator'
 import StudentProfileCreateValidator from '@Validators/StudentProfileCreateValidator'
 import StudentProfileDescriptionUpdateValidator from '@Validators/StudentProfileDescriptionUpdateValidator'
@@ -355,23 +355,56 @@ export default class StudentProfilesController {
     return response.status(200).send('Profile validation asked') // 200 OK
   }
 
-  public async validateProfile({ params, response }: HttpContextContract) {
-    await this.studentProfileService.validateProfile(Number(params.student_profile_id))
-    return response.status(200).send('Profile validated') // 200 OK
-  }
-
   public async getValidationRequests({ response }: HttpContextContract) {
     const validationRequests = await this.studentProfileService.getValidationRequests()
     return response.ok(validationRequests) // 200 OK
   }
 
+  public async validateProfile({ params, response }: HttpContextContract) {
+    await this.studentProfileService.validateProfile(Number(params.student_profile_id))
+    return response.status(200).send('Profile validated') // 200 OK
+  }
+
   public async rejectProfileValidation({ request, params, response }: HttpContextContract) {
-    const data = await request.validate(RejectProfileValidator)
+    const data = await request.validate(RejectProfileOrNewProfessionValidator)
 
     await this.studentProfileService.rejectProfileValidation(
       Number(params.student_profile_id),
       data.comment
     )
     return response.status(200).send('Profile validation rejected') // 200 OK
+  }
+
+  // NEW PROFESSION VALIDATION
+  public async askNewProfessionValidation({ params, response }: HttpContextContract) {
+    await this.studentProfileService.askNewProfessionValidation(
+      Number(params.student_profile_id),
+      Number(params.profession_id)
+    )
+    return response.status(200).send('New profession validation asked') // 200 OK
+  }
+
+  public async getProfessionsValidationRequests({ response }: HttpContextContract) {
+    const validationRequests = await this.studentProfileService.getProfessionsValidationRequests()
+    return response.ok(validationRequests) // 200 OK
+  }
+
+  public async validateNewProfession({ params, response }: HttpContextContract) {
+    await this.studentProfileService.validateNewProfession(
+      Number(params.student_profile_id),
+      Number(params.profession_id)
+    )
+    return response.status(200).send('New profession validated') // 200 OK
+  }
+
+  public async rejectNewProfessionValidation({ request, params, response }: HttpContextContract) {
+    const data = await request.validate(RejectProfileOrNewProfessionValidator)
+
+    await this.studentProfileService.rejectNewProfessionValidation(
+      Number(params.student_profile_id),
+      Number(params.profession_id),
+      data.comment
+    )
+    return response.status(200).send('New profession validation rejected') // 200 OK
   }
 }

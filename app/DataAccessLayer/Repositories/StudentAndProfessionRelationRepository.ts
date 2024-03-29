@@ -59,4 +59,52 @@ export default class StudentProfileAndProfessionRelationRepository
       .where('profession_id', professionId)
       .update({ profession_has_been_accepted: true })
   }
+
+  public async askNewProfessionValidation(studentProfileId: number, professionId: number) {
+    const studentAndProfessionRelation = await StudentProfilesHasProfessions.query()
+      .where('student_profile_id', studentProfileId)
+      .where('profession_id', professionId)
+      .first()
+    if (studentAndProfessionRelation) {
+      studentAndProfessionRelation.waiting_validation = true
+      await studentAndProfessionRelation.save()
+      return studentAndProfessionRelation
+    }
+    return null
+  }
+
+  public async getProfessionsValidationRequests(): Promise<StudentProfilesHasProfessions[]> {
+    const professionsToValidate = await StudentProfilesHasProfessions.query()
+      .where('waiting_validation', true)
+      .preload('profession')
+      .preload('studentProfile')
+    return professionsToValidate
+  }
+
+  public async rejectNewProfessionValidation(studentProfileId: number, professionId: number) {
+    const studentAndProfessionRelation = await StudentProfilesHasProfessions.query()
+      .where('student_profile_id', studentProfileId)
+      .where('profession_id', professionId)
+      .first()
+    if (studentAndProfessionRelation) {
+      studentAndProfessionRelation.waiting_validation = false
+      await studentAndProfessionRelation.save()
+      return studentAndProfessionRelation
+    }
+    return null
+  }
+
+  public async validateNewProfession(studentProfileId: number, professionId: number) {
+    const studentAndProfessionRelation = await StudentProfilesHasProfessions.query()
+      .where('student_profile_id', studentProfileId)
+      .where('profession_id', professionId)
+      .first()
+    if (studentAndProfessionRelation) {
+      studentAndProfessionRelation.waiting_validation = false
+      studentAndProfessionRelation.profession_has_been_accepted = true
+      await studentAndProfessionRelation.save()
+      return studentAndProfessionRelation
+    }
+    return null
+  }
 }

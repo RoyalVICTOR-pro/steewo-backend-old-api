@@ -584,8 +584,8 @@ export default class StudentProfileService implements StudentProfileServiceInter
   }
 
   public async askProfileValidation(studentProfileId: number) {
+    await this.studentProfileRepository.askProfileValidation(studentProfileId)
     await StudentMailService.sendStudentProfileValidationRequestMail()
-    return await this.studentProfileRepository.askProfileValidation(studentProfileId)
   }
 
   public async validateProfile(studentProfileId: number) {
@@ -629,5 +629,87 @@ export default class StudentProfileService implements StudentProfileServiceInter
       student.firstname,
       comment
     )
+  }
+
+  public async askNewProfessionValidation(studentProfileId: number, professionId: number) {
+    const student = await this.studentProfileRepository.getStudentProfileById(studentProfileId)
+    if (!student || !student.firstname) {
+      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
+    }
+    const profession = await Profession.find(professionId)
+    if (!profession) {
+      throw new Exception('Profession not found', 404, 'E_NOT_FOUND')
+    }
+
+    await this.studentProfileAndProfessionRelationRepository.askNewProfessionValidation(
+      studentProfileId,
+      professionId
+    )
+
+    // TODO : Send Email to the admin
+    // await StudentMailService.sendStudentNewProfessionValidationRequestMail()
+  }
+
+  public async getProfessionsValidationRequests() {
+    return await this.studentProfileAndProfessionRelationRepository.getProfessionsValidationRequests()
+  }
+
+  public async rejectNewProfessionValidation(
+    studentProfileId: number,
+    professionId: number,
+    comment: string
+  ) {
+    const student = await this.studentProfileRepository.getStudentProfileById(studentProfileId)
+    if (!student || !student.firstname) {
+      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
+    }
+    const profession = await Profession.find(professionId)
+    if (!profession) {
+      throw new Exception('Profession not found', 404, 'E_NOT_FOUND')
+    }
+
+    await this.studentProfileAndProfessionRelationRepository.rejectNewProfessionValidation(
+      studentProfileId,
+      professionId
+    )
+
+    // TODO : Create a notification for the student
+
+    // TODO : Send Email to the student
+    // await StudentMailService.sendStudentNewProfessionValidationRejectedMail(
+    //   student.user.email,
+    //   student.firstname,
+    //   profession.name,
+    //   comment
+    // )
+  }
+
+  public async validateNewProfession(studentProfileId: number, professionId: number) {
+    const student = await this.studentProfileRepository.getStudentProfileById(studentProfileId)
+    if (!student || !student.firstname) {
+      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
+    }
+    const profession = await Profession.find(professionId)
+    if (!profession) {
+      throw new Exception('Profession not found', 404, 'E_NOT_FOUND')
+    }
+
+    await this.studentProfileAndProfessionRelationRepository.validateNewProfession(
+      studentProfileId,
+      professionId
+    )
+
+    await this.studentProfileAndServiceRelationRepository.validateServicesOfTheNewProfession(
+      studentProfileId,
+      professionId
+    )
+    // TODO : Create a notification for the student
+
+    // TODO : Send Email to the student
+    // await StudentMailService.sendStudentNewProfessionValidationAcceptedMail(
+    //   student.user.email,
+    //   student.firstname,
+    //   profession.name
+    // )
   }
 }

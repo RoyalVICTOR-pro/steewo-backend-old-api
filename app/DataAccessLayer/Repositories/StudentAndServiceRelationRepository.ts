@@ -74,4 +74,19 @@ export default class StudentProfileAndServiceRelationRepository
       .where('service_id', serviceId)
       .update({ service_has_been_accepted: true })
   }
+
+  public async validateServicesOfTheNewProfession(studentProfileId: number, professionId: number) {
+    // Récupérer tous les services liés à la profession par rapport à la table professions et liés au profil par rapport à la table student_profiles_has_services
+    const studentServices = await StudentProfilesHasServices.query()
+      .select('*')
+      .join('services', 'student_profiles_has_services.service_id', 'services.id')
+      .join('professions', 'professions.id', 'services.profession_id')
+      .where('student_profiles_has_services.student_profile_id', studentProfileId)
+      .where('professions.id', professionId)
+    // Valider tous les services
+    for (const studentService of studentServices) {
+      studentService.service_has_been_accepted = true
+      await studentService.save()
+    }
+  }
 }

@@ -231,4 +231,33 @@ Route.group(() => {
   Route.patch('/student/validate-profile/:student_profile_id', 'StudentsController.validateProfile')
     .as('validateProfile')
     .middleware(['auth', `role:${[Role.ADMIN]}`])
+
+  // NEW PROFESSION VALIDATION
+  Route.patch(
+    '/student/:student_profile_id/ask-new-profession-validation/:profession_id',
+    'StudentsController.askNewProfessionValidation'
+  )
+    .as('askNewProfessionValidation')
+    .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
+
+  Route.get(
+    '/student/get-professions-validation-requests',
+    'StudentsController.getProfessionsValidationRequests'
+  )
+    .as('getProfessionsValidationRequests')
+    .middleware(['auth', `role:${[Role.ADMIN]}`])
+
+  Route.post(
+    '/student/:student_profile_id/reject-new-profession-validation/:profession_id',
+    'StudentsController.rejectNewProfessionValidation'
+  )
+    .as('rejectNewProfessionValidation')
+    .middleware(['auth', `role:${[Role.ADMIN]}`])
+
+  Route.patch(
+    '/student/:student_profile_id/validate-new-profession/:profession_id',
+    'StudentsController.validateNewProfession'
+  )
+    .as('validateNewProfession')
+    .middleware(['auth', `role:${[Role.ADMIN]}`])
 }).prefix('/v1')
