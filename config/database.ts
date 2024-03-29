@@ -47,7 +47,7 @@ const databaseConfig: DatabaseConfig = {
         disableRollbacksInProduction: true,
       },
       healthCheck: false,
-      debug: false,
+      debug: true,
     },
   },
 }
