@@ -217,10 +217,6 @@ Route.group(() => {
     .as('askProfileValidation')
     .middleware(['auth', 'isStudentProfileOwner', 'isValidEmail'])
 
-  Route.patch('/student/validate-profile/:student_profile_id', 'StudentsController.validateProfile')
-    .as('validateProfile')
-    .middleware(['auth', `role:${[Role.ADMIN]}`])
-
   Route.get('/student/get-validation-requests', 'StudentsController.getValidationRequests')
     .as('getValidationRequests')
     .middleware(['auth', `role:${[Role.ADMIN]}`])
@@ -230,5 +226,9 @@ Route.group(() => {
     'StudentsController.rejectProfileValidation'
   )
     .as('rejectProfileValidation')
+    .middleware(['auth', `role:${[Role.ADMIN]}`])
+
+  Route.patch('/student/validate-profile/:student_profile_id', 'StudentsController.validateProfile')
+    .as('validateProfile')
     .middleware(['auth', `role:${[Role.ADMIN]}`])
 }).prefix('/v1')
