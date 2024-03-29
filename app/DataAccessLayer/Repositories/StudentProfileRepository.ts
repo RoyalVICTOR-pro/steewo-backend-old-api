@@ -137,15 +137,16 @@ export default class StudentProfileRepository implements StudentProfileRepositor
   }
 
   public async askProfileValidation(studentProfileId: number) {
-    const studentProfileUser = await User.query()
-      .join('student_profiles', 'users.id', 'student_profiles.user_id')
-      .where('student_profiles.id', studentProfileId)
-      .first()
+    const studentProfile = await StudentProfile.findBy('id', studentProfileId)
+
+    const studentProfileUser = await User.findBy('id', studentProfile?.user_id)
     if (!studentProfileUser) {
       throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
     }
+    console.log('studentProfileUser :>> ', studentProfileUser)
     studentProfileUser.status = StudentUserStatus.ACCOUNT_VALIDATION_ASKED
-    await studentProfileUser.save()
+    const result = await studentProfileUser.save()
+    console.log('result :>> ', result)
   }
 
   public async validateProfile(studentProfileId: number) {
@@ -162,9 +163,14 @@ export default class StudentProfileRepository implements StudentProfileRepositor
 
   public async getValidationRequests() {
     const validationAskingStudentProfiles = await StudentProfile.query()
-      .preload('user')
-      .where('status', StudentUserStatus.ACCOUNT_VALIDATION_ASKED)
-      .orderBy('updated_at', 'desc')
+      .select('student_profiles.id')
+      .select('student_profiles.user_id')
+      .select('student_profiles.firstname')
+      .select('student_profiles.lastname')
+      .select('users.email')
+      .join('users', 'users.id', 'student_profiles.user_id')
+      .where('users.status', StudentUserStatus.ACCOUNT_VALIDATION_ASKED)
+      .orderBy('users.updated_at', 'desc')
     return validationAskingStudentProfiles
   }
 
