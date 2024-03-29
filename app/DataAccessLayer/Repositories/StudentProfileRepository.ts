@@ -143,20 +143,18 @@ export default class StudentProfileRepository implements StudentProfileRepositor
     if (!studentProfileUser) {
       throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
     }
-    console.log('studentProfileUser :>> ', studentProfileUser)
     studentProfileUser.status = StudentUserStatus.ACCOUNT_VALIDATION_ASKED
-    const result = await studentProfileUser.save()
-    console.log('result :>> ', result)
+    await studentProfileUser.save()
   }
 
   public async validateProfile(studentProfileId: number) {
-    const studentProfileUser = await User.query()
-      .join('student_profiles', 'users.id', 'student_profiles.user_id')
-      .where('student_profiles.id', studentProfileId)
-      .first()
+    const studentProfile = await StudentProfile.findBy('id', studentProfileId)
+
+    const studentProfileUser = await User.findBy('id', studentProfile?.user_id)
     if (!studentProfileUser) {
       throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
     }
+
     studentProfileUser.status = StudentUserStatus.ACCOUNT_VALIDATED
     await studentProfileUser.save()
   }
@@ -175,13 +173,13 @@ export default class StudentProfileRepository implements StudentProfileRepositor
   }
 
   public async rejectProfileValidation(studentProfileId: number) {
-    const studentProfileUser = await User.query()
-      .join('student_profiles', 'users.id', 'student_profiles.user_id')
-      .where('student_profiles.id', studentProfileId)
-      .first()
+    const studentProfile = await StudentProfile.findBy('id', studentProfileId)
+
+    const studentProfileUser = await User.findBy('id', studentProfile?.user_id)
     if (!studentProfileUser) {
       throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
     }
+
     studentProfileUser.status = StudentUserStatus.ACCOUNT_CREATED
     await studentProfileUser.save()
   }
