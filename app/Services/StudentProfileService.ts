@@ -646,8 +646,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
       professionId
     )
 
-    // TODO : Send Email to the admin
-    // await StudentMailService.sendStudentNewProfessionValidationRequestMail()
+    await StudentMailService.sendStudentNewProfessionValidationRequestMail()
   }
 
   public async getProfessionsValidationRequests() {
@@ -675,13 +674,12 @@ export default class StudentProfileService implements StudentProfileServiceInter
 
     // TODO : Create a notification for the student
 
-    // TODO : Send Email to the student
-    // await StudentMailService.sendStudentNewProfessionValidationRejectedMail(
-    //   student.user.email,
-    //   student.firstname,
-    //   profession.name,
-    //   comment
-    // )
+    await StudentMailService.sendStudentNewProfessionValidationRejectedMail(
+      student.user.email,
+      student.firstname,
+      profession.name,
+      comment
+    )
   }
 
   public async validateNewProfession(studentProfileId: number, professionId: number) {
@@ -705,11 +703,10 @@ export default class StudentProfileService implements StudentProfileServiceInter
     )
     // TODO : Create a notification for the student
 
-    // TODO : Send Email to the student
-    // await StudentMailService.sendStudentNewProfessionValidationAcceptedMail(
-    //   student.user.email,
-    //   student.firstname,
-    //   profession.name
-    // )
+    await StudentMailService.sendStudentNewProfessionValidationAcceptedMail(
+      student.user.email,
+      student.firstname,
+      profession.name
+    )
   }
 }
