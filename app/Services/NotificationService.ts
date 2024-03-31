@@ -8,24 +8,23 @@ import NotificationCreateDTO from '@DTO/NotificationCreateDTO'
 
 @inject()
 export default class NotificationService {
-  private static notificationRepository: NotificationRepository
+  private notificationRepository: NotificationRepository
 
   constructor(notificationRepository: NotificationRepository) {
-    NotificationService.notificationRepository = notificationRepository
+    this.notificationRepository = notificationRepository
   }
 
   public static async createNotification(data: NotificationCreateDTO) {
-    const notification = await NotificationService.notificationRepository.createNotification(data)
+    const notification = await NotificationRepository.createNotification(data)
     return notification
   }
 
   public async getNotificationsOfUser(userId: number) {
-    return await NotificationService.notificationRepository.getNotificationsOfUser(userId)
+    return await this.notificationRepository.getNotificationsOfUser(userId)
   }
 
   public async toggleNotificationReadStatus(notificationId: number, userId: number) {
-    const notification =
-      await NotificationService.notificationRepository.getNotificationById(notificationId)
+    const notification = await this.notificationRepository.getNotificationById(notificationId)
 
     if (!notification) {
       throw new Exception('Notification not found', 404)
@@ -35,16 +34,18 @@ export default class NotificationService {
       throw new Exception('User not allowed to update this notification', 403)
     }
 
-    const updatedNotification =
-      await NotificationService.notificationRepository.updateNotificationById(notificationId, {
+    const updatedNotification = await this.notificationRepository.updateNotificationById(
+      notificationId,
+      {
         user_id: notification.user_id,
         has_been_read: !notification.has_been_read,
-      })
+      }
+    )
 
     return updatedNotification
   }
 
   public async deleteNotification(notificationId: number) {
-    await NotificationService.notificationRepository.deleteNotification(notificationId)
+    await this.notificationRepository.deleteNotification(notificationId)
   }
 }

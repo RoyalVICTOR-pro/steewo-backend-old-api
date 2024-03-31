@@ -8,7 +8,7 @@ import Notification from '@Models/Notification'
 
 @inject()
 export default class NotificationRepository {
-  public async createNotification(data: NotificationCreateDTO): Promise<Notification> {
+  public static async createNotification(data: NotificationCreateDTO): Promise<Notification> {
     const notification = new Notification()
     notification.user_id = data.user_id
     notification.title = data.title
