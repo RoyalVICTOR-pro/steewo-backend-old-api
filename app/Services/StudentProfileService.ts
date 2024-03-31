@@ -33,6 +33,7 @@ import UserRepository from '@DALRepositories/UserRepository'
 // SERVICES
 import StudentMailService from '@Services/MailServices/StudentMailService'
 import UploadService from '@Services/UploadService'
+import NotificationService from './NotificationService'
 
 @inject()
 export default class StudentProfileService implements StudentProfileServiceInterface {
@@ -603,7 +604,12 @@ export default class StudentProfileService implements StudentProfileServiceInter
 
     await this.studentProfileRepository.validateProfile(studentProfileId)
 
-    // TODO : Create a notification for the student
+    await NotificationService.createNotification({
+      user_id: student.user_id,
+      title: 'Info Profil',
+      content:
+        "Ton profil a été validé par l'équipe Steewo. Tu peux désormais postuler à des missions.",
+    })
 
     await StudentMailService.sendStudentProfileValidationAcceptedMail(
       student.user.email,
@@ -622,7 +628,11 @@ export default class StudentProfileService implements StudentProfileServiceInter
     }
     await this.studentProfileRepository.rejectProfileValidation(studentProfileId)
 
-    // TODO : Create a notification for the student
+    await NotificationService.createNotification({
+      user_id: student.user_id,
+      title: 'Info Profil',
+      content: "Ton profil a été refusé par l'équipe Steewo : " + comment,
+    })
 
     await StudentMailService.sendStudentProfileValidationRejectedMail(
       student.user.email,
@@ -672,7 +682,12 @@ export default class StudentProfileService implements StudentProfileServiceInter
       professionId
     )
 
-    // TODO : Create a notification for the student
+    await NotificationService.createNotification({
+      user_id: student.user_id,
+      title: 'Info Profil',
+      content:
+        'Ton nouveau métier ' + profession.name + " a été refusé par l'équipe Steewo : " + comment,
+    })
 
     await StudentMailService.sendStudentNewProfessionValidationRejectedMail(
       student.user.email,
@@ -701,7 +716,12 @@ export default class StudentProfileService implements StudentProfileServiceInter
       studentProfileId,
       professionId
     )
-    // TODO : Create a notification for the student
+
+    await NotificationService.createNotification({
+      user_id: student.user_id,
+      title: 'Info Profil',
+      content: 'Ton nouveau métier ' + profession.name + " a été validé par l'équipe Steewo.",
+    })
 
     await StudentMailService.sendStudentNewProfessionValidationAcceptedMail(
       student.user.email,
