@@ -355,6 +355,8 @@ export default class StudentProfileService implements StudentProfileServiceInter
               professions[i]
             )
           }
+        } else {
+          throw new Exception('Profession not enabled', 400, 'E_BAD_REQUEST')
         }
       }
     }
@@ -382,6 +384,8 @@ export default class StudentProfileService implements StudentProfileServiceInter
               services[i]
             )
           }
+        } else {
+          throw new Exception('Service not enabled', 400, 'E_BAD_REQUEST')
         }
       }
     }
