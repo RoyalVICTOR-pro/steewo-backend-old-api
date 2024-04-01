@@ -78,7 +78,15 @@ export default class StudentProfileAndServiceRelationRepository
   public async validateServicesOfTheNewProfession(studentProfileId: number, professionId: number) {
     // Récupérer tous les services liés à la profession par rapport à la table professions et liés au profil par rapport à la table student_profiles_has_services
     const studentServices = await StudentProfilesHasServices.query()
-      .select('*')
+      .select(
+        'student_profiles_has_services.id',
+        'student_profiles_has_services.student_profile_id',
+        'student_profiles_has_services.service_id',
+        'student_profiles_has_services.service_has_been_accepted',
+        'services.id as s_id',
+        'services.profession_id',
+        'professions.id as p_id'
+      )
       .join('services', 'student_profiles_has_services.service_id', 'services.id')
       .join('professions', 'professions.id', 'services.profession_id')
       .where('student_profiles_has_services.student_profile_id', studentProfileId)
