@@ -1,13 +1,8 @@
 // ADONIS
-import { getDatetimeForFileName, getExtension, getFileTypeFromExtension } from '@Utils/Various'
+import { getDatetimeForFileName } from '@Utils/Various'
 import { inject, Exception } from '@adonisjs/core/build/standalone'
 import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
 // DTO
-import AchievementCreateDTO from '@DTO/AchievementCreateDTO'
-import AchievementDetailCreateOrUpdateDTO from '@DTO/AchievementDetailCreateOrUpdateDTO'
-import AchievementDetailsUpdateOrderDTO from '@DTO/AchievementDetailsUpdateOrderDTO'
-import AchievementsUpdateOrderDTO from '@DTO/AchievementsUpdateOrderDTO'
-import AchievementUpdateDTO from '@DTO/AchievementUpdateDTO'
 import StudentProfileBannerUpdateDTO from '@DTO/StudentProfileBannerUpdateDTO'
 import StudentProfileCreateDTO from '@DTO/StudentProfileCreateDTO'
 import StudentProfileDescriptionUpdateDTO from '@DTO/StudentProfileDescriptionUpdateDTO'
@@ -19,39 +14,34 @@ import StudentUserStatus from '@Enums/StudentUserStatus'
 import StudentProfileServiceInterface from '@Services/Interfaces/StudentProfileServiceInterface'
 // MODELS
 import Achievement from '@Models/Achievement'
-import AchievementDetail from '@Models/AchievementDetail'
 import Profession from '@Models/Profession'
 import Service from '@Models/Service'
 // REPOSITORIES
 import AchievementsRepository from '@DALRepositories/AchievementsRepository'
-import StudentBookmarksRepository from '@DALRepositories/BookmarkRepository'
+import StudentProfileRepository from '@DALRepositories/StudentProfileRepository'
+import UserRepository from '@DALRepositories/UserRepository'
 import StudentProfileAndProfessionRelationRepository from '@DALRepositories/StudentAndProfessionRelationRepository'
 import StudentProfileAndServiceRelationRepository from '@DALRepositories/StudentAndServiceRelationRepository'
-import StudentProfileRepository from '@DALRepositories/StudentProfileRepository'
-import StudentProfileViewRepository from '@DALRepositories/StudentProfileViewRepository'
-import UserRepository from '@DALRepositories/UserRepository'
 // SERVICES
 import StudentMailService from '@Services/MailServices/StudentMailService'
+import StudentProfessionsAndServicesService from '@Services/StudentProfessionsAndServicesService'
 import UploadService from '@Services/UploadService'
-import NotificationService from './NotificationService'
 
 @inject()
 export default class StudentProfileService implements StudentProfileServiceInterface {
   private studentProfileRepository: StudentProfileRepository
-  private studentProfileAndProfessionRelationRepository: StudentProfileAndProfessionRelationRepository
-  private studentProfileAndServiceRelationRepository: StudentProfileAndServiceRelationRepository
   private achievementRepository: AchievementsRepository
+  private studentProfessionsAndServices: StudentProfessionsAndServicesService
   private userRepository: UserRepository
   private readonly studentProfilePath = 'students/profiles/'
-  private readonly achievementsSubFolder = '/achievements/'
 
   constructor(studentProfileRepository: StudentProfileRepository) {
+    this.studentProfessionsAndServices = new StudentProfessionsAndServicesService(
+      new StudentProfileAndProfessionRelationRepository(),
+      new StudentProfileAndServiceRelationRepository()
+    )
     this.studentProfileRepository = studentProfileRepository
     this.userRepository = new UserRepository()
-    this.studentProfileAndProfessionRelationRepository =
-      new StudentProfileAndProfessionRelationRepository()
-    this.studentProfileAndServiceRelationRepository =
-      new StudentProfileAndServiceRelationRepository()
     this.achievementRepository = new AchievementsRepository()
   }
 
@@ -114,9 +104,11 @@ export default class StudentProfileService implements StudentProfileServiceInter
       achievements: [] as Achievement[],
     }
 
-    studentPublicProfile.professions = await this.getStudentPublicProfessions(studentProfile.id)
+    studentPublicProfile.professions =
+      await this.studentProfessionsAndServices.getStudentPublicProfessions(studentProfile.id)
 
-    studentPublicProfile.services = await this.getStudentPublicServices(studentProfile.id)
+    studentPublicProfile.services =
+      await this.studentProfessionsAndServices.getStudentPublicServices(studentProfile.id)
 
     studentPublicProfile.achievements =
       await this.achievementRepository.getAchievementsByStudentProfileId(studentProfile.id)
@@ -163,9 +155,11 @@ export default class StudentProfileService implements StudentProfileServiceInter
       achievements: [] as Achievement[],
     }
 
-    studentPrivateProfile.professions = await this.getStudentPrivateProfessions(studentProfile.id)
+    studentPrivateProfile.professions =
+      await this.studentProfessionsAndServices.getStudentPrivateProfessions(studentProfile.id)
 
-    studentPrivateProfile.services = await this.getStudentPrivateServices(studentProfile.id)
+    studentPrivateProfile.services =
+      await this.studentProfessionsAndServices.getStudentPrivateServices(studentProfile.id)
 
     studentPrivateProfile.achievements =
       await this.achievementRepository.getAchievementsByStudentProfileId(studentProfile.id)
@@ -300,435 +294,5 @@ export default class StudentProfileService implements StudentProfileServiceInter
       has_accepted_steewo_charter: true,
     }
     return await this.userRepository.updateUserData(user, updatedCharterAcceptation)
-  }
-
-  public async getStudentViewsCount(user_id: number) {
-    const studentProfile = await this.studentProfileRepository.getStudentProfileByUserId(user_id)
-    if (!studentProfile) {
-      throw new Exception('You are not a student', 401, 'E_UNAUTHORIZED')
-    }
-    const studentProfileViews = await StudentProfileViewRepository.countViews(studentProfile.id)
-    return studentProfileViews
-  }
-
-  public async addViewToStudentProfile(studentProfileId: number, clientProfileId: number) {
-    return await StudentProfileViewRepository.addView(
-      Number(studentProfileId),
-      Number(clientProfileId)
-    )
-  }
-
-  public async getStudentBookmarksCount(user_id: number) {
-    const studentProfile = await this.studentProfileRepository.getStudentProfileByUserId(user_id)
-    if (!studentProfile) {
-      throw new Exception('You are not a student', 401, 'E_UNAUTHORIZED')
-    }
-    return await StudentBookmarksRepository.countBookmarks(studentProfile.id)
-  }
-
-  public async toggleStudentProfileBookmark(studentProfileId: number, clientProfileId: number) {
-    return await StudentBookmarksRepository.toggleBookmark(studentProfileId, clientProfileId)
-  }
-
-  public async isStudentProfileBookmarked(studentProfileId: number, clientProfileId: number) {
-    return await StudentBookmarksRepository.isBookmarked(studentProfileId, clientProfileId)
-  }
-
-  public async addProfessionsToStudentProfile(studentProfileId: number, professions: number[]) {
-    for (const professionId of professions) {
-      // Check if profession exists
-      const profession = await Profession.find(professionId)
-
-      if (profession) {
-        // Check if profession is enabled
-        if (profession.is_enabled) {
-          // Check if profession is not already added by the student
-          if (
-            !(await this.studentProfileAndProfessionRelationRepository.isStudentHasAlreadyThisProfession(
-              studentProfileId,
-              professionId
-            ))
-          ) {
-            // Add profession to student profile
-            await this.studentProfileAndProfessionRelationRepository.addProfessionToStudentProfile(
-              studentProfileId,
-              professionId
-            )
-          }
-        } else {
-          throw new Exception('Profession not enabled', 400, 'E_BAD_REQUEST')
-        }
-      }
-    }
-  }
-
-  public async addServicesToStudentProfile(studentProfileId: number, services: number[]) {
-    for (const serviceId of services) {
-      // Check if service exists
-      const service = await Service.find(serviceId)
-
-      if (service) {
-        // Check if service is enabled
-        if (service.is_enabled) {
-          // Check if service is not already added by the student
-          if (
-            !(await this.studentProfileAndServiceRelationRepository.isStudentHasAlreadyThisService(
-              studentProfileId,
-              serviceId
-            ))
-          ) {
-            // Add service to student profile
-            await this.studentProfileAndServiceRelationRepository.addServiceToStudentProfile(
-              studentProfileId,
-              serviceId
-            )
-          }
-        } else {
-          throw new Exception('Service not enabled', 400, 'E_BAD_REQUEST')
-        }
-      }
-    }
-  }
-
-  public async getStudentPublicProfessions(studentProfileId: number) {
-    return await this.studentProfileAndProfessionRelationRepository.getStudentPublicProfessions(
-      studentProfileId
-    )
-  }
-
-  public async getStudentPrivateProfessions(studentProfileId: number) {
-    return await this.studentProfileAndProfessionRelationRepository.getStudentPrivateProfessions(
-      studentProfileId
-    )
-  }
-
-  public async getStudentPublicServices(studentProfileId: number) {
-    const studentServicesRelations =
-      await this.studentProfileAndServiceRelationRepository.getStudentPublicServices(
-        studentProfileId
-      )
-
-    const studentServices = [] as Service[]
-    for (const studentServicesRelation of studentServicesRelations) {
-      studentServices.push(studentServicesRelation.service)
-    }
-
-    return studentServices
-  }
-
-  public async getStudentPrivateServices(studentProfileId: number) {
-    const studentServicesRelations =
-      await this.studentProfileAndServiceRelationRepository.getStudentPrivateServices(
-        studentProfileId
-      )
-
-    const studentServices = [] as Service[]
-    for (const studentServicesRelation of studentServicesRelations) {
-      studentServices.push(studentServicesRelation.service)
-    }
-
-    return studentServices
-  }
-
-  public async addAchievementsToStudentProfile(
-    studentProfileId: number,
-    achievement: AchievementCreateDTO,
-    main_image_file: MultipartFileContract | null = null,
-    achievement_details: MultipartFileContract[] | [] | null = null
-  ) {
-    if (main_image_file) {
-      achievement.main_image_file = await UploadService.uploadFileTo(
-        main_image_file,
-        this.studentProfilePath + studentProfileId.toString() + this.achievementsSubFolder,
-        'achievement-main-image-' + getDatetimeForFileName()
-      )
-    }
-
-    const createdAchievement = await this.achievementRepository.addAchievementToStudentProfile(
-      studentProfileId,
-      achievement
-    )
-
-    const returnAchievement = {
-      achievement: createdAchievement,
-      details: [] as AchievementDetail[],
-    }
-
-    if (achievement_details) {
-      for (const achievementFile of achievement_details) {
-        const achievementDetailFilepath = await UploadService.uploadFileTo(
-          achievementFile,
-          this.studentProfilePath + studentProfileId.toString() + this.achievementsSubFolder,
-          'achievement-detail-' + getDatetimeForFileName()
-        )
-
-        const newAchievementDetail: AchievementDetailCreateOrUpdateDTO = {
-          achievementId: createdAchievement.id,
-          type: getFileTypeFromExtension(getExtension(achievementDetailFilepath)),
-          file: achievementDetailFilepath,
-        }
-
-        const achievementDetail =
-          await this.achievementRepository.addAchievementDetailToAchievement(newAchievementDetail)
-        returnAchievement.details.push(achievementDetail)
-      }
-    }
-
-    return returnAchievement
-  }
-
-  public async addAchievementDetailsToAchievement(
-    achievementId: number,
-    data: AchievementDetailCreateOrUpdateDTO,
-    achievement_details: MultipartFileContract[] | null = null
-  ) {
-    const returnAchievementDetails = [] as AchievementDetail[]
-    if (achievement_details) {
-      for (const achievementFile of achievement_details) {
-        let newAchievementDetail: AchievementDetailCreateOrUpdateDTO
-
-        const achievementDetailFilepath = await UploadService.uploadFileTo(
-          achievementFile,
-          this.studentProfilePath + achievementId.toString() + this.achievementsSubFolder,
-          'achievement-detail-' + getDatetimeForFileName()
-        )
-        newAchievementDetail = {
-          achievementId: achievementId,
-          type: getFileTypeFromExtension(getExtension(achievementDetailFilepath)),
-          file: achievementDetailFilepath,
-          name: data.name ? data.name : null,
-          caption: data.caption ? data.caption : null,
-        }
-        const achievementDetail =
-          await this.achievementRepository.addAchievementDetailToAchievement(newAchievementDetail)
-        returnAchievementDetails.push(achievementDetail)
-      }
-    } else {
-      let newAchievementDetail = {
-        achievementId: achievementId,
-        type: data.type,
-        value: data.value,
-        name: data.name ? data.name : null,
-        caption: data.caption ? data.caption : null,
-      }
-      const achievementDetail =
-        await this.achievementRepository.addAchievementDetailToAchievement(newAchievementDetail)
-      returnAchievementDetails.push(achievementDetail)
-    }
-
-    return returnAchievementDetails
-  }
-
-  public async updateAchievement(
-    achievementId: number,
-    data: AchievementUpdateDTO,
-    main_image_file: MultipartFileContract | null = null
-  ) {
-    if (main_image_file) {
-      data.main_image_file = await UploadService.uploadFileTo(
-        main_image_file,
-        this.studentProfilePath + achievementId.toString() + this.achievementsSubFolder,
-        'achievement-main-image-' + getDatetimeForFileName()
-      )
-    }
-
-    return await this.achievementRepository.updateAchievement(achievementId, data)
-  }
-
-  public async updateAchievementDetail(
-    achievementDetailId: number,
-    data: AchievementDetailCreateOrUpdateDTO,
-    file: MultipartFileContract | null = null
-  ) {
-    if (file) {
-      data.file = await UploadService.uploadFileTo(
-        file,
-        this.studentProfilePath + achievementDetailId.toString() + this.achievementsSubFolder,
-        'achievement-detail-' + getDatetimeForFileName()
-      )
-      data.type = getFileTypeFromExtension(getExtension(data.file))
-    }
-    return await this.achievementRepository.updateAchievementDetail(achievementDetailId, data)
-  }
-
-  public async deleteAchievement(achievementId: number) {
-    const achievement = await this.achievementRepository.getAchievementById(achievementId)
-    if (!achievement) {
-      throw new Exception('Achievement not found', 404, 'E_NOT_FOUND')
-    }
-    if (achievement.main_image_file) {
-      await UploadService.deleteFile(achievement.main_image_file)
-    }
-    return await this.achievementRepository.deleteAchievement(achievementId)
-  }
-
-  public async deleteAchievementDetail(achievementDetailId: number) {
-    const achievementDetail =
-      await this.achievementRepository.getAchievementDetailById(achievementDetailId)
-    if (!achievementDetail) {
-      throw new Exception('Achievement Detail not found', 404, 'E_NOT_FOUND')
-    }
-    if (achievementDetail.file) {
-      await UploadService.deleteFile(achievementDetail.file)
-    }
-    return await this.achievementRepository.deleteAchievementDetail(achievementDetailId)
-  }
-
-  public async updateAchievementsOrder(reorderedAchievements: AchievementsUpdateOrderDTO[]) {
-    return await this.achievementRepository.updateAchievementsOrder(reorderedAchievements)
-  }
-
-  public async updateAchievementDetailsOrder(
-    reorderedAchievementDetails: AchievementDetailsUpdateOrderDTO[]
-  ) {
-    return await this.achievementRepository.updateAchievementDetailsOrder(
-      reorderedAchievementDetails
-    )
-  }
-
-  public async askProfileValidation(studentProfileId: number) {
-    await this.studentProfileRepository.askProfileValidation(studentProfileId)
-    await StudentMailService.sendStudentProfileValidationRequestMail()
-  }
-
-  public async validateProfile(studentProfileId: number) {
-    const student = await this.studentProfileRepository.getStudentProfileById(studentProfileId)
-    if (!student || !student.firstname) {
-      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
-    }
-
-    await this.studentProfileAndProfessionRelationRepository.acceptAllProfessionsOfAStudent(
-      studentProfileId
-    )
-    await this.studentProfileAndServiceRelationRepository.acceptAllServicesOfAStudent(
-      studentProfileId
-    )
-
-    await this.studentProfileRepository.validateProfile(studentProfileId)
-
-    await NotificationService.createNotification({
-      user_id: student.user_id,
-      title: 'Info Profil',
-      content:
-        "Ton profil a été validé par l'équipe Steewo. Tu peux désormais postuler à des missions.",
-    })
-
-    await StudentMailService.sendStudentProfileValidationAcceptedMail(
-      student.user.email,
-      student.firstname
-    )
-  }
-
-  public async getValidationRequests() {
-    return await this.studentProfileRepository.getValidationRequests()
-  }
-
-  public async rejectProfileValidation(studentProfileId: number, comment: string) {
-    const student = await this.studentProfileRepository.getStudentProfileById(studentProfileId)
-    if (!student || !student.firstname) {
-      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
-    }
-    await this.studentProfileRepository.rejectProfileValidation(studentProfileId)
-
-    await NotificationService.createNotification({
-      user_id: student.user_id,
-      title: 'Info Profil',
-      content: "Ton profil a été refusé par l'équipe Steewo : " + comment,
-    })
-
-    await StudentMailService.sendStudentProfileValidationRejectedMail(
-      student.user.email,
-      student.firstname,
-      comment
-    )
-  }
-
-  public async askNewProfessionValidation(studentProfileId: number, professionId: number) {
-    const student = await this.studentProfileRepository.getStudentProfileById(studentProfileId)
-    if (!student || !student.firstname) {
-      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
-    }
-    const profession = await Profession.find(professionId)
-    if (!profession) {
-      throw new Exception('Profession not found', 404, 'E_NOT_FOUND')
-    }
-
-    await this.studentProfileAndProfessionRelationRepository.askNewProfessionValidation(
-      studentProfileId,
-      professionId
-    )
-
-    await StudentMailService.sendStudentNewProfessionValidationRequestMail()
-  }
-
-  public async getProfessionsValidationRequests() {
-    return await this.studentProfileAndProfessionRelationRepository.getProfessionsValidationRequests()
-  }
-
-  public async rejectNewProfessionValidation(
-    studentProfileId: number,
-    professionId: number,
-    comment: string
-  ) {
-    const student = await this.studentProfileRepository.getStudentProfileById(studentProfileId)
-    if (!student || !student.firstname) {
-      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
-    }
-    const profession = await Profession.find(professionId)
-    if (!profession) {
-      throw new Exception('Profession not found', 404, 'E_NOT_FOUND')
-    }
-
-    await this.studentProfileAndProfessionRelationRepository.rejectNewProfessionValidation(
-      studentProfileId,
-      professionId
-    )
-
-    await NotificationService.createNotification({
-      user_id: student.user_id,
-      title: 'Info Profil',
-      content:
-        'Ton nouveau métier ' + profession.name + " a été refusé par l'équipe Steewo : " + comment,
-    })
-
-    await StudentMailService.sendStudentNewProfessionValidationRejectedMail(
-      student.user.email,
-      student.firstname,
-      profession.name,
-      comment
-    )
-  }
-
-  public async validateNewProfession(studentProfileId: number, professionId: number) {
-    const student = await this.studentProfileRepository.getStudentProfileById(studentProfileId)
-    if (!student || !student.firstname) {
-      throw new Exception('Student profile not found', 404, 'E_NOT_FOUND')
-    }
-    const profession = await Profession.find(professionId)
-    if (!profession) {
-      throw new Exception('Profession not found', 404, 'E_NOT_FOUND')
-    }
-
-    await this.studentProfileAndProfessionRelationRepository.validateNewProfession(
-      studentProfileId,
-      professionId
-    )
-
-    await this.studentProfileAndServiceRelationRepository.validateServicesOfTheNewProfession(
-      studentProfileId,
-      professionId
-    )
-
-    await NotificationService.createNotification({
-      user_id: student.user_id,
-      title: 'Info Profil',
-      content: 'Ton nouveau métier ' + profession.name + " a été validé par l'équipe Steewo.",
-    })
-
-    await StudentMailService.sendStudentNewProfessionValidationAcceptedMail(
-      student.user.email,
-      student.firstname,
-      profession.name
-    )
   }
 }
