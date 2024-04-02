@@ -23,7 +23,7 @@ export class MailJetSender {
         {
           From: {
             Email: data.from,
-            Name: 'Ne pas répondre - Steewo',
+            Name: 'Plateforme Steewo',
           },
           To: [
             {

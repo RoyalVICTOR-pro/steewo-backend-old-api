@@ -1,8 +1,19 @@
 // SERVICES
 import MailService from '@Services/MailServices/MailService'
+// REPOSITORIES
+import UserRepository from '@DALRepositories/UserRepository'
 
 export default class StudentMailService extends MailService {
   private static emailsViewPath: string = 'emails/students/'
+
+  private static async userHasEnabledEmailNotifications(email: string): Promise<boolean> {
+    const userRepository = new UserRepository()
+    const user = await userRepository.getUserByEmail(email)
+    if (!user) {
+      return false
+    }
+    return user.has_enabled_email_notifications
+  }
 
   public static async sendStudentEmailVerificationMail(
     email: string,
@@ -40,10 +51,13 @@ export default class StudentMailService extends MailService {
       },
     }
 
-    await this.sendMail(options)
+    if (await this.userHasEnabledEmailNotifications(email)) {
+      await this.sendMail(options)
+    }
   }
 
-  public static sendStudentProfileValidationRequestMail() {
+  // TO ADMIN
+  public static async sendStudentProfileValidationRequestMail() {
     const options = {
       from: this.emailSender,
       to: this.validationAdminEmail,
@@ -54,7 +68,7 @@ export default class StudentMailService extends MailService {
       },
     }
 
-    this.sendMail(options)
+    await this.sendMail(options)
   }
 
   public static async sendStudentProfileValidationAcceptedMail(email: string, firstname: string) {
@@ -68,7 +82,9 @@ export default class StudentMailService extends MailService {
       },
     }
 
-    await this.sendMail(options)
+    if (await this.userHasEnabledEmailNotifications(email)) {
+      await this.sendMail(options)
+    }
   }
 
   public static async sendStudentNewProfessionValidationRejectedMail(
@@ -89,9 +105,12 @@ export default class StudentMailService extends MailService {
       },
     }
 
-    await this.sendMail(options)
+    if (await this.userHasEnabledEmailNotifications(email)) {
+      await this.sendMail(options)
+    }
   }
 
+  // TO ADMIN
   public static async sendStudentNewProfessionValidationRequestMail() {
     const options = {
       from: this.emailSender,
@@ -103,7 +122,7 @@ export default class StudentMailService extends MailService {
       },
     }
 
-    this.sendMail(options)
+    await this.sendMail(options)
   }
 
   public static async sendStudentNewProfessionValidationAcceptedMail(
@@ -122,6 +141,8 @@ export default class StudentMailService extends MailService {
       },
     }
 
-    await this.sendMail(options)
+    if (await this.userHasEnabledEmailNotifications(email)) {
+      await this.sendMail(options)
+    }
   }
 }
