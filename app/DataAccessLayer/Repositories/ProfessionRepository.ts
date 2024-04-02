@@ -15,6 +15,11 @@ export default class ProfessionRepository implements ProfessionRepositoryInterfa
     return professions
   }
 
+  public async listPublicProfessions(): Promise<Profession[]> {
+    const professions = await Profession.query().where('is_enabled', true).orderBy('name', 'asc')
+    return professions
+  }
+
   public async getProfessionById(id: number): Promise<Profession> {
     const profession = await Profession.findOrFail(id)
     return profession

@@ -250,13 +250,25 @@ test.group('Professional Client Profile Creation Process', (group) => {
 
     assert.exists(body)
   })
-  test('Get all professions with logged simple user role with is_valid_email = 0', async ({
+
+  test('Get all private professions with logged simple user role with is_valid_email = 0', async ({
     client,
   }) => {
     await fakeClient.loginFakeClient()
     const response = await client.get('/professions').header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(401)
   })
+
+  test('Get all public professions with logged simple user role with is_valid_email = 0', async ({
+    client,
+  }) => {
+    await fakeClient.loginFakeClient()
+    const response = await client
+      .get('/public-professions')
+      .header('Cookie', fakeClient.tokenCookie)
+    response.assertStatus(401)
+  })
+
   test('Validate Client Email with wrong token', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
       .get('/validate-email/123456789/' + fakeClient.email)
@@ -264,6 +276,7 @@ test.group('Professional Client Profile Creation Process', (group) => {
 
     assert.exists(body)
   })
+
   test('Validate Client Email with a good token', async ({ assert }) => {
     const { body } = await supertest(BASE_URL)
       .get(
@@ -273,10 +286,20 @@ test.group('Professional Client Profile Creation Process', (group) => {
 
     assert.exists(body)
   })
-  test('Get all professions with logged simple user role with is_valid_email = 1', async ({
+
+  test('Get all private professions with logged simple user role with is_valid_email = 1', async ({
     client,
   }) => {
     const response = await client.get('/professions').header('Cookie', fakeClient.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Get all public professions with logged simple user role with is_valid_email = 1', async ({
+    client,
+  }) => {
+    const response = await client
+      .get('/public-professions')
+      .header('Cookie', fakeClient.tokenCookie)
     response.assertStatus(200)
   })
 })

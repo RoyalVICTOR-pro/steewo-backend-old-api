@@ -264,11 +264,22 @@ test.group('Student Profile Creation Process', (group) => {
       assert.deepEqual(studentUserInfos.cgv_acceptation, DateTime.fromSQL('2024-08-24 11:48:12'))
     }
   })
-  test('Get all professions with logged simple user role with is_valid_email = 0', async ({
+
+  test('Get all private professions with logged simple user role with is_valid_email = 0', async ({
     client,
   }) => {
     await fakeStudent.loginFakeStudent()
     const response = await client.get('/professions').header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Get all public professions with logged simple user role with is_valid_email = 0', async ({
+    client,
+  }) => {
+    await fakeStudent.loginFakeStudent()
+    const response = await client
+      .get('/public-professions')
+      .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(401)
   })
   test('Validate Student Email with wrong token', async ({ assert }) => {
@@ -290,10 +301,19 @@ test.group('Student Profile Creation Process', (group) => {
 
     assert.exists(body)
   })
-  test('Get all professions with logged simple user role with is_valid_email = 1', async ({
+  test('Get all private professions with logged simple user role with is_valid_email = 1', async ({
     client,
   }) => {
     const response = await client.get('/professions').header('Cookie', fakeStudent.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Get all public professions with logged simple user role with is_valid_email = 1', async ({
+    client,
+  }) => {
+    const response = await client
+      .get('/public-professions')
+      .header('Cookie', fakeStudent.tokenCookie)
     response.assertStatus(200)
   })
 })

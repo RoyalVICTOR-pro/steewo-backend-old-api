@@ -22,6 +22,11 @@ export default class ProfessionsController {
     return response.ok(professions)
   }
 
+  public async getAllPublicProfessions({ response }: HttpContextContract) {
+    const professions = await this.professionService.listPublicProfessions()
+    return response.ok(professions)
+  }
+
   public async getProfessionById({ response, params }: HttpContextContract) {
     const profession = await this.professionService.getProfessionById(params.id)
     return response.ok(profession)

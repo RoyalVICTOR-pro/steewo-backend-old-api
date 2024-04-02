@@ -3,9 +3,12 @@ import Role from '@Enums/Roles'
 
 Route.group(() => {
   // PROFESSIONS
+  Route.get('/public-professions', 'ProfessionsController.getAllPublicProfessions')
+    .as('getAllPublicProfessions')
+    .middleware(['auth', 'isValidEmail'])
   Route.get('/professions', 'ProfessionsController.getAllProfessions')
     .as('getAllProfessions')
-    .middleware(['auth', 'isValidEmail'])
+    .middleware(['auth', 'isValidEmail', `role:${[Role.ADMIN]}`])
   Route.get('/professions/:id', 'ProfessionsController.getProfessionById')
     .as('getProfessionById')
     .middleware(['auth', 'isValidEmail'])

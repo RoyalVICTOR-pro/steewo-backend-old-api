@@ -24,6 +24,10 @@ export default class ProfessionService implements ProfessionServiceInterface {
     return await this.professionRepository.listProfessions()
   }
 
+  public async listPublicProfessions() {
+    return await this.professionRepository.listPublicProfessions()
+  }
+
   public async getProfessionById(id: number) {
     return await this.professionRepository.getProfessionById(id)
   }

@@ -86,18 +86,31 @@ test.group('ProfessionRoutes', (group) => {
     assert.equal(response.body().image_file, 'professions/images/profession-test-2.jpg')
   })
 
-  test('Get all professions with logged simple user role with is_valid_email = 0', async ({
+  test('Get all private professions with logged simple user role with is_valid_email = 0', async ({
     client,
   }) => {
     const response = await client.get('/professions').header('Cookie', fakeUser.tokenCookie)
     response.assertStatus(401)
   })
-  test('Get all professions with logged simple user role with is_valid_email = 1', async ({
-    assert,
+
+  test('Get all public professions with logged simple user role with is_valid_email = 0', async ({
+    client,
+  }) => {
+    const response = await client.get('/public-professions').header('Cookie', fakeUser.tokenCookie)
+    response.assertStatus(401)
+  })
+  test('Get all private professions with logged simple user role with is_valid_email = 1', async ({
     client,
   }) => {
     await fakeUser.validateUserEmail()
     const response = await client.get('/professions').header('Cookie', fakeUser.tokenCookie)
+    response.assertStatus(401)
+  })
+  test('Get all public professions with logged simple user role with is_valid_email = 1', async ({
+    assert,
+    client,
+  }) => {
+    const response = await client.get('/public-professions').header('Cookie', fakeUser.tokenCookie)
     response.assertStatus(200)
 
     assert.isTrue(
