@@ -92,7 +92,7 @@ export default class StudentMailService extends MailService {
     await this.sendMail(options)
   }
 
-  public static sendStudentNewProfessionValidationRequestMail() {
+  public static async sendStudentNewProfessionValidationRequestMail() {
     const options = {
       from: this.emailSender,
       to: this.validationAdminEmail,

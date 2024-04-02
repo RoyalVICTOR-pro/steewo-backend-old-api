@@ -335,9 +335,9 @@ export default class StudentProfileService implements StudentProfileServiceInter
   }
 
   public async addProfessionsToStudentProfile(studentProfileId: number, professions: number[]) {
-    for (let i = 0; i < professions.length; i++) {
+    for (const professionId of professions) {
       // Check if profession exists
-      const profession = await Profession.find(professions[i])
+      const profession = await Profession.find(professionId)
 
       if (profession) {
         // Check if profession is enabled
@@ -346,13 +346,13 @@ export default class StudentProfileService implements StudentProfileServiceInter
           if (
             !(await this.studentProfileAndProfessionRelationRepository.isStudentHasAlreadyThisProfession(
               studentProfileId,
-              professions[i]
+              professionId
             ))
           ) {
             // Add profession to student profile
             await this.studentProfileAndProfessionRelationRepository.addProfessionToStudentProfile(
               studentProfileId,
-              professions[i]
+              professionId
             )
           }
         } else {
@@ -360,13 +360,12 @@ export default class StudentProfileService implements StudentProfileServiceInter
         }
       }
     }
-    return
   }
 
   public async addServicesToStudentProfile(studentProfileId: number, services: number[]) {
-    for (let i = 0; i < services.length; i++) {
+    for (const serviceId of services) {
       // Check if service exists
-      const service = await Service.find(services[i])
+      const service = await Service.find(serviceId)
 
       if (service) {
         // Check if service is enabled
@@ -375,13 +374,13 @@ export default class StudentProfileService implements StudentProfileServiceInter
           if (
             !(await this.studentProfileAndServiceRelationRepository.isStudentHasAlreadyThisService(
               studentProfileId,
-              services[i]
+              serviceId
             ))
           ) {
             // Add service to student profile
             await this.studentProfileAndServiceRelationRepository.addServiceToStudentProfile(
               studentProfileId,
-              services[i]
+              serviceId
             )
           }
         } else {
@@ -389,7 +388,6 @@ export default class StudentProfileService implements StudentProfileServiceInter
         }
       }
     }
-    return
   }
 
   public async getStudentPublicProfessions(studentProfileId: number) {
@@ -411,8 +409,8 @@ export default class StudentProfileService implements StudentProfileServiceInter
       )
 
     const studentServices = [] as Service[]
-    for (let i = 0; i < studentServicesRelations.length; i++) {
-      studentServices.push(studentServicesRelations[i].service)
+    for (const studentServicesRelation of studentServicesRelations) {
+      studentServices.push(studentServicesRelation.service)
     }
 
     return studentServices
@@ -425,8 +423,8 @@ export default class StudentProfileService implements StudentProfileServiceInter
       )
 
     const studentServices = [] as Service[]
-    for (let i = 0; i < studentServicesRelations.length; i++) {
-      studentServices.push(studentServicesRelations[i].service)
+    for (const studentServicesRelation of studentServicesRelations) {
+      studentServices.push(studentServicesRelation.service)
     }
 
     return studentServices
@@ -457,9 +455,9 @@ export default class StudentProfileService implements StudentProfileServiceInter
     }
 
     if (achievement_details) {
-      for (let i = 0; i < achievement_details.length; i++) {
+      for (const achievementFile of achievement_details) {
         const achievementDetailFilepath = await UploadService.uploadFileTo(
-          achievement_details[i],
+          achievementFile,
           this.studentProfilePath + studentProfileId.toString() + this.achievementsSubFolder,
           'achievement-detail-' + getDatetimeForFileName()
         )
@@ -486,11 +484,11 @@ export default class StudentProfileService implements StudentProfileServiceInter
   ) {
     const returnAchievementDetails = [] as AchievementDetail[]
     if (achievement_details) {
-      for (let i = 0; i < achievement_details.length; i++) {
+      for (const achievementFile of achievement_details) {
         let newAchievementDetail: AchievementDetailCreateOrUpdateDTO
 
         const achievementDetailFilepath = await UploadService.uploadFileTo(
-          achievement_details[i],
+          achievementFile,
           this.studentProfilePath + achievementId.toString() + this.achievementsSubFolder,
           'achievement-detail-' + getDatetimeForFileName()
         )
