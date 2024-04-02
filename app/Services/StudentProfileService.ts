@@ -51,6 +51,7 @@ export default class StudentProfileService implements StudentProfileServiceInter
       role: data.role,
       privacy_acceptation: data.privacy_acceptation,
       cgv_acceptation: data.cgv_acceptation,
+      has_enabled_email_notifications: true,
     }
     const user = await this.userRepository.getUserById(data.user_id)
     if (!user) {

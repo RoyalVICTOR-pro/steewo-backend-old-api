@@ -66,7 +66,7 @@ export default class User extends compose(BaseModel, SoftDeletes) {
   public password_reset_token_expiration_datetime: DateTime | null
 
   @column()
-  public has_enabled_notifications: boolean
+  public has_enabled_email_notifications: boolean
 
   @column()
   public has_accepted_steewo_charter: boolean
