@@ -6,6 +6,8 @@ import ProfessionCreateOrUpdateDTO from '@DTO/ProfessionCreateOrUpdateDTO'
 import ProfessionStatusUpdateDTO from '@DTO/ProfessionStatusUpdateDTO'
 // INTERFACES
 import ProfessionServiceInterface from '@Services/Interfaces/ProfessionServiceInterface'
+// MODELS
+import Profession from '@Models/Profession'
 // REPOSITORIES
 import ProfessionRepository from '@DALRepositories/ProfessionRepository'
 // SERVICES
@@ -47,6 +49,32 @@ export default class ProfessionService implements ProfessionServiceInterface {
     return await this.professionRepository.createProfession(data)
   }
 
+  private async handlePictoFile(
+    data: ProfessionCreateOrUpdateDTO,
+    pictoFile: MultipartFileContract | null,
+    oldProfession: Profession
+  ) {
+    if (pictoFile) {
+      if (oldProfession.picto_file) {
+        await UploadService.deleteFile(oldProfession.picto_file)
+      }
+      data.picto_file = await UploadService.uploadFileTo(pictoFile, this.pictoPath, data.name)
+    }
+  }
+
+  private async handleImageFile(
+    data: ProfessionCreateOrUpdateDTO,
+    imageFile: MultipartFileContract | null,
+    oldProfession: Profession
+  ) {
+    if (imageFile) {
+      if (oldProfession.image_file) {
+        await UploadService.deleteFile(oldProfession.image_file)
+      }
+      data.image_file = await UploadService.uploadFileTo(imageFile, this.imagePath, data.name)
+    }
+  }
+
   public async updateProfessionById(
     idToUpdate: number,
     data: ProfessionCreateOrUpdateDTO,
@@ -55,20 +83,8 @@ export default class ProfessionService implements ProfessionServiceInterface {
   ) {
     const oldProfession = await this.professionRepository.getProfessionById(idToUpdate)
 
-    if (pictoFile || imageFile) {
-      if (pictoFile) {
-        if (oldProfession.picto_file) {
-          await UploadService.deleteFile(oldProfession.picto_file)
-        }
-        data.picto_file = await UploadService.uploadFileTo(pictoFile, this.pictoPath, data.name)
-      }
-      if (imageFile) {
-        if (oldProfession.image_file) {
-          await UploadService.deleteFile(oldProfession.image_file)
-        }
-        data.image_file = await UploadService.uploadFileTo(imageFile, this.imagePath, data.name)
-      }
-    }
+    await this.handlePictoFile(data, pictoFile, oldProfession)
+    await this.handleImageFile(data, imageFile, oldProfession)
 
     if (oldProfession.name !== data.name && oldProfession.picto_file && !pictoFile) {
       data.picto_file = await UploadService.renameFile(oldProfession.picto_file, data.name)
