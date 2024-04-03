@@ -7,11 +7,14 @@ import {
   beforeDelete,
   hasMany,
   HasMany,
+  ManyToMany,
+  manyToMany,
 } from '@ioc:Adonis/Lucid/Orm'
 import { compose } from '@ioc:Adonis/Core/Helpers'
 import { DateTime } from 'luxon'
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 // MODELS
+import Mission from '@Models/Mission'
 import Profession from '@Models/Profession'
 import ServicesFormField from '@Models/ServicesFormField'
 import StudentProfilesHasServices from '@Models/StudentProfilesHasServices'
@@ -52,6 +55,15 @@ export default class Service extends compose(BaseModel, SoftDeletes) {
 
   @hasMany(() => StudentProfilesHasServices)
   public studentProfilesHasServices: HasMany<typeof StudentProfilesHasServices>
+
+  @manyToMany(() => Mission, {
+    pivotTable: 'missions_has_services',
+    localKey: 'id',
+    pivotForeignKey: 'service_id',
+    relatedKey: 'id',
+    pivotRelatedForeignKey: 'mission_id',
+  })
+  public missions: ManyToMany<typeof Mission>
 
   @beforeDelete()
   public static async deleteFormFields(service: Service) {

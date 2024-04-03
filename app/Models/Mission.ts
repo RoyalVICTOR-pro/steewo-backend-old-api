@@ -1,10 +1,11 @@
 // ADONIS
-import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, hasMany, HasMany, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import { compose } from '@ioc:Adonis/Core/Helpers'
+import { DateTime } from 'luxon'
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 // MODELS
 import MissionFile from '@Models/MissionFile'
+import Service from '@Models/Service'
 
 export default class Mission extends compose(BaseModel, SoftDeletes) {
   @column({ isPrimary: true })
@@ -68,4 +69,13 @@ export default class Mission extends compose(BaseModel, SoftDeletes) {
     foreignKey: 'missions_id',
   })
   public files: HasMany<typeof MissionFile>
+
+  @manyToMany(() => Service, {
+    pivotTable: 'missions_has_services',
+    localKey: 'id',
+    pivotForeignKey: 'mission_id',
+    relatedKey: 'id',
+    pivotRelatedForeignKey: 'service_id',
+  })
+  public services: ManyToMany<typeof Service>
 }
