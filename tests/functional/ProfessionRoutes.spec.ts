@@ -158,10 +158,17 @@ test.group('ProfessionRoutes', (group) => {
     assert.equal(await Drive.exists('professions/images/profession-test-3.jpg'), true)
   })
 
-  test('Get profession 2 by ID with logged simple user role', async ({ assert, client }) => {
+  test('Get profession 2 by ID with logged simple user role', async ({ client }) => {
     const response = await client
       .get('/professions/' + secondProfessionId)
       .header('Cookie', fakeUser.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Get profession 2 by ID with admin role', async ({ assert, client }) => {
+    const response = await client
+      .get('/professions/' + secondProfessionId)
+      .header('Cookie', fakeUser.adminTokenCookie)
     response.assertStatus(200)
 
     assert.containsSubset(response.body(), {
@@ -169,6 +176,12 @@ test.group('ProfessionRoutes', (group) => {
       name: 'Profession Test 3',
       is_enabled: 0,
     })
+  })
+  test('Get profession 2 by ID with logged simple user', async ({ client }) => {
+    const response = await client
+      .get('/public-professions/' + secondProfessionId)
+      .header('Cookie', fakeUser.tokenCookie)
+    response.assertStatus(404)
   })
 
   test('Update the second profession status with valid data with admin role', async ({
@@ -190,7 +203,7 @@ test.group('ProfessionRoutes', (group) => {
     client,
   }) => {
     const response = await client
-      .get('/professions/' + secondProfessionId)
+      .get('/public-professions/' + secondProfessionId)
       .header('Cookie', fakeUser.tokenCookie)
     response.assertStatus(200)
 

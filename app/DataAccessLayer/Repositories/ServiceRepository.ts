@@ -14,8 +14,30 @@ export default class ServiceRepository implements ServiceRepositoryInterface {
     return services
   }
 
+  public async listPublicServicesByProfession(professionId: number): Promise<Service[]> {
+    const services = await Service.query()
+      .join('professions', 'services.profession_id', 'professions.id')
+      .where('profession_id', professionId)
+      .where('services.is_enabled', true)
+      .where('professions.is_enabled', true)
+      .orderBy('services.name')
+    console.log('services :>> ', services)
+    return services
+  }
+
   public async getServiceById(id: number): Promise<Service> {
     const service = await Service.findOrFail(id)
+    return service
+  }
+
+  public async getPublicServiceById(id: number): Promise<Service> {
+    const service = await Service.query()
+      .select('services.*')
+      .join('professions', 'services.profession_id', 'professions.id')
+      .where('services.id', id)
+      .where('services.is_enabled', true)
+      .where('professions.is_enabled', true)
+      .firstOrFail()
     return service
   }
 

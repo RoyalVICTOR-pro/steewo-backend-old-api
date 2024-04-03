@@ -34,6 +34,10 @@ export default class ProfessionService implements ProfessionServiceInterface {
     return await this.professionRepository.getProfessionById(id)
   }
 
+  public async getPublicProfessionById(id: number) {
+    return await this.professionRepository.getPublicProfessionById(id)
+  }
+
   public async createProfession(
     data: ProfessionCreateOrUpdateDTO,
     pictoFile: MultipartFileContract | null = null,

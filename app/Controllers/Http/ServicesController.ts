@@ -22,8 +22,18 @@ export default class ServicesController {
     return response.ok(services)
   }
 
+  public async getAllPublicServicesByProfession({ response, params }: HttpContextContract) {
+    const services = await this.serviceService.listPublicServicesByProfession(params.id_profession)
+    return response.ok(services)
+  }
+
   public async getServiceById({ response, params }: HttpContextContract) {
     const service = await this.serviceService.getServiceById(params.id)
+    return response.ok(service)
+  }
+
+  public async getPublicServiceById({ response, params }: HttpContextContract) {
+    const service = await this.serviceService.getPublicServiceById(params.id)
     return response.ok(service)
   }
 
