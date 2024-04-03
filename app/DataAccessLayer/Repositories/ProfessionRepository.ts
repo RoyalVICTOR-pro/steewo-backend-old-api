@@ -25,6 +25,14 @@ export default class ProfessionRepository implements ProfessionRepositoryInterfa
     return profession
   }
 
+  public async getPublicProfessionById(id: number): Promise<Profession> {
+    const profession = await Profession.query()
+      .where('is_enabled', true)
+      .where('id', id)
+      .firstOrFail()
+    return profession
+  }
+
   public async createProfession(data: ProfessionCreateOrUpdateDTO): Promise<Profession> {
     const profession = new Profession()
     profession.merge(data)

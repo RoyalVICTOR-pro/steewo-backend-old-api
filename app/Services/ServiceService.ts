@@ -25,8 +25,16 @@ export default class ServiceService implements ServiceServiceInterface {
     return await this.serviceRepository.listServicesByProfession(professionId)
   }
 
+  public async listPublicServicesByProfession(professionId: number) {
+    return await this.serviceRepository.listPublicServicesByProfession(professionId)
+  }
+
   public async getServiceById(id: number) {
     return await this.serviceRepository.getServiceById(id)
+  }
+
+  public async getPublicServiceById(id: number) {
+    return await this.serviceRepository.getPublicServiceById(id)
   }
 
   public async createService(

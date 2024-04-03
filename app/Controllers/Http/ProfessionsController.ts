@@ -32,6 +32,11 @@ export default class ProfessionsController {
     return response.ok(profession)
   }
 
+  public async getPublicProfessionById({ response, params }: HttpContextContract) {
+    const profession = await this.professionService.getPublicProfessionById(params.id)
+    return response.ok(profession)
+  }
+
   public async createProfession({ request, response }: HttpContextContract) {
     const data = await request.validate(ProfessionCreateValidator)
 

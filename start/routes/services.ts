@@ -5,9 +5,21 @@ Route.group(() => {
   // SERVICES
   Route.get('/professions/:id_profession/services', 'ServicesController.getAllServicesByProfession')
     .as('getAllServicesByProfession')
+    .middleware(['auth', 'isValidEmail', `role:${[Role.ADMIN]}`])
+  Route.get(
+    '/public-professions/:id_profession/public-services',
+    'ServicesController.getAllPublicServicesByProfession'
+  )
+    .as('getAllPublicServicesByProfession')
     .middleware(['auth', 'isValidEmail'])
   Route.get('/professions/:id_profession/services/:id', 'ServicesController.getServiceById')
     .as('getServiceById')
+    .middleware(['auth', 'isValidEmail', `role:${[Role.ADMIN]}`])
+  Route.get(
+    '/public-professions/:id_profession/public-services/:id',
+    'ServicesController.getPublicServiceById'
+  )
+    .as('getPublicServiceById')
     .middleware(['auth', 'isValidEmail'])
   Route.post('/professions/:id_profession/services', 'ServicesController.createService')
     .as('createService')

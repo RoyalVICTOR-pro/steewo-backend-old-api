@@ -8,6 +8,7 @@ import Service from '@Models/Service'
 
 export default interface ServiceServiceInterface {
   listServicesByProfession(professionId: number): Promise<Service[]>
+  listPublicServicesByProfession(professionId: number): Promise<Service[]>
   getServiceById(id: number): Promise<Service>
   createService(
     data: ServiceCreateOrUpdateDTO,

@@ -116,14 +116,20 @@ test.group('Services Management Routes Testing', (group) => {
     assert.equal(response.body().image_file, 'services/images/service-test-2.jpg')
   })
 
-  test('Get all services for a profession with logged simple user role', async ({
-    assert,
+  test('Get all private services for a profession with logged simple user role', async ({
     client,
   }) => {
     await fakeUser.validateUserEmail()
     const response = await client
       .get('professions/' + professionIdForTest + '/services')
       .header('Cookie', fakeUser.tokenCookie)
+    response.assertStatus(401)
+  })
+  test('Get all private services for a profession with admin role', async ({ assert, client }) => {
+    await fakeUser.validateUserEmail()
+    const response = await client
+      .get('professions/' + professionIdForTest + '/services')
+      .header('Cookie', fakeUser.adminTokenCookie)
     response.assertStatus(200)
 
     assert.isTrue(
@@ -168,10 +174,24 @@ test.group('Services Management Routes Testing', (group) => {
     assert.equal(await Drive.exists('services/images/service-test-3.jpg'), true)
   })
 
-  test('Get service 2 by ID with logged simple user role', async ({ assert, client }) => {
+  test('Get service 2 by ID with logged simple user role', async ({ client }) => {
     const response = await client
       .get('professions/' + professionIdForTest + '/services/' + secondServiceId)
       .header('Cookie', fakeUser.tokenCookie)
+    response.assertStatus(401)
+  })
+
+  test('Get service 2 by ID with logged simple user role', async ({ client }) => {
+    const response = await client
+      .get('public-professions/' + professionIdForTest + '/public-services/' + secondServiceId)
+      .header('Cookie', fakeUser.tokenCookie)
+    response.assertStatus(404)
+  })
+
+  test('Get service 2 by ID with admin role', async ({ assert, client }) => {
+    const response = await client
+      .get('professions/' + professionIdForTest + '/services/' + secondServiceId)
+      .header('Cookie', fakeUser.adminTokenCookie)
     response.assertStatus(200)
 
     assert.containsSubset(response.body(), {
@@ -203,7 +223,7 @@ test.group('Services Management Routes Testing', (group) => {
     client,
   }) => {
     const response = await client
-      .get('professions/' + professionIdForTest + '/services/' + secondServiceId)
+      .get('public-professions/' + professionIdForTest + '/public-services/' + secondServiceId)
       .header('Cookie', fakeUser.tokenCookie)
     response.assertStatus(200)
 
@@ -332,7 +352,7 @@ test.group('Services Management Routes Testing', (group) => {
   }) => {
     const response = await client
       .get('professions/' + professionIdForTest + '/services')
-      .header('Cookie', fakeUser.tokenCookie)
+      .header('Cookie', fakeUser.adminTokenCookie)
     response.assertStatus(200)
 
     assert.isFalse(
