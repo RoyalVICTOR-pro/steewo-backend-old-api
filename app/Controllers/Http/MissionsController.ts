@@ -1,9 +1,16 @@
+// ADONIS
 import { inject } from '@adonisjs/core/build/standalone'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+// DTO
+import MissionCreateDTO from '@DTO/MissionCreateDTO'
+import AddServiceToMissionDTO from '@DTO/AddServiceToMissionDTO'
+// ENUMS
+import MissionStatus from '@Enums/MissionStatus'
+// SERVICES
 import MissionService from '@Services/MissionService'
+// VALIDATORS
 import MissionCreateValidator from '@Validators/MissionCreateValidator'
-import MissionCreateDTO from 'App/DataAccessLayer/DTO/MissionCreateDTO'
-import MissionStatus from 'App/Enums/MissionStatus'
+import AddServiceToMissionValidator from '@Validators/AddServiceToMissionValidator'
 
 @inject()
 export default class MissionsController {
@@ -23,5 +30,21 @@ export default class MissionsController {
 
     const mission = await this.missionService.createMission(newMission)
     return response.created(mission)
+  }
+
+  public async addServiceToMission({ request, params, response }: HttpContextContract) {
+    const data = await request.validate(AddServiceToMissionValidator)
+    // TODO : Quid des fichiers ? Les champs pouvant contenir des fichiers ou du texte, on ne peut pas les traiter de la même manière
+    // TODO : Il faudra probablement créer un validator custom pour gérer le double cas de figure soit string, soit file
+
+    const serviceForMission: AddServiceToMissionDTO = {
+      mission_id: params.mission_id,
+      service_id: data.service_id,
+      serviceInfos: data.serviceInfos,
+    }
+
+    await this.missionService.addServiceToMission(serviceForMission)
+
+    return response.ok('Service added to mission.')
   }
 }
