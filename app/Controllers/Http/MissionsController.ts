@@ -12,11 +12,11 @@ export default class MissionsController {
     this.missionService = missionService
   }
 
-  public async createMission({ request, response }: HttpContextContract) {
+  public async createMission({ request, params, response }: HttpContextContract) {
     const data = await request.validate(MissionCreateValidator)
 
     const newMission: MissionCreateDTO = {
-      clientProfilesId: request.param('client_profile_id'),
+      clientProfilesId: params.client_profile_id,
       name: data.name,
       status: MissionStatus.CREATION_IN_PROGRESS_BY_CLIENT,
     }
