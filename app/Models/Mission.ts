@@ -3,6 +3,8 @@ import { BaseModel, column, hasMany, HasMany, ManyToMany, manyToMany } from '@io
 import { compose } from '@ioc:Adonis/Core/Helpers'
 import { DateTime } from 'luxon'
 import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
+// ENUMS
+import MissionStatus from '@Enums/MissionStatus'
 // MODELS
 import MissionFile from '@Models/MissionFile'
 import Service from '@Models/Service'
@@ -18,40 +20,40 @@ export default class Mission extends compose(BaseModel, SoftDeletes) {
   public name: string
 
   @column()
-  public description: string
+  public description: string | null
 
   @column()
-  public messageForStudent: string
+  public messageForStudent: string | null
 
   @column()
-  public status: string
+  public status: MissionStatus
 
   @column()
-  public engagementAcceptation: number
+  public engagementAcceptation: number | null
 
   @column.date()
-  public plannedDueDate: DateTime
+  public plannedDueDate: DateTime | null
 
   @column()
-  public plannedRoundTripsNumber: number
+  public plannedRoundTripsNumber: number | null
 
   @column()
-  public price: number
+  public price: number | null
 
   @column()
-  public steewoCommission: number
+  public steewoCommission: number | null
 
   @column()
-  public paymentStatus: number
+  public paymentStatus: number | null
 
   @column()
-  public studentInvoicePath: string
+  public studentInvoicePath: string | null
 
   @column()
-  public clientInvoicePath: string
+  public clientInvoicePath: string | null
 
   @column()
-  public numberOfViews: number
+  public numberOfViews: number | null
 
   @column()
   public hasBeenCreatedByStudent: boolean

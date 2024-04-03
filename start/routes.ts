@@ -15,6 +15,7 @@ Route.get('/docs', async () => {
 import './routes/auth'
 import './routes/clients'
 import './routes/formfields'
+import './routes/missions'
 import './routes/notifications'
 import './routes/professions'
 import './routes/services'

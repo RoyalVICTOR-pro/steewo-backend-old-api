@@ -19,7 +19,7 @@ export default class extends BaseSchema {
       table.integer('payment_status').nullable()
       table.string('student_invoice_path', 255).nullable()
       table.string('client_invoice_path', 255).nullable()
-      table.integer('number_of_views').nullable()
+      table.integer('number_of_views').defaultTo(0)
       table.boolean('has_been_created_by_student').defaultTo(false)
 
       table
