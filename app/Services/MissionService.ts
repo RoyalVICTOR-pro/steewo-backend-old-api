@@ -5,10 +5,16 @@ import MissionCreateDTO from 'App/DataAccessLayer/DTO/MissionCreateDTO'
 import AddServiceToMissionDTO from 'App/DataAccessLayer/DTO/AddServiceToMissionDTO'
 // REPOSITORIS
 import MissionRepository from '@DALRepositories/MissionRepository'
+// SERVICES
+import UploadService from '@Services/UploadService'
+// UTILS
+import { getDatetimeForFileName } from '@Utils/Various'
 
 @inject()
 export default class MissionService {
   private missionRepository: MissionRepository
+  private readonly clientMissionPath = 'clients/missions/'
+  private readonly serviceSubFolder = '/service/'
 
   constructor(missionRepository: MissionRepository) {
     this.missionRepository = missionRepository
@@ -19,9 +25,22 @@ export default class MissionService {
   }
 
   public async addServiceToMission(data: AddServiceToMissionDTO) {
-    // TODO : Créer une entrée missions_has_services et récupérer l'id de cette entrée
-    // TODO : Créer autant d'entrée missions_services_infos qu'il y a de serviceInfos dans data.serviceInfos avec l'id de la mission_has_service récupéré juste au dessus et les infos du service
+    const missionHasServiceId = await this.missionRepository.addServiceToMission(
+      data.mission_id,
+      data.service_id
+    )
 
-    return await this.missionRepository.addServiceToMission(data)
+    let numberOfFiles = 0
+    for (const serviceInfo of data.serviceInfos) {
+      if (serviceInfo.file) {
+        numberOfFiles++
+        serviceInfo.value = await UploadService.uploadFileTo(
+          serviceInfo.file,
+          this.clientMissionPath + data.mission_id + this.serviceSubFolder,
+          'service-info-' + numberOfFiles + '-' + getDatetimeForFileName()
+        )
+      }
+      await this.missionRepository.addServiceInfoToMission(missionHasServiceId, serviceInfo)
+    }
   }
 }

@@ -1,4 +1,5 @@
 // MODELS
+import Mission from '@Models/Mission'
 import Profession from '@Models/Profession'
 import Service from '@Models/Service'
 import ServicesFormField from '@Models/ServicesFormField'
@@ -15,6 +16,10 @@ export const hardDeleteService = async (idToDelete: number) => {
 
 export const hardDeleteFormField = async (idToDelete: number) => {
   await ServicesFormField.query().where('id', idToDelete).delete()
+}
+
+export const hardDeleteMission = async (idToDelete: number) => {
+  await Mission.query().where('id', idToDelete).delete()
 }
 
 export const deleteFile = async (filePath: string) => {

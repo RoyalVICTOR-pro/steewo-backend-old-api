@@ -34,8 +34,6 @@ export default class MissionsController {
 
   public async addServiceToMission({ request, params, response }: HttpContextContract) {
     const data = await request.validate(AddServiceToMissionValidator)
-    // TODO : Quid des fichiers ? Les champs pouvant contenir des fichiers ou du texte, on ne peut pas les traiter de la même manière
-    // TODO : Il faudra probablement créer un validator custom pour gérer le double cas de figure soit string, soit file
 
     const serviceForMission: AddServiceToMissionDTO = {
       mission_id: params.mission_id,

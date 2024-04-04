@@ -6,9 +6,10 @@ Route.group(() => {
     Route.post('/mission/create/:client_profile_id', 'MissionsController.createMission').as(
       'createMission'
     )
-    Route.post('/mission/:mission_id/add-service', 'MissionsController.addServiceToMission').as(
-      'addServiceToMission'
-    )
+    Route.post(
+      '/mission/:mission_id/add-service/:client_profile_id',
+      'MissionsController.addServiceToMission'
+    ).as('addServiceToMission')
   }).middleware([
     'auth',
     'isValidEmail',
